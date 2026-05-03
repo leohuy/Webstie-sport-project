@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập & Đăng ký - SPORTFLEX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen flex items-center justify-center p-4">
+
+    <!-- Auth Container -->
+    <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row relative">
+
+        <a href="Home.html"
+            class="absolute top-4 left-4 z-20 bg-black/20 hover:bg-black/40 text-white p-2 rounded-full backdrop-blur-sm transition flex items-center justify-center md:bg-white md:text-gray-600 md:hover:bg-gray-100 md:shadow-sm"
+            title="Trở về trang chủ">
+            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+        </a>
+
+        <!-- Left : banner -->
+        <div class="hidden md:block md:w-1/2 relative bg-gray-900 overflow-hidden group">
+            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=800&q=80"
+                alt="SportFlex Workout"
+                class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition duration-700">
+            <div
+                class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-10">
+                <div class="flex items-center gap-2 text-white mb-4">
+                    <i data-lucide="activity" class="w-10 h-10 text-blue-500"></i>
+                    <span class="text-3xl font-black italic tracking-wider">SPORTFLEX</span>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-3 leading-snug">Khám phá giới hạn<br>của bản thân.</h2>
+                <p class="text-gray-300 text-sm leading-relaxed">Đăng nhập để nhận các ưu đãi độc quyền, theo dõi đơn
+                    hàng dễ dàng và lưu lại danh sách sản phẩm yêu thích của bạn.</p>
+            </div>
+        </div>
+
+        <!-- Right: Forms -->
+        <div class="w-full md:w-1/2 p-6 sm:p-10 lg:p-12 relative bg-white">
+
+            <div class="md:hidden flex justify-center items-center gap-2 text-blue-700 mb-6 mt-4">
+                <i data-lucide="activity" class="w-8 h-8"></i>
+                <span class="text-2xl font-black italic tracking-wider">SPORTFLEX</span>
+            </div>
+
+            <!-- Form Tabs -->
+            <div class="flex border-b border-gray-200 mb-8 relative">
+                <button onclick="switchTab('login')" id="tab-login"
+                    class="flex-1 pb-3 text-center font-bold text-blue-600 border-b-2 border-blue-600 transition duration-300 focus:outline-none">
+                    Đăng nhập
+                </button>
+                <button onclick="switchTab('register')" id="tab-register"
+                    class="flex-1 pb-3 text-center font-semibold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition duration-300 focus:outline-none">
+                    Đăng ký
+                </button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <div id="login-form" class="fade-in block">
+                <h3 class="text-2xl font-black text-gray-900 mb-2">Chào mừng trở lại!</h3>
+                <p class="text-gray-500 text-sm mb-6">Vui lòng đăng nhập để tiếp tục.</p>
+
+                <form onsubmit="handleAuth(event, 'login')">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Email của bạn</label>
+                        <div class="relative">
+                            <i data-lucide="mail" class="absolute left-3 top-3.5 text-gray-400 w-5 h-5"></i>
+                            <input type="email" id="login-email" required placeholder="Nhập email của bạn"
+                                class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-1 outline-none transition text-sm bg-gray-50">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="flex justify-between items-center mb-1.5">
+                            <label class="block text-sm font-medium text-gray-700">Mật khẩu</label>
+                            <a href="#" class="text-xs font-semibold text-blue-600 hover:underline">Quên mật khẩu?</a>
+                        </div>
+                        <div class="relative">
+                            <i data-lucide="lock" class="absolute left-3 top-3.5 text-gray-400 w-5 h-5"></i>
+                            <input type="password" id="login-password" required placeholder="••••••••"
+                                class="w-full pl-10 pr-10 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-1 outline-none transition text-sm bg-gray-50">
+                            <button type="button" onclick="togglePassword('login-password')"
+                                class="absolute right-3 top-3.5 text-gray-400 hover:text-gray-600">
+                                <i data-lucide="eye" class="w-5 h-5" id="login-password-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full py-3.5 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition shadow-lg flex justify-center items-center mt-6">
+                        Đăng nhập
+                    </button>
+                </form>
+            </div>
+            <!-- REGISTER FORM -->
+            <div id="register-form" class="fade-in hidden">
+                <h3 class="text-2xl font-black text-gray-900 mb-2">Tạo tài khoản mới</h3>
+                <p class="text-gray-500 text-sm mb-6">Trở thành thành viên của SportFlex ngay hôm nay.</p>
+
+                <form onsubmit="handleAuth(event, 'register')">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Họ và tên <span
+                                class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <i data-lucide="user" class="absolute left-3 top-3.5 text-gray-400 w-5 h-5"></i>
+                            <input type="text" id="reg-name" required placeholder="Nguyễn Văn A"
+                                class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 outline-none text-sm bg-gray-50">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Email <span
+                                    class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <i data-lucide="mail" class="absolute left-3 top-3.5 text-gray-400 w-5 h-5"></i>
+                                <input type="email" id="reg-email" required placeholder="email@example.com"
+                                    class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 outline-none text-sm bg-gray-50">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1.5">Số điện thoại <span
+                                    class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <i data-lucide="phone" class="absolute left-3 top-3.5 text-gray-400 w-5 h-5"></i>
+                                <input type="tel" id="reg-phone" required placeholder="090 1234 567"
+                                    class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 outline-none text-sm bg-gray-50">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Mật khẩu <span
+                                class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <i data-lucide="lock" class="absolute left-3 top-3.5 text-gray-400 w-5 h-5"></i>
+                            <input type="password" id="reg-password" required
+                                placeholder="Tạo mật khẩu (Ít nhất 6 ký tự)"
+                                class="w-full pl-10 pr-10 py-3 rounded-xl border border-gray-300 focus:border-blue-500 outline-none text-sm bg-gray-50">
+                            <button type="button" onclick="togglePassword('reg-password')"
+                                class="absolute right-3 top-3.5 text-gray-400">
+                                <i data-lucide="eye" class="w-5 h-5" id="reg-password-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Xác nhận mật khẩu <span
+                                class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <i data-lucide="lock" class="absolute left-3 top-3.5 text-gray-400 w-5 h-5"></i>
+                            <input type="password" id="reg-confirm-password" required placeholder="Nhập lại mật khẩu"
+                                class="w-full pl-10 pr-10 py-3 rounded-xl border border-gray-300 focus:border-blue-500 outline-none text-sm bg-gray-50">
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full py-3.5 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-800 transition shadow-lg flex justify-center items-center">
+                        Tạo tài khoản
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thông báo góc màn hình-->
+    <div id="toast"
+        class="fixed top-4 right-4 text-white px-6 py-3 rounded-lg shadow-2xl transform transition-transform duration-300 translate-x-full z-50 flex items-center gap-3">
+        <i id="toast-icon" data-lucide="info" class="w-6 h-6"></i>
+        <span id="toast-message" class="font-medium"></span>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        // chuyen qua lai tab dang nhap va dang ky
+        function switchTab(tabName) {
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const tabLoginBtn = document.getElementById('tab-login');
+            const tabRegisterBtn = document.getElementById('tab-register');
+
+            if (tabName === 'login') {
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+                tabLoginBtn.className = "flex-1 pb-3 text-center font-bold text-blue-600 border-b-2 border-blue-600 transition";
+                tabRegisterBtn.className = "flex-1 pb-3 text-center font-semibold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition";
+            } else {
+                registerForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+                tabRegisterBtn.className = "flex-1 pb-3 text-center font-bold text-blue-600 border-b-2 border-blue-600 transition";
+                tabLoginBtn.className = "flex-1 pb-3 text-center font-semibold text-gray-400 border-b-2 border-transparent hover:text-gray-600 transition";
+            }
+        }
+        // an hien mat khau
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(inputId + '-icon');
+            if (input.type === "password") {
+                input.type = "text";
+                icon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                input.type = "password";
+                icon.setAttribute('data-lucide', 'eye');
+            }
+            lucide.createIcons();
+        }
+
+        // Hàm hiển thị thông báo 
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            const toastIcon = document.getElementById('toast-icon');
+
+            // Set màu và icon theo trạng thái
+            if (type === 'success') {
+                toast.className = "fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-2xl transform transition-transform duration-300 z-50 flex items-center gap-3";
+                toastIcon.setAttribute('data-lucide', 'check-circle');
+            } else {
+                toast.className = "fixed top-4 right-4 bg-red-600 text-white px-6 py-3 rounded-lg shadow-2xl transform transition-transform duration-300 z-50 flex items-center gap-3";
+                toastIcon.setAttribute('data-lucide', 'alert-circle');
+            }
+
+            toastMsg.innerText = message;
+            lucide.createIcons();
+
+            // Hiện toast
+            toast.classList.remove('translate-x-full');
+            // Ẩn sau 3s
+            setTimeout(() => toast.classList.add('translate-x-full'), 3000);
+        }
+    </script>
+    <script src="../js/api.js"></script>
+</body>
+
+</html>

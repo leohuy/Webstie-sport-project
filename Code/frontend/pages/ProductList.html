@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- thu vien Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- thu vien Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+
+<body>
+    <!-- TOP BAR -->
+    <div class="bg-slate-900 text-white text-xs py-2 px-4 md:px-8 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <i class="ph ph-phone text-base"></i>
+            <span>Hotline: 1900 1234</span>
+        </div>
+        <div class="hidden md:block">Miễn phí vận chuyển cho đơn hàng trên 500k!</div>
+        <div class="flex items-center gap-6">
+            <a href="#" class="hover:text-blue-400 transition">Hỗ trợ</a>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="py-4 px-4 md:px-8 max-w-7xl mx-auto flex justify-between items-center bg-white">
+        <!-- Logo -->
+        <div class="flex items-center gap-2 text-2xl font-black text-blue-600 italic tracking-tighter">
+            <i class="ph-fill ph-activity text-3xl"></i>
+            SPORTFLEX
+        </div>
+
+        <!-- Search Bar -->
+        <div class="hidden md:flex flex-1 max-w-2xl mx-8 relative">
+            <div class="relative w-full">
+                <i class="ph ph-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
+                <input type="text" placeholder="Tìm kiếm giày, phụ kiện, quần áo..."
+                    class="w-full bg-gray-50 border border-gray-200 rounded-full py-2.5 pl-12 pr-24 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
+                <button
+                    class="absolute right-1 top-1 bottom-1 bg-blue-600 text-white px-6 rounded-full text-sm font-medium hover:bg-blue-700 transition">Tìm</button>
+            </div>
+        </div>
+
+        <!-- Icons -->
+        <div class="flex items-center gap-6">
+            <div class="relative cursor-pointer hover:text-blue-600 transition">
+                <i class="ph ph-shopping-bag text-2xl"></i>
+                <!-- Badge hiển thị số lượng giỏ hàng -->
+                <span
+                    class="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">3</span>
+            </div>
+            <div class="cursor-pointer hover:text-blue-600 transition">
+                <i class="ph ph-user text-2xl"></i>
+            </div>
+        </div>
+    </header>
+
+    <!--  NAVIGATION Thanh dieu-->
+    <nav class="border-b border-gray-100 mb-6">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <ul class="flex justify-center gap-8 text-sm font-semibold text-gray-600 pb-4">
+                <li><a href="Home.html" class="hover:text-blue-600 transition">Trang Chủ</a></li>
+                <li><a href="ProductList.html" class="hover:text-blue-600 transition text-blue-600 border-b-2 border-blue-600 pb-4">Giày Thể Thao</a></li>
+                <li><a href="#" class="hover:text-blue-600 transition">Quần Áo</a></li>
+                <li><a href="#" class="hover:text-blue-600 transition">Phụ Kiện</a></li>
+                <li class="relative">
+                    <a href="#" class="hover:text-blue-600 transition">Khuyến Mãi</a>
+                    <span
+                        class="absolute -top-3 -right-6 bg-red-500 text-white text-[7px] font-bold px-1 py-0.3 rounded shadow-sm">HOT</span>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- content -->
+     <!-- ============================================== -->
+    <!-- MAIN CONTENT: PRODUCT LISTING PAGE -->
+    <!-- ============================================== -->
+    <main class="max-w-7xl mx-auto px-4 md:px-8 py-6 pb-20">
+        
+        <!-- Breadcrumbs & Title -->
+        <div class="mb-8">
+            <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
+                <a href="#" class="hover:text-blue-600 transition">Trang chủ</a>
+                <i class="ph-bold ph-caret-right text-xs"></i>
+                <a href="#" class="hover:text-blue-600 transition">Giày Thể Thao</a>
+                <i class="ph-bold ph-caret-right text-xs"></i>
+                <span class="text-gray-900 font-semibold">Giày Chạy Bộ Nam</span>
+            </div>
+            <h1 class="text-3xl font-black text-slate-900 uppercase tracking-tight mb-2">GIÀY CHẠY BỘ NAM</h1>
+            <p class="text-gray-500 text-sm">Hiển thị 1 - 12 trong số 45 sản phẩm</p>
+        </div>
+
+        <!-- 2-Column Layout -->
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- CỘT TRÁI: BỘ LỌC (SIDEBAR) -->
+            <aside class="w-full lg:w-1/4 flex-shrink-0">
+                <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm sticky top-24">
+                    <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-100">
+                        <h2 class="font-bold flex items-center gap-2 text-gray-800">
+                            <i class="ph ph-funnel text-xl"></i> BỘ LỌC
+                        </h2>
+                        <button class="text-xs text-blue-600 hover:underline">Xóa tất cả</button>
+                    </div>
+
+                    <!-- Thương hiệu -->
+                    <div class="mb-6">
+                        <h3 class="font-bold text-sm text-gray-900 uppercase mb-4">Thương hiệu</h3>
+                        <div class="space-y-3">
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Nike (15)</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Adidas (12)</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Puma (8)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Mức giá -->
+                    <div class="mb-6">
+                        <h3 class="font-bold text-sm text-gray-900 uppercase mb-4">Mức giá</h3>
+                        <div class="space-y-3">
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="radio" name="price" class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Dưới 1.000.000₫</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="radio" name="price" class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">1.000.000₫ - 2.000.000₫</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="radio" name="price" class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Trên 2.000.000₫</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Kích cỡ (Size) -->
+                    <div class="mb-8">
+                        <h3 class="font-bold text-sm text-gray-900 uppercase mb-4">Kích cỡ (Size)</h3>
+                        <div class="grid grid-cols-4 gap-2">
+                            <div class="border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">39</div>
+                            <div class="border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">40</div>
+                            <div class="bg-blue-600 border-blue-600 rounded py-1.5 text-center text-sm text-white shadow-sm cursor-pointer">41</div>
+                            <div class="border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">42</div>
+                            <div class="border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">43</div>
+                            <div class="border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">44</div>
+                        </div>
+                    </div>
+
+                    <button class="w-full bg-[#111827] text-white font-bold py-3 rounded-lg hover:bg-blue-600 transition shadow-md">
+                        ÁP DỤNG BỘ LỌC
+                    </button>
+                </div>
+            </aside>
+
+            <!-- CỘT PHẢI: LƯỚI SẢN PHẨM -->
+            <div class="flex-1">
+                
+                <!-- Thanh Sắp Xếp -->
+                <div class="bg-white border border-gray-100 rounded-xl p-3 shadow-sm flex justify-between items-center mb-6">
+                    <div class="hidden sm:block"></div> <!-- Spacer -->
+                    <div class="flex items-center gap-3">
+                        <span class="text-sm text-gray-600">Sắp xếp theo:</span>
+                        <select class="border border-gray-200 rounded-lg text-sm py-2 px-4 focus:outline-none focus:border-blue-500 cursor-pointer bg-gray-50">
+                            <option>Mới nhất</option>
+                            <option>Giá: Thấp đến Cao</option>
+                            <option>Giá: Cao đến Thấp</option>
+                            <option>Bán chạy nhất</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Lưới 3 Cột -->
+                <div  id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!--danh sach san pham-->
+                </div>
+
+                <!-- Phân trang (Pagination) -->
+                <div class="flex justify-center items-center mt-12">
+                    <div class="flex border border-gray-200 rounded-xl overflow-hidden shadow-sm bg-white">
+                        <button class="px-4 py-2 text-gray-500 hover:bg-gray-50 border-r border-gray-200"><i class="ph-bold ph-caret-left"></i></button>
+                        <button class="px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 font-medium">1</button>
+                        <button class="px-4 py-2 bg-blue-600 text-white font-bold">2</button>
+                        <button class="px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 font-medium">3</button>
+                        <span class="px-4 py-2 text-gray-400">...</span>
+                        <button class="px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 font-medium">12</button>
+                        <button class="px-4 py-2 text-gray-500 hover:bg-gray-50 border-l border-gray-200"><i class="ph-bold ph-caret-right"></i></button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+    <!--  FOOTER -->
+    <footer class="bg-[#111827] text-gray-400 pt-8 pb-8 text-sm">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12 border-b border-gray-800 pb-12">
+
+                <!-- Cột 1: Brand -->
+                <div>
+                    <div class="flex items-center gap-2 text-2xl font-black text-blue-500 italic tracking-tighter mb-4">
+                        <i class="ph-fill ph-activity text-3xl"></i>
+                        SPORTFLEX
+                    </div>
+                    <p class="mb-6 leading-relaxed text-gray-400">
+                        Hệ thống cung cấp giày và phụ kiện thể thao chính hãng hàng đầu. Chuyên nghiệp, tận tâm và luôn
+                        hướng tới sức khỏe của bạn.
+                    </p>
+                    <div class="flex gap-3">
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-600 text-white transition"><i
+                                class="ph-fill ph-facebook-logo text-xl"></i></a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-400 text-white transition"><i
+                                class="ph-fill ph-twitter-logo text-xl"></i></a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-pink-600 text-white transition"><i
+                                class="ph-fill ph-instagram-logo text-xl"></i></a>
+                    </div>
+                </div>
+
+                <!-- Cột 2: Liên kết nhanh -->
+                <div>
+                    <h4 class="text-white font-bold mb-6 uppercase tracking-wider">LIÊN KẾT NHANH</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
+                                    class="ph ph-caret-right"></i> Trang chủ</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
+                                    class="ph ph-caret-right"></i> Giới thiệu</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
+                                    class="ph ph-caret-right"></i> Sản phẩm</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
+                                    class="ph ph-caret-right"></i> Khuyến mãi</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
+                                    class="ph ph-caret-right"></i> Tin tức thể thao</a></li>
+                    </ul>
+                </div>
+
+                <!-- Cột 3: Chính sách -->
+                <div>
+                    <h4 class="text-white font-bold mb-6 uppercase tracking-wider">CHÍNH SÁCH</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
+                                    class="ph ph-caret-right"></i> Chính sách bảo mật</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
+                                    class="ph ph-caret-right"></i> Điều khoản sử dụng</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
+                                    class="ph ph-caret-right"></i> Chính sách đổi trả</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
+                                    class="ph ph-caret-right"></i> Chính sách bảo hành</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
+                                    class="ph ph-caret-right"></i> Phương thức thanh toán</a></li>
+                    </ul>
+                </div>
+
+                <!-- Cột 4: Liên hệ -->
+                <div>
+                    <h4 class="text-white font-bold mb-6 uppercase tracking-wider">THÔNG TIN LIÊN HỆ</h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <i class="ph-fill ph-map-pin text-blue-500 text-lg mt-0.5"></i>
+                            <span>Khu II, Đại học Trà Vinh, 126 Nguyễn Thiện Thành, Khóm 4, Phường 5, TP. Trà
+                                Vinh</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="ph-fill ph-phone-call text-blue-500 text-lg"></i>
+                            <span>+84 1900 1234 56</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="ph-fill ph-envelope-simple text-blue-500 text-lg"></i>
+                            <span>support@sportflex.com.vn</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Bottom Copyright -->
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
+                <p>&copy; 2026 SportFlex. Đồ án Công nghệ phần mềm - Nhóm 10 (Đạt, Thanh Huy, Tuấn Huy).</p>
+                <div class="flex items-center gap-4 text-2xl text-gray-500">
+                    <i class="ph-fill ph-stripe-logo hover:text-white transition cursor-pointer"></i>
+                    <i class="ph-fill ph-paypal-logo hover:text-white transition cursor-pointer"></i>
+                    <i class="ph-fill ph-mastercard-logo hover:text-white transition cursor-pointer"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+<script src="../Js/api.js"></script>
+</html>
