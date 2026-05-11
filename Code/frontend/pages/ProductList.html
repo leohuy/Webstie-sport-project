@@ -27,10 +27,10 @@
     <!-- HEADER -->
     <header class="py-4 px-4 md:px-8 max-w-7xl mx-auto flex justify-between items-center bg-white">
         <!-- Logo -->
-        <div class="flex items-center gap-2 text-2xl font-black text-blue-600 italic tracking-tighter">
+        <a href="Home.html" class="flex items-center gap-2 text-2xl font-black text-blue-600 italic tracking-tighter">
             <i class="ph-fill ph-activity text-3xl"></i>
             SPORTFLEX
-        </div>
+        </a>
 
         <!-- Search Bar -->
         <div class="hidden md:flex flex-1 max-w-2xl mx-8 relative">
@@ -45,56 +45,64 @@
 
         <!-- Icons -->
         <div class="flex items-center gap-6">
-            <div class="relative cursor-pointer hover:text-blue-600 transition">
+            <a href="cart.html" class="relative cursor-pointer hover:text-blue-600 transition">
                 <i class="ph ph-shopping-bag text-2xl"></i>
                 <!-- Badge hiển thị số lượng giỏ hàng -->
                 <span
                     class="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">3</span>
-            </div>
-            <div class="cursor-pointer hover:text-blue-600 transition">
+            </a>
+            <a href="profile.html" class="cursor-pointer hover:text-blue-600 transition">
                 <i class="ph ph-user text-2xl"></i>
-            </div>
+            </a>
         </div>
     </header>
 
     <!--  NAVIGATION Thanh dieu-->
-    <nav class="border-b border-gray-100 mb-6">
+    <nav>
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <ul class="flex justify-center gap-8 text-sm font-semibold text-gray-600 pb-4">
-                <li><a href="Home.html" class="hover:text-blue-600 transition">Trang Chủ</a></li>
-                <li><a href="ProductList.html" class="hover:text-blue-600 transition text-blue-600 border-b-2 border-blue-600 pb-4">Giày Thể Thao</a></li>
-                <li><a href="#" class="hover:text-blue-600 transition">Quần Áo</a></li>
-                <li><a href="#" class="hover:text-blue-600 transition">Phụ Kiện</a></li>
+
+                <li><a href="Home.html" class="nav-item hover:text-blue-600 transition pb-1">Trang Chủ</a></li>
+
+                <li><a href="ProductList.html?danhMuc=1" data-id="1"
+                        class="nav-item hover:text-blue-600 transition pb-1">Giày Thể Thao</a></li>
+
+                <li><a href="ProductList.html?danhMuc=2" data-id="2"
+                        class="nav-item hover:text-blue-600 transition pb-1">Quần Áo</a></li>
+
+                <li><a href="ProductList.html?danhMuc=3" data-id="3"
+                        class="nav-item hover:text-blue-600 transition pb-1">Phụ Kiện</a></li>
+
                 <li class="relative">
-                    <a href="#" class="hover:text-blue-600 transition">Khuyến Mãi</a>
+                    <a href="ProductList.html" class="hover:text-blue-600 transition pb-1">Khuyến Mãi</a>
                     <span
                         class="absolute -top-3 -right-6 bg-red-500 text-white text-[7px] font-bold px-1 py-0.3 rounded shadow-sm">HOT</span>
                 </li>
+
             </ul>
         </div>
     </nav>
     <!-- content -->
-     <!-- ============================================== -->
     <!-- MAIN CONTENT: PRODUCT LISTING PAGE -->
-    <!-- ============================================== -->
+
     <main class="max-w-7xl mx-auto px-4 md:px-8 py-6 pb-20">
-        
+
         <!-- Breadcrumbs & Title -->
         <div class="mb-8">
             <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
-                <a href="#" class="hover:text-blue-600 transition">Trang chủ</a>
+                <a href="Home.html" class="hover:text-blue-600 transition">Trang chủ</a>
                 <i class="ph-bold ph-caret-right text-xs"></i>
-                <a href="#" class="hover:text-blue-600 transition">Giày Thể Thao</a>
+                <a href="ProductList.html" class="hover:text-blue-600 transition">Giày Thể Thao</a>
                 <i class="ph-bold ph-caret-right text-xs"></i>
-                <span class="text-gray-900 font-semibold">Giày Chạy Bộ Nam</span>
+                <span class="text-gray-900 font-semibold">Giày Thể Thao</span>
             </div>
-            <h1 class="text-3xl font-black text-slate-900 uppercase tracking-tight mb-2">GIÀY CHẠY BỘ NAM</h1>
+            <h1 class="text-3xl font-black text-slate-900 uppercase tracking-tight mb-2">GIÀY THỂ THAO</h1>
             <p class="text-gray-500 text-sm">Hiển thị 1 - 12 trong số 45 sản phẩm</p>
         </div>
 
         <!-- 2-Column Layout -->
         <div class="flex flex-col lg:flex-row gap-8">
-            
+
             <!-- CỘT TRÁI: BỘ LỌC (SIDEBAR) -->
             <aside class="w-full lg:w-1/4 flex-shrink-0">
                 <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm sticky top-24">
@@ -110,15 +118,20 @@
                         <h3 class="font-bold text-sm text-gray-900 uppercase mb-4">Thương hiệu</h3>
                         <div class="space-y-3">
                             <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
-                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Nike (15)</span>
+                                <input type="checkbox" checked
+                                    class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Nike
+                                    (15)</span>
                             </label>
                             <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
-                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Adidas (12)</span>
+                                <input type="checkbox"
+                                    class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Adidas
+                                    (12)</span>
                             </label>
                             <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                <input type="checkbox"
+                                    class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
                                 <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Puma (8)</span>
                             </label>
                         </div>
@@ -129,16 +142,22 @@
                         <h3 class="font-bold text-sm text-gray-900 uppercase mb-4">Mức giá</h3>
                         <div class="space-y-3">
                             <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="radio" name="price" class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer">
-                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Dưới 1.000.000₫</span>
+                                <input type="radio" name="price"
+                                    class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Dưới
+                                    1.000.000₫</span>
                             </label>
                             <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="radio" name="price" class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer">
-                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">1.000.000₫ - 2.000.000₫</span>
+                                <input type="radio" name="price"
+                                    class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">1.000.000₫ -
+                                    2.000.000₫</span>
                             </label>
                             <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="radio" name="price" class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer">
-                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Trên 2.000.000₫</span>
+                                <input type="radio" name="price"
+                                    class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Trên
+                                    2.000.000₫</span>
                             </label>
                         </div>
                     </div>
@@ -147,16 +166,29 @@
                     <div class="mb-8">
                         <h3 class="font-bold text-sm text-gray-900 uppercase mb-4">Kích cỡ (Size)</h3>
                         <div class="grid grid-cols-4 gap-2">
-                            <div class="border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">39</div>
-                            <div class="border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">40</div>
-                            <div class="bg-blue-600 border-blue-600 rounded py-1.5 text-center text-sm text-white shadow-sm cursor-pointer">41</div>
-                            <div class="border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">42</div>
-                            <div class="border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">43</div>
-                            <div class="border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">44</div>
+                            <div
+                                class="border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">
+                                39</div>
+                            <div
+                                class="border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">
+                                40</div>
+                            <div
+                                class="bg-blue-600 border-blue-600 rounded py-1.5 text-center text-sm text-white shadow-sm cursor-pointer">
+                                41</div>
+                            <div
+                                class="border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">
+                                42</div>
+                            <div
+                                class="border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">
+                                43</div>
+                            <div
+                                class="border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">
+                                44</div>
                         </div>
                     </div>
 
-                    <button class="w-full bg-[#111827] text-white font-bold py-3 rounded-lg hover:bg-blue-600 transition shadow-md">
+                    <button
+                        class="w-full bg-[#111827] text-white font-bold py-3 rounded-lg hover:bg-blue-600 transition shadow-md">
                         ÁP DỤNG BỘ LỌC
                     </button>
                 </div>
@@ -164,13 +196,15 @@
 
             <!-- CỘT PHẢI: LƯỚI SẢN PHẨM -->
             <div class="flex-1">
-                
+
                 <!-- Thanh Sắp Xếp -->
-                <div class="bg-white border border-gray-100 rounded-xl p-3 shadow-sm flex justify-between items-center mb-6">
+                <div
+                    class="bg-white border border-gray-100 rounded-xl p-3 shadow-sm flex justify-between items-center mb-6">
                     <div class="hidden sm:block"></div> <!-- Spacer -->
                     <div class="flex items-center gap-3">
                         <span class="text-sm text-gray-600">Sắp xếp theo:</span>
-                        <select class="border border-gray-200 rounded-lg text-sm py-2 px-4 focus:outline-none focus:border-blue-500 cursor-pointer bg-gray-50">
+                        <select
+                            class="border border-gray-200 rounded-lg text-sm py-2 px-4 focus:outline-none focus:border-blue-500 cursor-pointer bg-gray-50">
                             <option>Mới nhất</option>
                             <option>Giá: Thấp đến Cao</option>
                             <option>Giá: Cao đến Thấp</option>
@@ -180,20 +214,25 @@
                 </div>
 
                 <!-- Lưới 3 Cột -->
-                <div  id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!--danh sach san pham-->
                 </div>
 
                 <!-- Phân trang (Pagination) -->
                 <div class="flex justify-center items-center mt-12">
                     <div class="flex border border-gray-200 rounded-xl overflow-hidden shadow-sm bg-white">
-                        <button class="px-4 py-2 text-gray-500 hover:bg-gray-50 border-r border-gray-200"><i class="ph-bold ph-caret-left"></i></button>
-                        <button class="px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 font-medium">1</button>
+                        <button class="px-4 py-2 text-gray-500 hover:bg-gray-50 border-r border-gray-200"><i
+                                class="ph-bold ph-caret-left"></i></button>
+                        <button
+                            class="px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 font-medium">1</button>
                         <button class="px-4 py-2 bg-blue-600 text-white font-bold">2</button>
-                        <button class="px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 font-medium">3</button>
+                        <button
+                            class="px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 font-medium">3</button>
                         <span class="px-4 py-2 text-gray-400">...</span>
-                        <button class="px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 font-medium">12</button>
-                        <button class="px-4 py-2 text-gray-500 hover:bg-gray-50 border-l border-gray-200"><i class="ph-bold ph-caret-right"></i></button>
+                        <button
+                            class="px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 font-medium">12</button>
+                        <button class="px-4 py-2 text-gray-500 hover:bg-gray-50 border-l border-gray-200"><i
+                                class="ph-bold ph-caret-right"></i></button>
                     </div>
                 </div>
 
@@ -297,5 +336,8 @@
         </div>
     </footer>
 </body>
+<script src="../Js/main.js"></script>
 <script src="../Js/api.js"></script>
+<script src="../Js/cart.js"></script>
+
 </html>

@@ -6,7 +6,9 @@ import db from './config/db.js';
 // Import các routes
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
-
+import categoryRoutes from './routes/categoryRoutes.js';
+import cartRoutes from './routes/cartRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
 dotenv.config({ path: fileURLToPath(new URL('./.env', import.meta.url)) });
 const app = express();
 
@@ -18,10 +20,11 @@ app.use(express.json()); // Đọc dữ liệu JSON gửi từ Client
 app.use('/api/auth', authRoutes);
 
 app.use('/api/products', productRoutes);
+app.use('/api/categories', categoryRoutes);
 
+app.use('/api/cart', cartRoutes);
 
-
-
+app.use('/api/orders', orderRoutes);
 
 // Khởi chạy server
 const PORT = process.env.PORT || 3000;

@@ -27,11 +27,10 @@
     <!-- HEADER -->
     <header class="py-4 px-4 md:px-8 max-w-7xl mx-auto flex justify-between items-center bg-white">
         <!-- Logo -->
-        <div class="flex items-center gap-2 text-2xl font-black text-blue-600 italic tracking-tighter">
+        <a href="Home.html" class="flex items-center gap-2 text-2xl font-black text-blue-600 italic tracking-tighter">
             <i class="ph-fill ph-activity text-3xl"></i>
             SPORTFLEX
-        </div>
-
+        </a>
         <!-- Search Bar -->
         <div class="hidden md:flex flex-1 max-w-2xl mx-8 relative">
             <div class="relative w-full">
@@ -42,38 +41,41 @@
                     class="absolute right-1 top-1 bottom-1 bg-blue-600 text-white px-6 rounded-full text-sm font-medium hover:bg-blue-700 transition">Tìm</button>
             </div>
         </div>
-
         <!-- Icons -->
         <div class="flex items-center gap-6">
-            <div class="relative cursor-pointer hover:text-blue-600 transition">
+            <a href="cart.html" class="relative cursor-pointer hover:text-blue-600 transition">
                 <i class="ph ph-shopping-bag text-2xl"></i>
                 <!-- Badge hiển thị số lượng giỏ hàng -->
                 <span
                     class="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">3</span>
-            </div>
-            <div class="cursor-pointer hover:text-blue-600 transition">
+            </a>
+            <a href="profile.html" class="cursor-pointer hover:text-blue-600 transition">
                 <i class="ph ph-user text-2xl"></i>
-            </div>
+            </a>
         </div>
     </header>
 
-    <!--  NAVIGATION Thanh dieu-->
-    <nav class="border-b border-gray-100 mb-6">
-        <div class="max-w-7xl mx-auto px-4 md:px-8">
-            <ul class="flex justify-center gap-8 text-sm font-semibold text-gray-600 pb-4">
-                <li><a href="Home.html" class="text-blue-600 border-b-2 border-blue-600 pb-4">Trang Chủ</a></li>
-                <li><a href="ProductList.html" class="hover:text-blue-600 transition">Giày Thể Thao</a></li>
-                <li><a href="#" class="hover:text-blue-600 transition">Quần Áo</a></li>
-                <li><a href="#" class="hover:text-blue-600 transition">Phụ Kiện</a></li>
-                <li class="relative">
-                    <a href="#" class="hover:text-blue-600 transition">Khuyến Mãi</a>
-                    <span
-                        class="absolute -top-3 -right-6 bg-red-500 text-white text-[7px] font-bold px-1 py-0.3 rounded shadow-sm">HOT</span>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
+    <!--  NAVIGATION -->
+   <nav>
+    <div class="max-w-7xl mx-auto px-4 md:px-8">
+        <ul class="flex justify-center gap-8 text-sm font-semibold text-gray-600 pb-4">
+            
+            <li><a href="Home.html" class="nav-item hover:text-blue-600 transition pb-1">Trang Chủ</a></li>
+            
+            <li><a href="ProductList.html?danhMuc=1" data-id="1" class="nav-item hover:text-blue-600 transition pb-1">Giày Thể Thao</a></li>
+            
+            <li><a href="ProductList.html?danhMuc=2" data-id="2" class="nav-item hover:text-blue-600 transition pb-1">Quần Áo</a></li>
+            
+            <li><a href="ProductList.html?danhMuc=3" data-id="3" class="nav-item hover:text-blue-600 transition pb-1">Phụ Kiện</a></li>
+            
+            <li class="relative">
+                <a href="ProductList.html" class="hover:text-blue-600 transition pb-1">Khuyến Mãi</a>
+                <span class="absolute -top-3 -right-6 bg-red-500 text-white text-[7px] font-bold px-1 py-0.3 rounded shadow-sm">HOT</span>
+            </li>
+            
+        </ul>
+    </div>
+</nav>
     <!-- content -->
     <main class="max-w-7xl mx-auto px-4 md:px-8 pb-8">
         <!-- banner -->
@@ -116,56 +118,8 @@
             </div>
 
             <!-- Danh sách các vòng tròn -->
-            <div class="flex flex-wrap justify-between gap-4 overflow-x-auto pb-4">
-                <div class="flex flex-col items-center gap-3 cursor-pointer group">
-                    <div
-                        class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden p-1 border-2 border-transparent group-hover:border-blue-500 transition-colors">
-                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=300"
-                            class="w-full h-full rounded-full object-cover">
-                    </div>
-                    <span class="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition">Giày Chạy
-                        Bộ</span>
-                </div>
-
-                <div class="flex flex-col items-center gap-3 cursor-pointer group">
-                    <div
-                        class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden p-1 border-2 border-transparent group-hover:border-blue-500 transition-colors">
-                        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=300"
-                            class="w-full h-full rounded-full object-cover">
-                    </div>
-                    <span class="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition">Tạ & Thể
-                        Hình</span>
-                </div>
-
-                <div class="flex flex-col items-center gap-3 cursor-pointer group">
-                    <div
-                        class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden p-1 border-2 border-transparent group-hover:border-blue-500 transition-colors">
-                        <img src="https://images.unsplash.com/photo-1556815315-479a5f57f648?auto=format&fit=crop&w=300"
-                            class="w-full h-full rounded-full object-cover bg-gray-100">
-                    </div>
-                    <span class="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition">Đồ Thể
-                        Thao</span>
-                </div>
-
-                <div class="flex flex-col items-center gap-3 cursor-pointer group">
-                    <div
-                        class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden p-1 border-2 border-transparent group-hover:border-blue-500 transition-colors">
-                        <div class="w-full h-full rounded-full bg-gray-200 flex items-center justify-center">
-                            <i class="ph ph-tennis-ball text-4xl text-gray-400"></i>
-                        </div>
-                    </div>
-                    <span class="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition">Vợt & Bóng</span>
-                </div>
-
-                <div class="flex flex-col items-center gap-3 cursor-pointer group">
-                    <div
-                        class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden p-1 border-2 border-transparent group-hover:border-blue-500 transition-colors">
-                        <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=300"
-                            class="w-full h-full rounded-full object-cover">
-                    </div>
-                    <span class="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition">Balo & Túi
-                        Xách</span>
-                </div>
+            <div id="category-list" class="flex flex-wrap justify-between gap-4 overflow-x-auto pb-4">
+                <!--hien thi danh muc noi bat-->
             </div>
         </section>
         <!--san pham ban chay -->
@@ -186,118 +140,8 @@
             </div>
 
             <!-- Lưới Sản phẩm (Grid 4 cột) -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-                <!-- Thẻ SP 1 -->
-                <div
-                    class="border border-gray-100 rounded-2xl p-4 bg-white hover:shadow-xl hover:border-blue-100 transition-all duration-300 flex flex-col group cursor-pointer">
-                    <!-- Ảnh & Badge -->
-                    <div
-                        class="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-50 mb-4 flex items-center justify-center">
-                        <span
-                            class="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded">-20%</span>
-                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400"
-                            class="w-[80%] object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500">
-                    </div>
-                    <!-- Đánh giá -->
-                    <div class="flex items-center gap-1 text-yellow-400 text-xs mb-2">
-                        <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i
-                            class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
-                        <span class="text-gray-400 ml-1">(124)</span>
-                    </div>
-                    <!-- Tên SP -->
-                    <h3 class="font-bold text-gray-800 text-sm mb-2 line-clamp-2 group-hover:text-blue-600 transition">
-                        Giày
-                        Thể Thao Nike Air Max Chuyên Dụng</h3>
-                    <!-- Giá -->
-                    <div class="flex items-end gap-2 mb-4 mt-auto">
-                        <span class="text-blue-600 font-bold text-lg">2.450.000 ₫</span>
-                        <span class="text-gray-400 text-xs line-through pb-0.5">3.000.000 ₫</span>
-                    </div>
-                    <!-- Nút Thêm vào giỏ -->
-                    <button
-                        class="w-full py-2.5 rounded-lg border border-gray-200 text-blue-600 font-semibold text-sm flex justify-center items-center gap-2 hover:bg-blue-50 hover:border-blue-200 transition">
-                        <i class="ph ph-shopping-cart text-lg"></i> Thêm vào giỏ
-                    </button>
-                </div>
-
-                <!-- Thẻ SP 2 -->
-                <div
-                    class="border border-gray-100 rounded-2xl p-4 bg-white hover:shadow-xl hover:border-blue-100 transition-all duration-300 flex flex-col group cursor-pointer">
-                    <div
-                        class="relative aspect-[4/3] rounded-xl overflow-hidden bg-[#1a1a1a] mb-4 flex items-center justify-center">
-                        <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=400"
-                            class="w-[80%] object-contain group-hover:scale-110 transition-transform duration-500">
-                    </div>
-                    <div class="flex items-center gap-1 text-yellow-400 text-xs mb-2">
-                        <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i
-                            class="ph-fill ph-star"></i><i class="ph ph-star text-gray-300"></i>
-                        <span class="text-gray-400 ml-1">(89)</span>
-                    </div>
-                    <h3 class="font-bold text-gray-800 text-sm mb-2 line-clamp-2 group-hover:text-blue-600 transition">
-                        Giày
-                        Chạy Bộ Puma RS-X Trắng Xanh</h3>
-                    <div class="flex items-end gap-2 mb-4 mt-auto">
-                        <span class="text-blue-600 font-bold text-lg">1.850.000 ₫</span>
-                    </div>
-                    <button
-                        class="w-full py-2.5 rounded-lg border border-gray-200 text-blue-600 font-semibold text-sm flex justify-center items-center gap-2 hover:bg-blue-50 hover:border-blue-200 transition">
-                        <i class="ph ph-shopping-cart text-lg"></i> Thêm vào giỏ
-                    </button>
-                </div>
-
-                <!-- Thẻ SP 3 -->
-                <div
-                    class="border border-gray-100 rounded-2xl p-4 bg-white hover:shadow-xl hover:border-blue-100 transition-all duration-300 flex flex-col group cursor-pointer">
-                    <div
-                        class="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-50 mb-4 flex items-center justify-center">
-                        <span
-                            class="absolute top-2 left-2 bg-blue-500 text-white text-[10px] font-bold px-2 py-1 rounded">Mới</span>
-                        <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=400"
-                            class="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-500">
-                    </div>
-                    <div class="flex items-center gap-1 text-yellow-400 text-xs mb-2">
-                        <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i
-                            class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
-                        <span class="text-gray-400 ml-1">(210)</span>
-                    </div>
-                    <h3 class="font-bold text-gray-800 text-sm mb-2 line-clamp-2 group-hover:text-blue-600 transition">
-                        Balo
-                        Thể Thao Đa Năng Chống Nước SportFlex</h3>
-                    <div class="flex items-end gap-2 mb-4 mt-auto">
-                        <span class="text-blue-600 font-bold text-lg">650.000 ₫</span>
-                    </div>
-                    <button
-                        class="w-full py-2.5 rounded-lg border border-gray-200 text-blue-600 font-semibold text-sm flex justify-center items-center gap-2 hover:bg-blue-50 hover:border-blue-200 transition">
-                        <i class="ph ph-shopping-cart text-lg"></i> Thêm vào giỏ
-                    </button>
-                </div>
-
-                <!-- Thẻ SP 4 -->
-                <div
-                    class="border border-gray-100 rounded-2xl p-4 bg-white hover:shadow-xl hover:border-blue-100 transition-all duration-300 flex flex-col group cursor-pointer">
-                    <div
-                        class="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-50 mb-4 flex items-center justify-center">
-                        <img src="https://images.unsplash.com/photo-1601422407692-ec4eeec1d9b3?auto=format&fit=crop&w=400"
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    </div>
-                    <div class="flex items-center gap-1 text-yellow-400 text-xs mb-2">
-                        <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i
-                            class="ph-fill ph-star"></i><i class="ph-fill ph-star-half"></i>
-                        <span class="text-gray-400 ml-1">(56)</span>
-                    </div>
-                    <h3 class="font-bold text-gray-800 text-sm mb-2 line-clamp-2 group-hover:text-blue-600 transition">
-                        Thảm
-                        Tập Yoga Cao Su Non Chống Trượt Cao Cấp</h3>
-                    <div class="flex items-end gap-2 mb-4 mt-auto">
-                        <span class="text-blue-600 font-bold text-lg">450.000 ₫</span>
-                    </div>
-                    <button
-                        class="w-full py-2.5 rounded-lg border border-gray-200 text-blue-600 font-semibold text-sm flex justify-center items-center gap-2 hover:bg-blue-50 hover:border-blue-200 transition">
-                        <i class="ph ph-shopping-cart text-lg"></i> Thêm vào giỏ
-                    </button>
-                </div>
-
+            <div id="bestseller-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!--hien thi san pham ban chay-->
             </div>
         </section>
         <!-- quang cao them-->
@@ -359,14 +203,14 @@
                 <div>
                     <h4 class="text-white font-bold mb-6 uppercase tracking-wider">LIÊN KẾT NHANH</h4>
                     <ul class="space-y-3">
-                        <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
+                        <li><a href="Home.html" class="hover:text-blue-500 transition flex items-center gap-2"><i
                                     class="ph ph-caret-right"></i> Trang chủ</a></li>
-                        <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
-                                    class="ph ph-caret-right"></i> Giới thiệu</a></li>
-                        <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
+                        <li><a href="ProductList.html" class="hover:text-blue-500 transition flex items-center gap-2"><i
                                     class="ph ph-caret-right"></i> Sản phẩm</a></li>
-                        <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
-                                    class="ph ph-caret-right"></i> Khuyến mãi</a></li>
+                        <li><a href="cart.html" class="hover:text-blue-500 transition flex items-center gap-2"><i
+                                    class="ph ph-caret-right"></i> Giỏ hàng</a></li>
+                        <li><a href="auth.html" class="hover:text-blue-500 transition flex items-center gap-2"><i
+                                    class="ph ph-caret-right"></i> Đăng nhập</a></li>
                         <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
                                     class="ph ph-caret-right"></i> Tin tức thể thao</a></li>
                     </ul>
@@ -423,5 +267,7 @@
         </div>
     </footer>
 </body>
-<script src="./js/main.js"></script>
+<script src="../Js/main.js"></script>
+<script src="../Js/cart.js"></script>
+<script src="../Js/api.js"></script>
 </html>

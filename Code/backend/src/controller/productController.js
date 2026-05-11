@@ -8,13 +8,14 @@ export const getAllProducts = async (req, res) => {
 
         // Bắt đầu câu query mặc định (Chỉ lấy SP đang Hoạt động)
         let sql = `
-            SELECT sp.MaSanPham, sp.TenSanPham, sp.HinhAnhChinh, sp.GiaMacDinh, 
-                   dm.TenDanhMuc, th.TenThuongHieu
-            FROM SANPHAM sp
-            LEFT JOIN DANHMUC dm ON sp.MaDanhMuc = dm.MaDanhMuc
-            LEFT JOIN THUONGHIEU th ON sp.MaThuongHieu = th.MaThuongHieu
-            WHERE sp.TrangThai = 'HoatDong'
-        `;
+                    SELECT sp.MaSanPham, sp.TenSanPham, sp.HinhAnhChinh, sp.GiaMacDinh, 
+                        dm.TenDanhMuc, th.TenThuongHieu,
+                        (SELECT MaBienThe FROM BIENTHE_SANPHAM WHERE MaSanPham = sp.MaSanPham LIMIT 1) as MaBienThe
+                    FROM SANPHAM sp
+                    LEFT JOIN DANHMUC dm ON sp.MaDanhMuc = dm.MaDanhMuc
+                    LEFT JOIN THUONGHIEU th ON sp.MaThuongHieu = th.MaThuongHieu
+                    WHERE sp.TrangThai = 'HoatDong'
+                    `;
         let values = [];
 
         // 1. Xử lý Lọc theo Tìm kiếm tên (Search)
@@ -55,6 +56,29 @@ export const getAllProducts = async (req, res) => {
 
     } catch (error) {
         console.error('Lỗi khi lấy SP:', error);
+        res.status(500).json({ message: 'Lỗi server', error: error.message });
+    }
+};
+
+// api lay danh sach san pham noi bat (home.html)
+export const getBestSellers = async (req, res) => {
+    try {
+
+        const sql = `
+    SELECT sp.MaSanPham, sp.TenSanPham, sp.HinhAnhChinh, sp.GiaMacDinh,
+           (SELECT MaBienThe FROM BIENTHE_SANPHAM WHERE MaSanPham = sp.MaSanPham LIMIT 1) as MaBienThe
+    FROM SANPHAM sp
+    WHERE sp.TrangThai = 'HoatDong'
+    ORDER BY sp.MaSanPham ASC 
+    LIMIT 4
+`;
+        const [products] = await db.query(sql);
+
+        res.status(200).json({
+            message: 'Lấy sản phẩm bán chạy thành công!',
+            data: products
+        });
+    } catch (error) {
         res.status(500).json({ message: 'Lỗi server', error: error.message });
     }
 };

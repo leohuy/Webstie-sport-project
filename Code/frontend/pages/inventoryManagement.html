@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Tồn Kho - NV SportFlex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        
+        /* Hiệu ứng mở rộng dòng (Expandable Row) */
+        .variant-row {
+            transition: all 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .variant-row.expanded {
+            max-height: 500px;
+            opacity: 1;
+        }
+        .rotate-icon {
+            transition: transform 0.3s ease;
+        }
+        .rotate-icon.open {
+            transform: rotate(180deg);
+        }
+        
+        /* Toggle Switch (Nút Bật/Tắt) */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #2563eb;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #2563eb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans h-screen flex overflow-hidden">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-4 right-4 bg-gray-900 text-white px-6 py-3 rounded-lg shadow-2xl transform transition-transform duration-300 translate-x-full z-50 flex items-center gap-3 border-l-4 border-blue-500">
+        <i data-lucide="info" class="w-5 h-5 text-blue-400"></i>
+        <span id="toast-message" class="font-medium text-sm">Cập nhật thành công!</span>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-gray-900 text-white flex flex-col transition-all duration-300 z-20 flex-shrink-0 hidden md:flex">
+        <!-- Logo -->
+        <div class="h-16 flex items-center px-6 border-b border-gray-800">
+            <a href="dashboardStaff.html" class="flex items-center gap-2 text-blue-500 hover:text-blue-400 transition">
+                <i data-lucide="activity" class="w-8 h-8"></i>
+                <span class="text-xl font-black italic tracking-wider text-white">SPORTFLEX</span>
+            </a>
+        </div>
+
+        <!-- Menu -->
+        <nav class="flex-1 overflow-y-auto py-6 px-3 space-y-1">
+            <a href="dashboardStaff.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium">
+                <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                Tổng quan
+            </a>
+            <a href="dashboardStaff.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium">
+                <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                Quản lý Đơn hàng
+            </a>
+            <a href="inventoryManagement.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-600 text-white transition text-sm font-medium shadow-md shadow-blue-900/50">
+                <i data-lucide="package" class="w-5 h-5"></i>
+                Quản lý Tồn kho
+            </a>
+            <a href="profile.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium">
+                <i data-lucide="users" class="w-5 h-5"></i>
+                Khách hàng
+            </a>
+        </nav>
+
+        <!-- User bottom info -->
+        <div class="p-4 border-t border-gray-800">
+            <div class="flex items-center gap-3 mb-4">
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80" alt="Staff" class="w-10 h-10 rounded-full border border-gray-700">
+                <div class="overflow-hidden">
+                    <p class="text-sm font-bold text-white truncate">Trần Nhân Viên</p>
+                    <p class="text-xs text-blue-400 truncate">Nhân viên Kho</p>
+                </div>
+            </div>
+            <button class="w-full flex items-center justify-center gap-2 px-3 py-2 bg-gray-800 hover:bg-red-600 hover:text-white text-gray-400 rounded-lg transition text-sm font-medium">
+                <i data-lucide="log-out" class="w-4 h-4"></i> Đăng xuất
+            </button>
+        </div>
+    </aside>
+
+    <!-- Khu vực Main Content -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden">
+        
+        <!-- Topbar -->
+        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 z-10 flex-shrink-0">
+            <div class="flex items-center gap-4">
+                <button class="md:hidden text-gray-500 hover:text-blue-600">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+                <h1 class="text-xl font-bold text-gray-800 hidden sm:block">Quản lý Tồn kho Sản phẩm</h1>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <button class="relative p-2 text-gray-400 hover:text-blue-600 transition">
+                    <i data-lucide="bell" class="w-6 h-6"></i>
+                    <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+                </button>
+                <button class="bg-gray-900 hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 shadow-sm transition">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Nhập kho
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content Scrollable -->
+        <main class="flex-1 overflow-y-auto p-4 sm:p-6 bg-gray-50">
+            
+            <!-- Thống kê nhanh (Cards) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="box" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Tổng mặt hàng</p>
+                        <p class="text-2xl font-black text-gray-900">128</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="layers" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Tổng tồn kho</p>
+                        <p class="text-2xl font-black text-gray-900">4,520</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Sắp hết hàng (< 10)</p>
+                        <p class="text-2xl font-black text-orange-600">15</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 bg-red-100 text-red-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="x-octagon" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Đã hết hàng (0)</p>
+                        <p class="text-2xl font-black text-red-600">3</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bảng Quản lý -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col h-full lg:h-auto">
+                
+                <!-- Toolbar Lọc & Tìm kiếm -->
+                <div class="p-4 border-b border-gray-200 bg-gray-50 flex flex-col lg:flex-row gap-4 justify-between items-center">
+                    <div class="flex flex-wrap gap-2 w-full lg:w-auto">
+                        <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-blue-500 bg-white min-w-[140px]">
+                            <option value="">Tất cả Danh mục</option>
+                            <option value="giay">Giày thể thao</option>
+                            <option value="quanao">Quần áo</option>
+                            <option value="phukien">Phụ kiện</option>
+                        </select>
+                        <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-blue-500 bg-white min-w-[140px]">
+                            <option value="">Tất cả Thương hiệu</option>
+                            <option value="nike">Nike</option>
+                            <option value="adidas">Adidas</option>
+                        </select>
+                        <button class="bg-white border border-gray-300 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition flex items-center gap-2">
+                            <i data-lucide="filter" class="w-4 h-4"></i> Lọc Nâng cao
+                        </button>
+                    </div>
+
+                    <div class="relative w-full lg:w-80">
+                        <i data-lucide="search" class="absolute left-3 top-2.5 text-gray-400 w-4 h-4"></i>
+                        <input type="text" placeholder="Tìm theo Mã SP, Tên sản phẩm..." class="w-full pl-9 pr-4 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition">
+                    </div>
+                </div>
+
+                <!-- Dữ liệu -->
+                <div class="overflow-x-auto custom-scrollbar flex-grow">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead>
+                            <tr class="bg-white border-b border-gray-200 text-xs uppercase tracking-wider text-gray-500 font-bold">
+                                <th class="w-12 px-4 py-4 text-center"></th>
+                                <th class="px-6 py-4">Mã SP</th>
+                                <th class="px-6 py-4 w-1/3">Sản Phẩm</th>
+                                <th class="px-6 py-4">Danh Mục</th>
+                                <th class="px-6 py-4 text-center">Tổng Tồn Kho</th>
+                                <th class="px-6 py-4 text-center">Hiển Thị Lên Web</th>
+                                <th class="px-6 py-4 text-right">Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-sm">
+                            
+                            <!-- ITEM 1 -->
+                            <tr class="hover:bg-gray-50 transition cursor-pointer" onclick="toggleVariantRow('variant-SP01', 'icon-SP01')">
+                                <td class="px-4 py-4 text-center">
+                                    <button class="text-gray-400 hover:text-blue-600"><i data-lucide="chevron-down" id="icon-SP01" class="w-5 h-5 rotate-icon"></i></button>
+                                </td>
+                                <td class="px-6 py-4 font-bold text-gray-600">SP01</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded border border-gray-200 bg-gray-50 p-0.5 flex-shrink-0">
+                                            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=100&q=80" class="w-full h-full object-contain mix-blend-multiply">
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-900 truncate max-w-[200px] lg:max-w-[300px]">Giày Thể Thao Nike Air Max</h4>
+                                            <span class="text-xs text-blue-600 font-semibold bg-blue-50 px-1.5 py-0.5 rounded">Nike</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-gray-600">Giày thể thao</td>
+                                <td class="px-6 py-4 text-center">
+                                    <span class="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-sm font-bold bg-green-100 text-green-700">125</span>
+                                </td>
+                                <td class="px-6 py-4" onclick="event.stopPropagation()">
+                                    <div class="flex items-center justify-center">
+                                        <!-- Toggle Switch -->
+                                        <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                                            <input type="checkbox" name="toggle" id="toggle1" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" checked onchange="toggleStatus('toggle1')"/>
+                                            <label for="toggle1" class="toggle-label block overflow-hidden h-5 rounded-full bg-blue-600 cursor-pointer transition-colors duration-200"></label>
+                                        </div>
+                                        <span class="text-xs font-medium text-gray-500" id="status-text-toggle1">Đang hiện</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right" onclick="event.stopPropagation()">
+                                    <button class="text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded text-xs font-bold transition mr-1">Sửa</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- Sub-row: Các Biến thể của SP01 (Bảng BIENTHE_SANPHAM) -->
+                            <tr id="variant-SP01" class="variant-row bg-gray-50/50">
+                                <td colspan="7" class="p-0 border-b border-gray-200">
+                                    <div class="px-14 py-4 w-full">
+                                        <h5 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Chi tiết Biến thể (Kích cỡ)</h5>
+                                        <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-inner max-w-3xl">
+                                            <table class="w-full text-left text-sm">
+                                                <thead class="bg-gray-100 text-gray-600">
+                                                    <tr>
+                                                        <th class="px-4 py-2 font-semibold">Mã Biến Thể (SKU)</th>
+                                                        <th class="px-4 py-2 font-semibold">Kích Cỡ</th>
+                                                        <th class="px-4 py-2 font-semibold">Tồn Kho Hiện Tại</th>
+                                                        <th class="px-4 py-2 font-semibold">Giá Bán Cụ Thể</th>
+                                                        <th class="px-4 py-2 font-semibold">Cập Nhật Kho</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="divide-y divide-gray-100">
+                                                    <tr>
+                                                        <td class="px-4 py-2 font-medium text-gray-500">NK-AM-40</td>
+                                                        <td class="px-4 py-2 font-bold text-gray-900">Size 40</td>
+                                                        <td class="px-4 py-2"><span class="text-green-600 font-bold">45</span></td>
+                                                        <td class="px-4 py-2">2.450.000 ₫</td>
+                                                        <td class="px-4 py-2"><button class="text-xs font-medium text-blue-600 hover:underline">Chỉnh sửa</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="px-4 py-2 font-medium text-gray-500">NK-AM-41</td>
+                                                        <td class="px-4 py-2 font-bold text-gray-900">Size 41</td>
+                                                        <td class="px-4 py-2"><span class="text-green-600 font-bold">60</span></td>
+                                                        <td class="px-4 py-2">2.450.000 ₫</td>
+                                                        <td class="px-4 py-2"><button class="text-xs font-medium text-blue-600 hover:underline">Chỉnh sửa</button></td>
+                                                    </tr>
+                                                    <tr class="bg-red-50/30">
+                                                        <td class="px-4 py-2 font-medium text-gray-500">NK-AM-42</td>
+                                                        <td class="px-4 py-2 font-bold text-gray-900">Size 42</td>
+                                                        <td class="px-4 py-2"><span class="text-orange-500 font-bold">8</span> <span class="text-[10px] bg-orange-100 text-orange-600 px-1 rounded">Sắp hết</span></td>
+                                                        <td class="px-4 py-2">2.500.000 ₫</td>
+                                                        <td class="px-4 py-2"><button class="text-xs font-medium text-blue-600 hover:underline">Nhập thêm</button></td>
+                                                    </tr>
+                                                    <tr class="bg-gray-100">
+                                                        <td class="px-4 py-2 font-medium text-gray-500">NK-AM-43</td>
+                                                        <td class="px-4 py-2 font-bold text-gray-900">Size 43</td>
+                                                        <td class="px-4 py-2"><span class="text-red-600 font-bold">0</span> <span class="text-[10px] bg-red-100 text-red-600 px-1 rounded">Hết hàng</span></td>
+                                                        <td class="px-4 py-2 text-gray-400">2.500.000 ₫</td>
+                                                        <td class="px-4 py-2"><button class="text-xs font-medium text-blue-600 hover:underline">Nhập thêm</button></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- ITEM 2 -->
+                            <tr class="hover:bg-gray-50 transition cursor-pointer" onclick="toggleVariantRow('variant-SP02', 'icon-SP02')">
+                                <td class="px-4 py-4 text-center">
+                                    <button class="text-gray-400 hover:text-blue-600"><i data-lucide="chevron-down" id="icon-SP02" class="w-5 h-5 rotate-icon"></i></button>
+                                </td>
+                                <td class="px-6 py-4 font-bold text-gray-600">SP02</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded border border-gray-200 bg-gray-50 p-0.5 flex-shrink-0">
+                                            <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=100&q=80" class="w-full h-full object-contain mix-blend-multiply">
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-900 truncate max-w-[200px] lg:max-w-[300px]">Thảm Tập Yoga Chống Trượt</h4>
+                                            <span class="text-xs text-gray-600 font-semibold bg-gray-100 px-1.5 py-0.5 rounded">No Brand</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-gray-600">Phụ kiện</td>
+                                <td class="px-6 py-4 text-center">
+                                    <span class="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-sm font-bold bg-orange-100 text-orange-600">12</span>
+                                </td>
+                                <td class="px-6 py-4" onclick="event.stopPropagation()">
+                                    <div class="flex items-center justify-center">
+                                        <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                                            <input type="checkbox" name="toggle" id="toggle2" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" checked onchange="toggleStatus('toggle2')"/>
+                                            <label for="toggle2" class="toggle-label block overflow-hidden h-5 rounded-full bg-blue-600 cursor-pointer transition-colors duration-200"></label>
+                                        </div>
+                                        <span class="text-xs font-medium text-gray-500" id="status-text-toggle2">Đang hiện</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right" onclick="event.stopPropagation()">
+                                    <button class="text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded text-xs font-bold transition mr-1">Sửa</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- Sub-row: SP02 -->
+                            <tr id="variant-SP02" class="variant-row bg-gray-50/50">
+                                <td colspan="7" class="p-0 border-b border-gray-200">
+                                    <div class="px-14 py-4 w-full">
+                                        <div class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-inner max-w-3xl">
+                                            <table class="w-full text-left text-sm">
+                                                <thead class="bg-gray-100 text-gray-600">
+                                                    <tr>
+                                                        <th class="px-4 py-2 font-semibold">SKU</th>
+                                                        <th class="px-4 py-2 font-semibold">Màu Sắc / Loại</th>
+                                                        <th class="px-4 py-2 font-semibold">Tồn Kho Hiện Tại</th>
+                                                        <th class="px-4 py-2 font-semibold">Cập Nhật</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="divide-y divide-gray-100">
+                                                    <tr class="bg-orange-50/30">
+                                                        <td class="px-4 py-2 font-medium text-gray-500">YG-MAT-GR</td>
+                                                        <td class="px-4 py-2 font-bold text-gray-900">Xanh Rêu</td>
+                                                        <td class="px-4 py-2"><span class="text-orange-600 font-bold">12</span></td>
+                                                        <td class="px-4 py-2"><button class="text-xs font-medium text-blue-600 hover:underline">Chỉnh sửa</button></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- ITEM 3 (Bị Ẩn) -->
+                            <tr class="hover:bg-gray-50 transition cursor-pointer bg-gray-50" onclick="toggleVariantRow('variant-SP03', 'icon-SP03')">
+                                <td class="px-4 py-4 text-center">
+                                    <button class="text-gray-400 hover:text-blue-600"><i data-lucide="chevron-down" id="icon-SP03" class="w-5 h-5 rotate-icon"></i></button>
+                                </td>
+                                <td class="px-6 py-4 font-bold text-gray-400">SP03</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3 opacity-60">
+                                        <div class="w-10 h-10 rounded border border-gray-200 bg-gray-100 p-0.5 flex-shrink-0">
+                                            <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=100&q=80" class="w-full h-full object-contain mix-blend-multiply grayscale">
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-500 line-through truncate max-w-[200px] lg:max-w-[300px]">Giày Chạy Bộ Puma Mẫu Cũ</h4>
+                                            <span class="text-xs text-gray-500 font-semibold bg-gray-200 px-1.5 py-0.5 rounded">Puma</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-gray-500">Giày thể thao</td>
+                                <td class="px-6 py-4 text-center">
+                                    <span class="inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-sm font-bold bg-red-100 text-red-600">0</span>
+                                </td>
+                                <td class="px-6 py-4" onclick="event.stopPropagation()">
+                                    <div class="flex items-center justify-center">
+                                        <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                                            <input type="checkbox" name="toggle" id="toggle3" class="toggle-checkbox absolute block w-5 h-5 rounded-full bg-white border-4 appearance-none cursor-pointer" onchange="toggleStatus('toggle3', 'row3')"/>
+                                            <label for="toggle3" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200"></label>
+                                        </div>
+                                        <span class="text-xs font-medium text-red-500" id="status-text-toggle3">Đã Ẩn</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right" onclick="event.stopPropagation()">
+                                    <button class="text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded text-xs font-bold transition mr-1">Sửa</button>
+                                </td>
+                            </tr>
+                            
+                            <!-- Sub-row: SP03 -->
+                            <tr id="variant-SP03" class="variant-row bg-gray-50/50">
+                                <td colspan="7" class="p-0 border-b border-gray-200">
+                                    <div class="px-14 py-4 w-full">
+                                        <p class="text-sm text-gray-500 italic">Sản phẩm này hiện đã hết hàng ở mọi kích cỡ và đang bị ẩn trên website.</p>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Phân trang -->
+                <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between bg-white">
+                    <span class="text-sm text-gray-500">Đang hiển thị trang <span class="font-bold text-gray-900">1</span>/5</span>
+                    <nav class="inline-flex rounded-md shadow-sm bg-white border border-gray-200 p-1">
+                        <a href="#" class="inline-flex items-center px-2 py-1.5 rounded text-gray-400 hover:bg-gray-50 hover:text-blue-600 transition"><i data-lucide="chevron-left" class="w-4 h-4"></i></a>
+                        <a href="#" class="inline-flex items-center px-3 py-1 font-bold rounded bg-blue-600 text-white text-sm">1</a>
+                        <a href="#" class="inline-flex items-center px-3 py-1 font-medium rounded text-gray-600 hover:bg-gray-50 text-sm">2</a>
+                        <a href="#" class="inline-flex items-center px-2 py-1.5 rounded text-gray-400 hover:bg-gray-50 hover:text-blue-600 transition"><i data-lucide="chevron-right" class="w-4 h-4"></i></a>
+                    </nav>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // 1. Logic Mở Rộng Dòng (Xem Chi tiết Biến Thể Size/Màu)
+        // Mô phỏng quan hệ 1-N giữa Bảng SANPHAM và BIENTHE_SANPHAM
+        function toggleVariantRow(rowId, iconId) {
+            const row = document.getElementById(rowId);
+            const icon = document.getElementById(iconId);
+            
+            if (row.classList.contains('expanded')) {
+                // Đang mở -> Đóng lại
+                row.classList.remove('expanded');
+                icon.classList.remove('open');
+            } else {
+                // Đóng tất cả các dòng đang mở khác trước (tùy chọn UI gọn gàng)
+                document.querySelectorAll('.variant-row.expanded').forEach(r => {
+                    if (r.id !== rowId) r.classList.remove('expanded');
+                });
+                document.querySelectorAll('.rotate-icon.open').forEach(i => {
+                    if (i.id !== iconId) i.classList.remove('open');
+                });
+
+                // Mở dòng được click
+                row.classList.add('expanded');
+                icon.classList.add('open');
+            }
+        }
+
+        // 2. Logic Nút Bật/Tắt Trạng Thái (Hiện/Ẩn Sản Phẩm Khỏi Web)
+        function toggleStatus(checkboxId) {
+            const checkbox = document.getElementById(checkboxId);
+            const statusText = document.getElementById(`status-text-${checkboxId}`);
+            
+            if (checkbox.checked) {
+                // Đang bật
+                statusText.innerText = "Đang hiện";
+                statusText.classList.remove("text-red-500");
+                statusText.classList.add("text-gray-500");
+                
+                // Toggle background color of custom toggle (handled by CSS, but need to reset parent if we dimmed it)
+                const tr = checkbox.closest('tr');
+                tr.classList.remove('bg-gray-50');
+                const title = tr.querySelector('h4');
+                title.classList.remove('text-gray-500', 'line-through');
+                title.classList.add('text-gray-900');
+                tr.querySelector('img').classList.remove('grayscale');
+                
+                showToast("Đã BẬT trạng thái hiển thị trên Website.");
+            } else {
+                // Đã tắt
+                statusText.innerText = "Đã Ẩn";
+                statusText.classList.remove("text-gray-500");
+                statusText.classList.add("text-red-500");
+                
+                // Làm mờ dòng sản phẩm
+                const tr = checkbox.closest('tr');
+                tr.classList.add('bg-gray-50');
+                const title = tr.querySelector('h4');
+                title.classList.remove('text-gray-900');
+                title.classList.add('text-gray-500', 'line-through');
+                tr.querySelector('img').classList.add('grayscale');
+
+                showToast("Đã ẨN sản phẩm khỏi Website.");
+            }
+        }
+
+        // 3. Hàm hiển thị Toast Notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = message;
+            
+            toast.classList.remove('translate-x-full');
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

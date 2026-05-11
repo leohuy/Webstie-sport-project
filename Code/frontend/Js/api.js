@@ -82,64 +82,229 @@ async function handleAuth(event, type) {
     }
 }
 
+// load danh muc san pham len trang chu
+async function loadHomepageData() {
+    const categoryList = document.getElementById('category-list');
+    const bestsellerList = document.getElementById('bestseller-list');
 
-
-// qpi lay danh sach san pham (productlist.html)
-
-async function fetchAndRenderProducts() {
-    // 1. Tìm khu vực lưới sản phẩm trên giao diện HTML
-    const productGrid = document.getElementById('product-grid');
-
-    // Nếu không tìm thấy (nghĩa là đang ở trang khác không phải ProductList), thì thoát hàm
-    if (!productGrid) return;
-
-    // Hiển thị trạng thái đang tải (Loading)
-    productGrid.innerHTML = '<p class="text-center col-span-full text-gray-500">Đang tải sản phẩm...</p>';
+    // Nếu không có 2 ID này (Nghĩa là không phải trang chủ) thì thoát hàm
+    if (!categoryList || !bestsellerList) return;
 
     try {
-        // 2. Gửi yêu cầu GET lên Backend Node.js
-        const response = await fetch('http://localhost:3000/api/products');
-        const result = await response.json();
+        //  Fetch Danh Mục
+        const catRes = await fetch('http://localhost:3000/api/categories');
+        const catResult = await catRes.json();
 
-        if (response.ok) {
-            // Xóa chữ "Đang tải..."
-            productGrid.innerHTML = '';
+        if (catRes.ok) {
+            categoryList.innerHTML = ''; // Xóa rỗng
+            catResult.data.forEach(cat => {
+                // Tùy biến icon theo tên danh mục
+                let icon = 'ph-sneaker';
+                if (cat.TenDanhMuc.includes('Tạ')) icon = 'ph-barbell';
+                if (cat.TenDanhMuc.includes('Áo')) icon = 'ph-t-shirt';
+                if (cat.TenDanhMuc.includes('Vợt')) icon = 'ph-tennis-ball';
+                if (cat.TenDanhMuc.includes('Balo')) icon = 'ph-backpack';
 
-            // 3. Lặp qua từng sản phẩm và vẽ HTML
-            result.data.forEach(product => {
-                // Format giá tiền Việt Nam
+                categoryList.innerHTML += `
+                    <div class="flex flex-col items-center gap-3 cursor-pointer group">
+                        <div class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden p-1 border-2 border-transparent group-hover:border-blue-500 transition-colors flex items-center justify-center bg-gray-100">
+                            <i class="ph ${icon} text-5xl text-gray-400 group-hover:text-blue-500 transition"></i>
+                        </div>
+                        <span class="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition">${cat.TenDanhMuc}</span>
+                    </div>
+                `;
+            });
+        }
+
+        // Fetch Sản Phẩm Bán Chạy
+        const prodRes = await fetch('http://localhost:3000/api/products/best-sellers');
+        const prodResult = await prodRes.json();
+
+        if (prodRes.ok) {
+            bestsellerList.innerHTML = ''; // Xóa rỗng
+            prodResult.data.forEach(product => {
                 const priceFormatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.GiaMacDinh);
 
-                const productCard = `
+                bestsellerList.innerHTML += `
                     <div class="border border-gray-100 rounded-2xl p-4 bg-white hover:shadow-xl hover:border-blue-100 transition-all duration-300 flex flex-col group cursor-pointer">
                         <div class="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-50 mb-4 flex items-center justify-center">
-                            <!-- Giả định ảnh được lưu trong thư mục assets/images/ hoặc lấy từ link thật -->
-                            <img src="../assets/images/${product.HinhAnhChinh}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'" class="w-[85%] object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-xl">
+                            <span class="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded z-10">HOT</span>
+                            <img src="./assets/images/${product.HinhAnhChinh}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'" class="w-[80%] object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500">
                         </div>
-                        <h3 class="font-bold text-gray-800 text-sm mb-1 line-clamp-2 group-hover:text-blue-600 transition">${product.TenSanPham}</h3>
-                        <p class="text-xs text-gray-500 mb-2">${product.TenThuongHieu || 'Chưa cập nhật'} | ${product.TenDanhMuc || 'Chưa cập nhật'}</p>
+                        <div class="flex items-center gap-1 text-yellow-400 text-xs mb-2">
+                            <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-800 text-sm mb-2 line-clamp-2 group-hover:text-blue-600 transition">${product.TenSanPham}</h3>
                         <div class="flex items-end gap-2 mb-4 mt-auto">
                             <span class="text-blue-600 font-bold text-lg">${priceFormatted}</span>
                         </div>
-                        <button class="w-full py-2.5 rounded-lg bg-blue-50 text-blue-600 font-semibold text-sm hover:bg-blue-600 hover:text-white transition shadow-sm">
+                        <button onclick="addToCart(${product.MaBienThe})" class="w-full py-2.5 rounded-lg bg-blue-50 text-blue-600 font-semibold text-sm hover:bg-blue-600 hover:text-white transition shadow-sm">
+                            <i class="ph ph-shopping-cart text-lg"></i> Thêm vào giỏ
+                        </button>
+                    </div>
+                `;
+            });
+        }
+    } catch (error) {
+        console.error("Lỗi khi fetch dữ liệu trang chủ:", error);
+    }
+}
+
+// // qpi lay danh sach san pham (productlist.html)
+// async function fetchAndRenderProducts() {
+//     //Tìm khu vực lưới sản phẩm trên giao diện HTML
+//     const productGrid = document.getElementById('product-grid');
+
+//     // Nếu không tìm thấy (nghĩa là đang ở trang khác không phải ProductList), thì thoát hàm
+//     if (!productGrid) return;
+
+//     // Hiển thị trạng thái đang tải (Loading)
+//     productGrid.innerHTML = '<p class="text-center col-span-full text-gray-500">Đang tải sản phẩm...</p>';
+
+//     try {
+//         // Gửi yêu cầu GET lên Backend Node.js
+//         const response = await fetch('http://localhost:3000/api/products');
+//         const result = await response.json();
+
+//         if (response.ok) {
+//             // Xóa chữ "Đang tải..."
+//             productGrid.innerHTML = '';
+
+//             // Lặp qua từng sản phẩm và vẽ HTML
+//             result.data.forEach(product => {
+//                 // Format giá tiền Việt Nam
+//                 const priceFormatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.GiaMacDinh);
+//                 const productCard = `
+//                     <div class="border border-gray-100 rounded-2xl p-4 bg-white hover:shadow-xl hover:border-blue-100 transition-all duration-300 flex flex-col group cursor-pointer">
+//                         <div class="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-50 mb-4 flex items-center justify-center">
+//                             <!-- Giả định ảnh được lưu trong thư mục assets/images/ hoặc lấy từ link thật -->
+//                             <img src="../assets/images/${product.HinhAnhChinh}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'" class="w-[85%] object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-xl">
+//                         </div>
+//                         <h3 class="font-bold text-gray-800 text-sm mb-1 line-clamp-2 group-hover:text-blue-600 transition">${product.TenSanPham}</h3>
+//                         <p class="text-xs text-gray-500 mb-2">${product.TenThuongHieu || 'Chưa cập nhật'} | ${product.TenDanhMuc || 'Chưa cập nhật'}</p>
+//                         <div class="flex items-end gap-2 mb-4 mt-auto">
+//                             <span class="text-blue-600 font-bold text-lg">${priceFormatted}</span>
+//                         </div>
+//                         <button onclick="addToCart(${product.MaBienThe})" class="w-full py-2.5 rounded-lg bg-blue-50 text-blue-600 font-semibold text-sm hover:bg-blue-600 hover:text-white transition shadow-sm">
+//                             Thêm vào giỏ
+//                         </button>
+//                     </div>
+//                 `;
+
+//                 // Nhét thẻ HTML vừa tạo vào lưới
+//                 productGrid.innerHTML += productCard;
+//             });
+//         } else {
+//             productGrid.innerHTML = `<p class="text-center col-span-full text-red-500">Lỗi: ${result.message}</p>`;
+//         }
+//     } catch (error) {
+//         console.error("Lỗi khi fetch sản phẩm:", error);
+//         productGrid.innerHTML = '<p class="text-center col-span-full text-red-500">Không thể kết nối đến máy chủ!</p>';
+//     }
+// }
+
+async function fetchAndRenderProducts() {
+    const productGrid = document.getElementById('product-grid');
+    if (!productGrid) return;
+
+    productGrid.innerHTML = '<p class="text-center col-span-full text-gray-500">Đang tải sản phẩm...</p>';
+
+    try {
+        // 1. Đọc tham số từ URL trình duyệt
+        const urlParams = new URLSearchParams(window.location.search);
+        const danhMucId = urlParams.get('danhMuc'); // Sẽ lấy ra được số '1', '2' hoặc null
+
+        // 2. Nối tham số vào link API gửi cho Backend
+        let apiUrl = 'http://localhost:3000/api/products';
+        if (danhMucId) {
+            apiUrl += `?danhMuc=${danhMucId}`;
+        }
+
+        // 3. Đổi lại tiêu đề trang (UI) cho chuyên nghiệp (Tùy chọn)
+        const pageTitle = document.getElementById('page-title'); // Nhớ gắn id="page-title" vào thẻ <h1> ở ProductList.html nhé
+        if (pageTitle) {
+            if (danhMucId === '1') pageTitle.innerText = 'GIÀY THỂ THAO';
+            else if (danhMucId === '2') pageTitle.innerText = 'QUẦN ÁO THỂ THAO';
+            else if (danhMucId === '4') pageTitle.innerText = 'PHỤ KIỆN';
+            else pageTitle.innerText = 'TẤT CẢ SẢN PHẨM';
+        }
+
+        // 4. Gọi API
+        const response = await fetch(apiUrl);
+        const result = await response.json();
+
+        if (response.ok) {
+            productGrid.innerHTML = '';
+            
+            if(result.data.length === 0) {
+                productGrid.innerHTML = '<p class="text-center col-span-full text-gray-500">Đang cập nhật sản phẩm cho danh mục này.</p>';
+                return;
+            }
+
+            result.data.forEach(product => {
+                const priceFormatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.GiaMacDinh);
+                const productCard = `
+                    <div class="border border-gray-100 rounded-2xl p-4 bg-white hover:shadow-xl hover:border-blue-100 transition-all duration-300 flex flex-col group cursor-pointer">
+                        <div class="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-50 mb-4 flex items-center justify-center">
+                            <img src="../assets/images/${product.HinhAnhChinh}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'" class="w-[85%] object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500 drop-shadow-xl">
+                        </div>
+                        <h3 class="font-bold text-gray-800 text-sm mb-1 line-clamp-2 group-hover:text-blue-600 transition">${product.TenSanPham}</h3>
+                        <p class="text-xs text-gray-500 mb-2">${product.TenThuongHieu || 'Phụ kiện'} | ${product.TenDanhMuc || ''}</p>
+                        <div class="flex items-end gap-2 mb-4 mt-auto">
+                            <span class="text-blue-600 font-bold text-lg">${priceFormatted}</span>
+                        </div>
+                        <button onclick="addToCart(${product.MaBienThe})" class="w-full py-2.5 rounded-lg bg-blue-50 text-blue-600 font-semibold text-sm hover:bg-blue-600 hover:text-white transition shadow-sm">
                             Thêm vào giỏ
                         </button>
                     </div>
                 `;
-
-                // Nhét thẻ HTML vừa tạo vào lưới
                 productGrid.innerHTML += productCard;
             });
-        } else {
-            productGrid.innerHTML = `<p class="text-center col-span-full text-red-500">Lỗi: ${result.message}</p>`;
         }
     } catch (error) {
         console.error("Lỗi khi fetch sản phẩm:", error);
-        productGrid.innerHTML = '<p class="text-center col-span-full text-red-500">Không thể kết nối đến máy chủ!</p>';
     }
 }
+// them san pham vao gio hang 
+async function addToCart(maBienThe) {
+    const token = localStorage.getItem('token');
 
-// 4. Kích hoạt hàm ngay khi trang web tải xong nội dung
+    // Kiểm tra đăng nhập
+    if (!token) {
+        showToast("Vui lòng đăng nhập để mua hàng!", "error");
+        setTimeout(() => window.location.href = 'auth.html', 1500);
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:3000/api/cart/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // <--- ĐÍNH KÈM TOKEN Ở ĐÂY
+            },
+            body: JSON.stringify({
+                maBienThe: maBienThe,
+                soLuong: 1
+            })
+        });
+
+        const data = await response.json();
+
+        // if (response.ok) {
+        //     showToast(data.message, "success");
+        //     // Gợi ý: Chỗ này có thể viết thêm code để tự động tăng số đếm trên icon Giỏ hàng ở Header + 1
+        // } else {
+        //     showToast(data.message, "error");
+        // }
+    } catch (error) {
+        console.error("Lỗi khi thêm giỏ hàng:", error);
+        showToast("Không thể kết nối đến máy chủ!", "error");
+    }
+}
+// Kích hoạt hàm ngay khi trang web tải xong nội dung
 document.addEventListener('DOMContentLoaded', () => {
     fetchAndRenderProducts();
+    loadHomepageData();
 });
+
