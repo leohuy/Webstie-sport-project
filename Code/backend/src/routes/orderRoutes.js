@@ -1,11 +1,12 @@
 import express from "express";
 
-import { placeOrder } from "../controller/orderController.js";
+import { placeOrder, getUserOrders } from "../controller/orderController.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
 const router = express.Router();
 // api đặt hàng
 
-router.post('/place-order', verifyToken, placeOrder);
+router.post('/', verifyToken, placeOrder);
+router.get('/', verifyToken, getUserOrders);
 
 
 

@@ -9,6 +9,8 @@ import productRoutes from './routes/productRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 import cartRoutes from './routes/cartRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import adminRoutes from "./routes/adminRoutes.js";
 dotenv.config({ path: fileURLToPath(new URL('./.env', import.meta.url)) });
 const app = express();
 
@@ -26,6 +28,9 @@ app.use('/api/cart', cartRoutes);
 
 app.use('/api/orders', orderRoutes);
 
+app.use('/api/user', userRoutes);
+
+app.use("/api/admin", adminRoutes);
 // Khởi chạy server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

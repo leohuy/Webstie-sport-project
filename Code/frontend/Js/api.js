@@ -1,4 +1,11 @@
-
+  function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toast.className = `fixed top-4 right-4 text-white px-6 py-3 rounded-lg shadow-2xl transform transition-transform duration-300 z-50 flex items-center gap-3 ${type==='success'?'bg-green-600':'bg-red-600'}`;
+            toastMsg.innerText = message;
+            toast.classList.remove('translate-x-full');
+            setTimeout(() => toast.classList.add('translate-x-full'), 3000);
+        }
 // goi api dang nhap va dang ky
 async function handleAuth(event, type) {
     event.preventDefault();
@@ -126,19 +133,23 @@ async function loadHomepageData() {
                 const priceFormatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.GiaMacDinh);
 
                 bestsellerList.innerHTML += `
-                    <div class="border border-gray-100 rounded-2xl p-4 bg-white hover:shadow-xl hover:border-blue-100 transition-all duration-300 flex flex-col group cursor-pointer">
-                        <div class="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-50 mb-4 flex items-center justify-center">
-                            <span class="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded z-10">HOT</span>
-                            <img src="./assets/images/${product.HinhAnhChinh}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'" class="w-[80%] object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500">
-                        </div>
-                        <div class="flex items-center gap-1 text-yellow-400 text-xs mb-2">
-                            <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
-                        </div>
-                        <h3 class="font-bold text-gray-800 text-sm mb-2 line-clamp-2 group-hover:text-blue-600 transition">${product.TenSanPham}</h3>
+                    <div class="border border-gray-100 rounded-2xl p-4 bg-white hover:shadow-xl hover:border-blue-100 transition-all duration-300 flex flex-col group">
+                        
+                        <a href="ProductDetail.html?id=${product.MaSanPham}" class="block cursor-pointer">
+                            <div class="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-50 mb-4 flex items-center justify-center">
+                                <span class="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded">HOT</span>
+                                <img src="./assets/images/${product.HinhAnhChinh}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'" class="w-[80%] object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500">
+                            </div>
+                            <div class="flex items-center gap-1 text-yellow-400 text-xs mb-2">
+                                <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-800 text-sm mb-2 line-clamp-2 group-hover:text-blue-600 transition">${product.TenSanPham}</h3>
+                        </a>
+
                         <div class="flex items-end gap-2 mb-4 mt-auto">
                             <span class="text-blue-600 font-bold text-lg">${priceFormatted}</span>
                         </div>
-                        <button onclick="addToCart(${product.MaBienThe})" class="w-full py-2.5 rounded-lg bg-blue-50 text-blue-600 font-semibold text-sm hover:bg-blue-600 hover:text-white transition shadow-sm">
+                        <button onclick="addToCart(${product.MaBienThe})" class="w-full py-2.5 rounded-lg border border-gray-200 text-blue-600 font-semibold text-sm flex justify-center items-center gap-2 hover:bg-blue-50 hover:border-blue-200 transition">
                             <i class="ph ph-shopping-cart text-lg"></i> Thêm vào giỏ
                         </button>
                     </div>
@@ -151,58 +162,57 @@ async function loadHomepageData() {
 }
 
 // // qpi lay danh sach san pham (productlist.html)
-// async function fetchAndRenderProducts() {
-//     //Tìm khu vực lưới sản phẩm trên giao diện HTML
-//     const productGrid = document.getElementById('product-grid');
+    // async function fetchAndRenderProducts() {
+    //     //Tìm khu vực lưới sản phẩm trên giao diện HTML
+    //     const productGrid = document.getElementById('product-grid');
 
-//     // Nếu không tìm thấy (nghĩa là đang ở trang khác không phải ProductList), thì thoát hàm
-//     if (!productGrid) return;
+    //     // Nếu không tìm thấy (nghĩa là đang ở trang khác không phải ProductList), thì thoát hàm
+    //     if (!productGrid) return;
 
-//     // Hiển thị trạng thái đang tải (Loading)
-//     productGrid.innerHTML = '<p class="text-center col-span-full text-gray-500">Đang tải sản phẩm...</p>';
+    //     // Hiển thị trạng thái đang tải (Loading)
+    //     productGrid.innerHTML = '<p class="text-center col-span-full text-gray-500">Đang tải sản phẩm...</p>';
 
-//     try {
-//         // Gửi yêu cầu GET lên Backend Node.js
-//         const response = await fetch('http://localhost:3000/api/products');
-//         const result = await response.json();
+    //     try {
+    //         // Gửi yêu cầu GET lên Backend Node.js
+    //         const response = await fetch('http://localhost:3000/api/products');
+    //         const result = await response.json();
 
-//         if (response.ok) {
-//             // Xóa chữ "Đang tải..."
-//             productGrid.innerHTML = '';
+    //         if (response.ok) {
+    //             // Xóa chữ "Đang tải..."
+    //             productGrid.innerHTML = '';
 
-//             // Lặp qua từng sản phẩm và vẽ HTML
-//             result.data.forEach(product => {
-//                 // Format giá tiền Việt Nam
-//                 const priceFormatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.GiaMacDinh);
-//                 const productCard = `
-//                     <div class="border border-gray-100 rounded-2xl p-4 bg-white hover:shadow-xl hover:border-blue-100 transition-all duration-300 flex flex-col group cursor-pointer">
-//                         <div class="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-50 mb-4 flex items-center justify-center">
-//                             <!-- Giả định ảnh được lưu trong thư mục assets/images/ hoặc lấy từ link thật -->
-//                             <img src="../assets/images/${product.HinhAnhChinh}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'" class="w-[85%] object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-xl">
-//                         </div>
-//                         <h3 class="font-bold text-gray-800 text-sm mb-1 line-clamp-2 group-hover:text-blue-600 transition">${product.TenSanPham}</h3>
-//                         <p class="text-xs text-gray-500 mb-2">${product.TenThuongHieu || 'Chưa cập nhật'} | ${product.TenDanhMuc || 'Chưa cập nhật'}</p>
-//                         <div class="flex items-end gap-2 mb-4 mt-auto">
-//                             <span class="text-blue-600 font-bold text-lg">${priceFormatted}</span>
-//                         </div>
-//                         <button onclick="addToCart(${product.MaBienThe})" class="w-full py-2.5 rounded-lg bg-blue-50 text-blue-600 font-semibold text-sm hover:bg-blue-600 hover:text-white transition shadow-sm">
-//                             Thêm vào giỏ
-//                         </button>
-//                     </div>
-//                 `;
+    //             // Lặp qua từng sản phẩm và vẽ HTML
+    //             result.data.forEach(product => {
+    //                 // Format giá tiền Việt Nam
+    //                 const priceFormatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.GiaMacDinh);
+    //                 const productCard = `
+    //                     <div class="border border-gray-100 rounded-2xl p-4 bg-white hover:shadow-xl hover:border-blue-100 transition-all duration-300 flex flex-col group cursor-pointer">
+    //                         <div class="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-50 mb-4 flex items-center justify-center">
+    //                             <!-- Giả định ảnh được lưu trong thư mục assets/images/ hoặc lấy từ link thật -->
+    //                             <img src="../assets/images/${product.HinhAnhChinh}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'" class="w-[85%] object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-xl">
+    //                         </div>
+    //                         <h3 class="font-bold text-gray-800 text-sm mb-1 line-clamp-2 group-hover:text-blue-600 transition">${product.TenSanPham}</h3>
+    //                         <p class="text-xs text-gray-500 mb-2">${product.TenThuongHieu || 'Chưa cập nhật'} | ${product.TenDanhMuc || 'Chưa cập nhật'}</p>
+    //                         <div class="flex items-end gap-2 mb-4 mt-auto">
+    //                             <span class="text-blue-600 font-bold text-lg">${priceFormatted}</span>
+    //                         </div>
+    //                         <button onclick="addToCart(${product.MaBienThe})" class="w-full py-2.5 rounded-lg bg-blue-50 text-blue-600 font-semibold text-sm hover:bg-blue-600 hover:text-white transition shadow-sm">
+    //                             Thêm vào giỏ
+    //                         </button>
+    //                     </div>
+    //                 `;
 
-//                 // Nhét thẻ HTML vừa tạo vào lưới
-//                 productGrid.innerHTML += productCard;
-//             });
-//         } else {
-//             productGrid.innerHTML = `<p class="text-center col-span-full text-red-500">Lỗi: ${result.message}</p>`;
-//         }
-//     } catch (error) {
-//         console.error("Lỗi khi fetch sản phẩm:", error);
-//         productGrid.innerHTML = '<p class="text-center col-span-full text-red-500">Không thể kết nối đến máy chủ!</p>';
-//     }
-// }
-
+    //                 // Nhét thẻ HTML vừa tạo vào lưới
+    //                 productGrid.innerHTML += productCard;
+    //             });
+    //         } else {
+    //             productGrid.innerHTML = `<p class="text-center col-span-full text-red-500">Lỗi: ${result.message}</p>`;
+    //         }
+    //     } catch (error) {
+    //         console.error("Lỗi khi fetch sản phẩm:", error);
+    //         productGrid.innerHTML = '<p class="text-center col-span-full text-red-500">Không thể kết nối đến máy chủ!</p>';
+    //     }
+    // }
 async function fetchAndRenderProducts() {
     const productGrid = document.getElementById('product-grid');
     if (!productGrid) return;
@@ -210,17 +220,17 @@ async function fetchAndRenderProducts() {
     productGrid.innerHTML = '<p class="text-center col-span-full text-gray-500">Đang tải sản phẩm...</p>';
 
     try {
-        // 1. Đọc tham số từ URL trình duyệt
+        // Đọc tham số từ URL trình duyệt
         const urlParams = new URLSearchParams(window.location.search);
         const danhMucId = urlParams.get('danhMuc'); // Sẽ lấy ra được số '1', '2' hoặc null
 
-        // 2. Nối tham số vào link API gửi cho Backend
+        // Nối tham số vào link API gửi cho Backend
         let apiUrl = 'http://localhost:3000/api/products';
         if (danhMucId) {
             apiUrl += `?danhMuc=${danhMucId}`;
         }
 
-        // 3. Đổi lại tiêu đề trang (UI) cho chuyên nghiệp (Tùy chọn)
+        //  Đổi lại tiêu đề trang (UI) cho chuyên nghiệp (Tùy chọn)
         const pageTitle = document.getElementById('page-title'); // Nhớ gắn id="page-title" vào thẻ <h1> ở ProductList.html nhé
         if (pageTitle) {
             if (danhMucId === '1') pageTitle.innerText = 'GIÀY THỂ THAO';
@@ -229,7 +239,7 @@ async function fetchAndRenderProducts() {
             else pageTitle.innerText = 'TẤT CẢ SẢN PHẨM';
         }
 
-        // 4. Gọi API
+        // Gọi API
         const response = await fetch(apiUrl);
         const result = await response.json();
 
@@ -243,16 +253,21 @@ async function fetchAndRenderProducts() {
 
             result.data.forEach(product => {
                 const priceFormatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.GiaMacDinh);
-                const productCard = `
-                    <div class="border border-gray-100 rounded-2xl p-4 bg-white hover:shadow-xl hover:border-blue-100 transition-all duration-300 flex flex-col group cursor-pointer">
-                        <div class="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-50 mb-4 flex items-center justify-center">
-                            <img src="../assets/images/${product.HinhAnhChinh}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'" class="w-[85%] object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500 drop-shadow-xl">
-                        </div>
-                        <h3 class="font-bold text-gray-800 text-sm mb-1 line-clamp-2 group-hover:text-blue-600 transition">${product.TenSanPham}</h3>
+              const productCard = `
+                    <div class="border border-gray-100 rounded-2xl p-4 bg-white hover:shadow-xl hover:border-blue-100 transition-all duration-300 flex flex-col group">
+                        
+                        <a href="ProductDetail.html?id=${product.MaSanPham}" class="block cursor-pointer">
+                            <div class="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-50 mb-4 flex items-center justify-center">
+                                <img src="../assets/images/${product.HinhAnhChinh}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'" class="w-[85%] object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500 drop-shadow-xl">
+                            </div>
+                            <h3 class="font-bold text-gray-800 text-sm mb-1 line-clamp-2 group-hover:text-blue-600 transition">${product.TenSanPham}</h3>
+                        </a>
+
                         <p class="text-xs text-gray-500 mb-2">${product.TenThuongHieu || 'Phụ kiện'} | ${product.TenDanhMuc || ''}</p>
                         <div class="flex items-end gap-2 mb-4 mt-auto">
                             <span class="text-blue-600 font-bold text-lg">${priceFormatted}</span>
                         </div>
+                        
                         <button onclick="addToCart(${product.MaBienThe})" class="w-full py-2.5 rounded-lg bg-blue-50 text-blue-600 font-semibold text-sm hover:bg-blue-600 hover:text-white transition shadow-sm">
                             Thêm vào giỏ
                         </button>
@@ -291,17 +306,19 @@ async function addToCart(maBienThe) {
 
         const data = await response.json();
 
-        // if (response.ok) {
-        //     showToast(data.message, "success");
-        //     // Gợi ý: Chỗ này có thể viết thêm code để tự động tăng số đếm trên icon Giỏ hàng ở Header + 1
-        // } else {
-        //     showToast(data.message, "error");
-        // }
+        if (response.ok) {
+            showToast(data.message, "success");
+        
+        } else {
+            showToast(data.message, "error");
+        }
     } catch (error) {
         console.error("Lỗi khi thêm giỏ hàng:", error);
         showToast("Không thể kết nối đến máy chủ!", "error");
     }
 }
+
+
 // Kích hoạt hàm ngay khi trang web tải xong nội dung
 document.addEventListener('DOMContentLoaded', () => {
     fetchAndRenderProducts();

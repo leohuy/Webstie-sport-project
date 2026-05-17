@@ -77,7 +77,8 @@ export const login = async (req, res) => {
                 id: user.MaNguoiDung,
                 hoTen: user.HoTen,
                 email: user.Email,
-                vaiTro: user.VaiTro
+                vaiTro: user.VaiTro,
+                SoDienThoai: user.SoDienThoai
             }
         });
     } catch (error) {

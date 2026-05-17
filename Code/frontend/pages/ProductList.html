@@ -4,15 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!-- thu vien Tailwind CSS -->
+    <title>Danh sách Sản phẩm - SPORTFLEX</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- thu vien Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 
 <body>
-    <!-- TOP BAR -->
     <div class="bg-slate-900 text-white text-xs py-2 px-4 md:px-8 flex justify-between items-center">
         <div class="flex items-center gap-2">
             <i class="ph ph-phone text-base"></i>
@@ -24,30 +21,28 @@
         </div>
     </div>
 
-    <!-- HEADER -->
     <header class="py-4 px-4 md:px-8 max-w-7xl mx-auto flex justify-between items-center bg-white">
-        <!-- Logo -->
         <a href="Home.html" class="flex items-center gap-2 text-2xl font-black text-blue-600 italic tracking-tighter">
             <i class="ph-fill ph-activity text-3xl"></i>
             SPORTFLEX
         </a>
 
-        <!-- Search Bar -->
         <div class="hidden md:flex flex-1 max-w-2xl mx-8 relative">
             <div class="relative w-full">
                 <i class="ph ph-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
-                <input type="text" placeholder="Tìm kiếm giày, phụ kiện, quần áo..."
+                <input type="text" id="search-input" placeholder="Tìm kiếm giày, phụ kiện, quần áo..."
                     class="w-full bg-gray-50 border border-gray-200 rounded-full py-2.5 pl-12 pr-24 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
-                <button
+                <button id="search-btn"
                     class="absolute right-1 top-1 bottom-1 bg-blue-600 text-white px-6 rounded-full text-sm font-medium hover:bg-blue-700 transition">Tìm</button>
+                <div id="search-suggestions"
+                    class="absolute left-0 top-[110%] w-full bg-white border border-gray-100 rounded-xl shadow-xl z-50 hidden max-h-[400px] overflow-y-auto">
+                </div>
             </div>
         </div>
 
-        <!-- Icons -->
         <div class="flex items-center gap-6">
             <a href="cart.html" class="relative cursor-pointer hover:text-blue-600 transition">
                 <i class="ph ph-shopping-bag text-2xl"></i>
-                <!-- Badge hiển thị số lượng giỏ hàng -->
                 <span
                     class="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">3</span>
             </a>
@@ -57,180 +52,159 @@
         </div>
     </header>
 
-    <!--  NAVIGATION Thanh dieu-->
     <nav>
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <ul class="flex justify-center gap-8 text-sm font-semibold text-gray-600 pb-4">
-
                 <li><a href="Home.html" class="nav-item hover:text-blue-600 transition pb-1">Trang Chủ</a></li>
-
                 <li><a href="ProductList.html?danhMuc=1" data-id="1"
                         class="nav-item hover:text-blue-600 transition pb-1">Giày Thể Thao</a></li>
-
                 <li><a href="ProductList.html?danhMuc=2" data-id="2"
                         class="nav-item hover:text-blue-600 transition pb-1">Quần Áo</a></li>
-
                 <li><a href="ProductList.html?danhMuc=3" data-id="3"
                         class="nav-item hover:text-blue-600 transition pb-1">Phụ Kiện</a></li>
-
                 <li class="relative">
                     <a href="ProductList.html" class="hover:text-blue-600 transition pb-1">Khuyến Mãi</a>
                     <span
                         class="absolute -top-3 -right-6 bg-red-500 text-white text-[7px] font-bold px-1 py-0.3 rounded shadow-sm">HOT</span>
                 </li>
-
             </ul>
         </div>
     </nav>
-    <!-- content -->
-    <!-- MAIN CONTENT: PRODUCT LISTING PAGE -->
 
     <main class="max-w-7xl mx-auto px-4 md:px-8 py-6 pb-20">
 
-        <!-- Breadcrumbs & Title -->
         <div class="mb-8">
             <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
-                <a href="Home.html" class="hover:text-blue-600 transition">Trang chủ</a>
+                <a href="index.html" class="hover:text-blue-600 transition">Trang chủ</a>
                 <i class="ph-bold ph-caret-right text-xs"></i>
-                <a href="ProductList.html" class="hover:text-blue-600 transition">Giày Thể Thao</a>
+                <a href="#" class="hover:text-blue-600 transition" id="bread-cat">Danh mục</a>
                 <i class="ph-bold ph-caret-right text-xs"></i>
-                <span class="text-gray-900 font-semibold">Giày Thể Thao</span>
+                <span class="text-gray-900 font-semibold" id="bread-current">Tất cả</span>
             </div>
-            <h1 class="text-3xl font-black text-slate-900 uppercase tracking-tight mb-2">GIÀY THỂ THAO</h1>
-            <p class="text-gray-500 text-sm">Hiển thị 1 - 12 trong số 45 sản phẩm</p>
+            <h1 class="text-3xl font-black text-slate-900 uppercase tracking-tight mb-2" id="page-title">SẢN PHẨM</h1>
+            <p class="text-gray-500 text-sm">Hiển thị kết quả tìm kiếm (<span id="total-results">0</span> sản phẩm)</p>
         </div>
 
-        <!-- 2-Column Layout -->
         <div class="flex flex-col lg:flex-row gap-8">
 
-            <!-- CỘT TRÁI: BỘ LỌC (SIDEBAR) -->
             <aside class="w-full lg:w-1/4 flex-shrink-0">
                 <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm sticky top-24">
                     <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-100">
                         <h2 class="font-bold flex items-center gap-2 text-gray-800">
                             <i class="ph ph-funnel text-xl"></i> BỘ LỌC
                         </h2>
-                        <button class="text-xs text-blue-600 hover:underline">Xóa tất cả</button>
+                        <button onclick="clearAllFilters()" class="text-xs text-blue-600 hover:underline">Xóa tất
+                            cả</button>
                     </div>
 
-                    <!-- Thương hiệu -->
                     <div class="mb-6">
                         <h3 class="font-bold text-sm text-gray-900 uppercase mb-4">Thương hiệu</h3>
                         <div class="space-y-3">
                             <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" checked
-                                    class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
-                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Nike
-                                    (15)</span>
+                                <input type="checkbox" value="Nike"
+                                    class="filter-brand w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Nike</span>
                             </label>
                             <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox"
-                                    class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
-                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Adidas
-                                    (12)</span>
+                                <input type="checkbox" value="Adidas"
+                                    class="filter-brand w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Adidas</span>
                             </label>
                             <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox"
-                                    class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
-                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Puma (8)</span>
+                                <input type="checkbox" value="Puma"
+                                    class="filter-brand w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Puma</span>
                             </label>
                         </div>
                     </div>
 
-                    <!-- Mức giá -->
                     <div class="mb-6">
                         <h3 class="font-bold text-sm text-gray-900 uppercase mb-4">Mức giá</h3>
                         <div class="space-y-3">
                             <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="radio" name="price"
-                                    class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                <input type="radio" name="price" value="0-1000000"
+                                    class="filter-price w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer">
                                 <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Dưới
                                     1.000.000₫</span>
                             </label>
                             <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="radio" name="price"
-                                    class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                <input type="radio" name="price" value="1000000-2000000"
+                                    class="filter-price w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer">
                                 <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">1.000.000₫ -
                                     2.000.000₫</span>
                             </label>
                             <label class="flex items-center gap-3 cursor-pointer group">
-                                <input type="radio" name="price"
-                                    class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer">
+                                <input type="radio" name="price" value="2000000-99999999"
+                                    class="filter-price w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500 cursor-pointer">
                                 <span class="text-sm text-gray-600 group-hover:text-blue-600 transition">Trên
                                     2.000.000₫</span>
                             </label>
                         </div>
                     </div>
 
-                    <!-- Kích cỡ (Size) -->
                     <div class="mb-8">
                         <h3 class="font-bold text-sm text-gray-900 uppercase mb-4">Kích cỡ (Size)</h3>
                         <div class="grid grid-cols-4 gap-2">
-                            <div
-                                class="border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">
+                            <div data-size="39"
+                                class="filter-size border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">
                                 39</div>
-                            <div
-                                class="border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">
+                            <div data-size="40"
+                                class="filter-size border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">
                                 40</div>
-                            <div
-                                class="bg-blue-600 border-blue-600 rounded py-1.5 text-center text-sm text-white shadow-sm cursor-pointer">
+                            <div data-size="41"
+                                class="filter-size border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">
                                 41</div>
-                            <div
-                                class="border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">
+                            <div data-size="42"
+                                class="filter-size border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">
                                 42</div>
-                            <div
-                                class="border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">
+                            <div data-size="43"
+                                class="filter-size border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">
                                 43</div>
-                            <div
-                                class="border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">
+                            <div data-size="44"
+                                class="filter-size border border-gray-200 rounded py-1.5 text-center text-sm text-gray-600 hover:border-blue-500 cursor-pointer transition">
                                 44</div>
                         </div>
                     </div>
 
-                    <button
+                    <button onclick="applyFilters()"
                         class="w-full bg-[#111827] text-white font-bold py-3 rounded-lg hover:bg-blue-600 transition shadow-md">
                         ÁP DỤNG BỘ LỌC
                     </button>
                 </div>
             </aside>
 
-            <!-- CỘT PHẢI: LƯỚI SẢN PHẨM -->
             <div class="flex-1">
 
-                <!-- Thanh Sắp Xếp -->
                 <div
                     class="bg-white border border-gray-100 rounded-xl p-3 shadow-sm flex justify-between items-center mb-6">
-                    <div class="hidden sm:block"></div> <!-- Spacer -->
+                    <div class="hidden sm:block"></div>
                     <div class="flex items-center gap-3">
                         <span class="text-sm text-gray-600">Sắp xếp theo:</span>
-                        <select
+                        <select id="sort-select" onchange="applyFilters()"
                             class="border border-gray-200 rounded-lg text-sm py-2 px-4 focus:outline-none focus:border-blue-500 cursor-pointer bg-gray-50">
-                            <option>Mới nhất</option>
-                            <option>Giá: Thấp đến Cao</option>
-                            <option>Giá: Cao đến Thấp</option>
-                            <option>Bán chạy nhất</option>
+                            <option value="newest">Mới nhất</option>
+                            <option value="price_asc">Giá: Thấp đến Cao</option>
+                            <option value="price_desc">Giá: Cao đến Thấp</option>
+                            <option value="bestseller">Bán chạy nhất</option>
                         </select>
                     </div>
                 </div>
 
-                <!-- Lưới 3 Cột -->
                 <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!--danh sach san pham-->
                 </div>
 
-                <!-- Phân trang (Pagination) -->
-                <div class="flex justify-center items-center mt-12">
+                <div id="loading-indicator" class="hidden py-10 text-center col-span-full">
+                    <i class="ph ph-spinner-gap animate-spin text-4xl text-blue-600 mx-auto mb-2"></i>
+                    <p class="text-gray-500">Đang tìm kiếm...</p>
+                </div>
+
+                <div class="flex justify-center items-center mt-12 hidden" id="pagination">
                     <div class="flex border border-gray-200 rounded-xl overflow-hidden shadow-sm bg-white">
                         <button class="px-4 py-2 text-gray-500 hover:bg-gray-50 border-r border-gray-200"><i
                                 class="ph-bold ph-caret-left"></i></button>
+                        <button class="px-4 py-2 bg-blue-600 text-white font-bold">1</button>
                         <button
-                            class="px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 font-medium">1</button>
-                        <button class="px-4 py-2 bg-blue-600 text-white font-bold">2</button>
-                        <button
-                            class="px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 font-medium">3</button>
-                        <span class="px-4 py-2 text-gray-400">...</span>
-                        <button
-                            class="px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 font-medium">12</button>
+                            class="px-4 py-2 text-gray-600 hover:bg-blue-50 hover:text-blue-600 font-medium">2</button>
                         <button class="px-4 py-2 text-gray-500 hover:bg-gray-50 border-l border-gray-200"><i
                                 class="ph-bold ph-caret-right"></i></button>
                     </div>
@@ -240,16 +214,13 @@
         </div>
 
     </main>
-    <!--  FOOTER -->
+
     <footer class="bg-[#111827] text-gray-400 pt-8 pb-8 text-sm">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12 border-b border-gray-800 pb-12">
-
-                <!-- Cột 1: Brand -->
                 <div>
                     <div class="flex items-center gap-2 text-2xl font-black text-blue-500 italic tracking-tighter mb-4">
-                        <i class="ph-fill ph-activity text-3xl"></i>
-                        SPORTFLEX
+                        <i class="ph-fill ph-activity text-3xl"></i> SPORTFLEX
                     </div>
                     <p class="mb-6 leading-relaxed text-gray-400">
                         Hệ thống cung cấp giày và phụ kiện thể thao chính hãng hàng đầu. Chuyên nghiệp, tận tâm và luôn
@@ -268,63 +239,45 @@
                     </div>
                 </div>
 
-                <!-- Cột 2: Liên kết nhanh -->
                 <div>
                     <h4 class="text-white font-bold mb-6 uppercase tracking-wider">LIÊN KẾT NHANH</h4>
                     <ul class="space-y-3">
                         <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
                                     class="ph ph-caret-right"></i> Trang chủ</a></li>
                         <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
-                                    class="ph ph-caret-right"></i> Giới thiệu</a></li>
-                        <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
                                     class="ph ph-caret-right"></i> Sản phẩm</a></li>
                         <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
                                     class="ph ph-caret-right"></i> Khuyến mãi</a></li>
-                        <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
-                                    class="ph ph-caret-right"></i> Tin tức thể thao</a></li>
                     </ul>
                 </div>
 
-                <!-- Cột 3: Chính sách -->
                 <div>
                     <h4 class="text-white font-bold mb-6 uppercase tracking-wider">CHÍNH SÁCH</h4>
                     <ul class="space-y-3">
                         <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
                                     class="ph ph-caret-right"></i> Chính sách bảo mật</a></li>
                         <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
-                                    class="ph ph-caret-right"></i> Điều khoản sử dụng</a></li>
-                        <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
                                     class="ph ph-caret-right"></i> Chính sách đổi trả</a></li>
-                        <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
-                                    class="ph ph-caret-right"></i> Chính sách bảo hành</a></li>
                         <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i
                                     class="ph ph-caret-right"></i> Phương thức thanh toán</a></li>
                     </ul>
                 </div>
 
-                <!-- Cột 4: Liên hệ -->
                 <div>
                     <h4 class="text-white font-bold mb-6 uppercase tracking-wider">THÔNG TIN LIÊN HỆ</h4>
                     <ul class="space-y-4">
                         <li class="flex items-start gap-3">
                             <i class="ph-fill ph-map-pin text-blue-500 text-lg mt-0.5"></i>
-                            <span>Khu II, Đại học Trà Vinh, 126 Nguyễn Thiện Thành, Khóm 4, Phường 5, TP. Trà
-                                Vinh</span>
+                            <span>Khu II, Đại học Trà Vinh, 126 Nguyễn Thiện Thành, Phường 5, TP. Trà Vinh</span>
                         </li>
                         <li class="flex items-center gap-3">
                             <i class="ph-fill ph-phone-call text-blue-500 text-lg"></i>
                             <span>+84 1900 1234 56</span>
                         </li>
-                        <li class="flex items-center gap-3">
-                            <i class="ph-fill ph-envelope-simple text-blue-500 text-lg"></i>
-                            <span>support@sportflex.com.vn</span>
-                        </li>
                     </ul>
                 </div>
-
             </div>
 
-            <!-- Bottom Copyright -->
             <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
                 <p>&copy; 2026 SportFlex. Đồ án Công nghệ phần mềm - Nhóm 10 (Đạt, Thanh Huy, Tuấn Huy).</p>
                 <div class="flex items-center gap-4 text-2xl text-gray-500">
@@ -335,9 +288,161 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        let selectedSizes = [];
+        let currentCategoryId = new URLSearchParams(window.location.search).get('danhMuc') || '';
+
+        function formatMoney(amount) {
+            return parseInt(amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " ₫";
+        }
+
+        // Xử lý Giao diện chọn Size
+        document.querySelectorAll('.filter-size').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const size = this.getAttribute('data-size');
+
+                // Đổi CSS khi được chọn
+                this.classList.toggle('bg-blue-600');
+                this.classList.toggle('text-white');
+                this.classList.toggle('border-blue-600');
+                this.classList.toggle('text-gray-600');
+                this.classList.toggle('hover:border-blue-500');
+
+                // Thêm/Xóa vào mảng
+                if (selectedSizes.includes(size)) {
+                    selectedSizes = selectedSizes.filter(s => s !== size);
+                } else {
+                    selectedSizes.push(size);
+                }
+            });
+        });
+
+        // Xóa tất cả bộ lọc
+        function clearAllFilters() {
+            // Xóa brand
+            document.querySelectorAll('.filter-brand').forEach(c => c.checked = false);
+            // Xóa giá
+            document.querySelectorAll('.filter-price').forEach(r => r.checked = false);
+            // Xóa size
+            document.querySelectorAll('.filter-size').forEach(b => {
+                b.classList.remove('bg-blue-600', 'text-white', 'border-blue-600');
+                b.classList.add('text-gray-600', 'border-gray-200', 'hover:border-blue-500');
+            });
+            selectedSizes = [];
+            document.getElementById('sort-select').value = 'newest';
+            applyFilters();
+        }
+
+        // Cập nhật tiêu đề trang
+        function initPageTitles() {
+            const titles = {
+                '1': 'Giày Thể Thao',
+                '2': 'Quần Áo',
+                '3': 'Phụ Kiện'
+            };
+            const title = titles[currentCategoryId] || 'Sản Phẩm';
+            document.getElementById('bread-cat').innerText = title;
+            document.getElementById('page-title').innerText = title.toUpperCase();
+        }
+
+        // Gọi API Lọc
+        async function applyFilters() {
+            const grid = document.getElementById('product-grid');
+            const loader = document.getElementById('loading-indicator');
+            const totalSpan = document.getElementById('total-results');
+
+            grid.innerHTML = '';
+            loader.classList.remove('hidden');
+
+            // 1. Lấy dữ liệu
+            const selectedBrands = Array.from(document.querySelectorAll('.filter-brand:checked')).map(cb => cb.value);
+            const selectedPrice = document.querySelector('.filter-price:checked')?.value;
+            const sortMethod = document.getElementById('sort-select').value;
+
+            let queryParams = new URLSearchParams();
+            if (currentCategoryId) queryParams.append('danhMuc', currentCategoryId);
+            if (selectedBrands.length > 0) queryParams.append('brands', selectedBrands.join(','));
+            if (selectedSizes.length > 0) queryParams.append('sizes', selectedSizes.join(','));
+            if (sortMethod) queryParams.append('sort', sortMethod);
+
+            // Xử lý khoảng giá
+            if (selectedPrice) {
+                const parts = selectedPrice.split('-');
+                if (parts[0]) queryParams.append('minPrice', parts[0]);
+                if (parts[1]) queryParams.append('maxPrice', parts[1]);
+            }
+
+            // === THÊM ĐOẠN CODE NÀY VÀO ĐÂY ĐỂ GIỮ LẠI TỪ KHÓA TÌM KIẾM ===
+            const searchQuery = new URLSearchParams(window.location.search).get('search');
+            if (searchQuery) {
+                queryParams.append('search', searchQuery); // Giữ chữ search trên URL
+
+                // (Tùy chọn) Hiển thị lại từ khóa khách vừa gõ vào ô tìm kiếm cho đẹp
+                const searchInputObj = document.getElementById('search-input');
+                if (searchInputObj) searchInputObj.value = searchQuery;
+            }
+            // =============================================================
+
+            // Đổi URL trình duyệt
+            window.history.pushState({}, '', `${window.location.pathname}?${queryParams.toString()}`);
+
+            // 2. Fetch API
+            try {
+                const response = await fetch(`http://localhost:3000/api/products?${queryParams.toString()}`);
+                const result = await response.json();
+                loader.classList.add('hidden');
+
+                if (response.ok && result.data.length > 0) {
+                    totalSpan.innerText = result.data.length;
+
+                    result.data.forEach(product => {
+                        const img = product.HinhAnhChinh.startsWith('http') ? product.HinhAnhChinh : `../assets/images/${product.HinhAnhChinh}`;
+
+                        grid.innerHTML += `
+                            <div class="border border-gray-100 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col bg-white group">
+                                <div class="relative bg-gray-50 aspect-square flex items-center justify-center p-4">
+                                    <span class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm">-10%</span>
+                                    <img src="${img}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'" class="w-[85%] h-[85%] object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500">
+                                    
+                                    <div class="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        <a href="ProductDetail.html?id=${product.MaSanPham}" class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 hover:scale-110 transition-all">
+                                            <i class="ph ph-shopping-cart text-lg"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="p-5 flex flex-col flex-grow">
+                                    <a href="ProductDetail.html?id=${product.MaSanPham}">
+                                        <h3 class="font-bold text-gray-800 text-sm md:text-base mb-2 line-clamp-2 hover:text-blue-600 transition">${product.TenSanPham}</h3>
+                                    </a>
+                                    <div class="mt-auto">
+                                        <div class="text-blue-600 font-black text-lg">${formatMoney(product.GiaMacDinh)}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    totalSpan.innerText = '0';
+                    grid.innerHTML = `
+                        <div class="col-span-full py-10 text-center">
+                            <i class="ph ph-magnifying-glass text-4xl text-gray-300 mb-2"></i>
+                            <p class="text-gray-500">Không tìm thấy sản phẩm nào phù hợp.</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                loader.classList.add('hidden');
+                grid.innerHTML = '<p class="col-span-full text-center text-red-500">Lỗi kết nối máy chủ!</p>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initPageTitles();
+            applyFilters();
+        });
+    </script>
+    <script src="../Js/main.js"></script>
 </body>
-<script src="../Js/main.js"></script>
-<script src="../Js/api.js"></script>
-<script src="../Js/cart.js"></script>
 
 </html>

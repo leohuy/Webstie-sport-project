@@ -158,7 +158,96 @@ async function removeItem(maChiTietGH, index) {
     });
     showToast("Đã xóa sản phẩm khỏi giỏ hàng", "success");
 }
+// HÀM XỬ LÝ KHI KHÁCH HÀNG BẤM NÚT ĐẶT HÀNG
+async function handlePlaceOrder(event) {
+    event.preventDefault(); 
 
+    // 1. Lấy Token đăng nhập của khách hàng
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert("Vui lòng đăng nhập trước khi thực hiện thanh toán!");
+        window.location.href = "login.html";
+        return;
+    }
+
+    const selectedAddressRadio = document.querySelector('input[name="address"]:checked');
+    const maDiaChi = selectedAddressRadio ? selectedAddressRadio.value : null;
+
+    // Ví dụ: Lấy phương thức thanh toán (COD hoặc VNPAY)
+    const selectedPaymentRadio = document.querySelector('input[name="payment"]:checked');
+    const phuongThucThanhToan = selectedPaymentRadio ? selectedPaymentRadio.value : 'COD';
+
+    // Ví dụ: Lấy ghi chú đơn hàng
+    const ghiChuElement = document.getElementById('order-note');
+    const ghiChu = ghiChuElement ? ghiChuElement.value.trim() : '';
+
+    // 3. Kiểm tra xem khách hàng có chọn địa chỉ chưa
+    if (!maDiaChi) {
+        alert("Vui lòng chọn hoặc thêm địa chỉ giao hàng!");
+        return;
+    }
+
+    // 4. Kiểm tra chế độ mua: "Mua Ngay" hay "Đặt từ Giỏ Hàng"
+    // Thường khi ấn "Mua ngay", bạn sẽ lưu tạm thông tin sản phẩm vào sessionStorage/localStorage
+    const buyNowData = JSON.parse(sessionStorage.getItem('buyNowItem'));
+    let buyNowItem = null;
+
+    if (buyNowData) {
+        buyNowItem = {
+            maBienThe: buyNowData.maBienThe,
+            soLuong: buyNowData.soLuong
+        };
+    }
+
+    // Giao diện hiển thị trạng thái đang xử lý để tránh khách bấm nút nhiều lần
+    const orderBtn = document.getElementById('btn-place-order'); // ID nút đặt hàng của bạn
+    if (orderBtn) {
+        orderBtn.innerText = "ĐANG XỬ LÝ...";
+        orderBtn.disabled = true;
+    }
+
+    // 5. Đóng gói dữ liệu và gửi yêu cầu POST lên Backend
+    try {
+        const response = await fetch('http://localhost:3000/api/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                maDiaChi: maDiaChi,
+                phuongThucThanhToan: phuongThucThanhToan,
+                ghiChu: ghiChu,
+                buyNowItem: buyNowItem // Sẽ là null nếu mua từ giỏ hàng như bình thường
+            })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert(" Đặt hàng thành công! Cảm ơn bạn đã mua sắm tại SportFlex.");
+
+            // Nếu là chế độ mua ngay, xóa dữ liệu mua ngay sau khi xong
+            if (buyNowData) sessionStorage.removeItem('buyNowItem');
+
+            // Chuyển hướng khách hàng sang trang hoàn tất hoặc trang lịch sử mua hàng
+            window.location.href = `orderSuccess.html?id=${result.maTraCuu}`;
+        } else {
+            alert(result.message || "Đã xảy ra lỗi trong quá trình đặt hàng.");
+            if (orderBtn) {
+                orderBtn.innerText = "HOÀN TẤT ĐẶT HÀNG";
+                orderBtn.disabled = false;
+            }
+        }
+    } catch (error) {
+        console.error("Lỗi đặt hàng:", error);
+        alert("Lỗi kết nối mạng hoặc hệ thống máy chủ gặp sự cố!");
+        if (orderBtn) {
+            orderBtn.innerText = "HOÀN TẤT ĐẶT HÀNG";
+            orderBtn.disabled = false;
+        }
+    }
+}
 
 // KHỞI ĐỘNG
 document.addEventListener('DOMContentLoaded', loadCart);

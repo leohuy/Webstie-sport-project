@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tài Khoản Của Tôi - SportFlex</title>
+    <title>Tài Khoản Của Tôi - SPORTFLEX</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -11,32 +12,42 @@
             display: none;
             animation: fadeIn 0.3s ease-in-out;
         }
+
         .tab-content.active {
             display: block;
         }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        /* Cuộn ngang menu trên mobile */
+
         .mobile-menu-scroll::-webkit-scrollbar {
             display: none;
         }
+
         .mobile-menu-scroll {
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
     </style>
 </head>
+
 <body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed top-4 right-4 bg-gray-900 text-white px-6 py-3 rounded-lg shadow-2xl transform transition-transform duration-300 translate-x-full z-50 flex items-center gap-3">
-        <i data-lucide="info" class="w-5 h-5 text-blue-400"></i>
+    <div id="toast"
+        class="fixed top-4 right-0 bg-green-600 text-white px-6 py-3 rounded-lg shadow-2xl transform transition-transform duration-300 translate-x-full z-50 flex items-center gap-3">
+        <i data-lucide="check-circle" class="w-5 h-5"></i>
         <span id="toast-message" class="font-medium text-sm">Cập nhật thành công!</span>
     </div>
 
-    <!-- Header -->
     <header class="bg-white sticky top-0 z-40 shadow-sm border-b border-gray-100 py-3 md:py-4">
         <div class="container mx-auto px-4 lg:px-8 flex items-center justify-between">
             <a href="Home.html" class="flex items-center gap-2 text-blue-700 hover:text-blue-800 transition">
@@ -44,64 +55,62 @@
                 <span class="text-xl md:text-2xl font-black italic tracking-wider">SPORTFLEX</span>
             </a>
             <div class="flex items-center gap-4">
-                <a href="#" class="relative p-2 text-gray-600 hover:text-blue-600 transition">
+                <a href="cart.html" class="relative p-2 text-gray-600 hover:text-blue-600 transition">
                     <i data-lucide="shopping-bag" class="w-6 h-6"></i>
-                    <span class="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">2</span>
                 </a>
                 <div class="hidden md:flex items-center gap-2 border-l border-gray-200 pl-4">
-                    <img src="https://avatars.githubusercontent.com/u/93829871?s=48&v=4" alt="Avatar" class="w-8 h-8 rounded-full border border-gray-200">
-                    <span class="text-sm font-bold text-gray-700">Nguyễn Văn A</span>
+                    <img src="" id="header-avatar" class="w-8 h-8 rounded-full border border-gray-200">
+                    <span id="header-name" class="text-sm font-bold text-gray-700">Đang tải...</span>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="flex-grow container mx-auto px-4 lg:px-8 py-6 md:py-10 max-w-7xl">
-        
         <div class="flex flex-col lg:flex-row gap-6 lg:gap-10">
-            
-            <!-- Sidebar Navigation -->
+
             <aside class="w-full lg:w-1/4 flex-shrink-0">
-                <!-- User Info Mobile (Ẩn trên Desktop) -->
-                <div class="md:hidden flex items-center gap-4 mb-6 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-                    <img src="https://avatars.githubusercontent.com/u/93829871?s=48&v=4" alt="Avatar" class="w-14 h-14 rounded-full border border-gray-200">
+                <div
+                    class="md:hidden flex items-center gap-4 mb-6 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                    <img src="" id="mobile-avatar" class="w-14 h-14 rounded-full border border-gray-200">
                     <div>
-                        <h2 class="font-bold text-gray-900">Nguyễn Văn A</h2>
+                        <h2 id="mobile-name" class="font-bold text-gray-900">Đang tải...</h2>
                         <p class="text-xs text-gray-500">Khách hàng thành viên</p>
                     </div>
                 </div>
 
                 <div class="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden sticky top-24">
-                    <!-- User Info Desktop -->
                     <div class="hidden md:flex items-center gap-4 p-6 border-b border-gray-100 bg-gray-50/50">
-                        <img src="https://avatars.githubusercontent.com/u/93829871?s=48&v=4" alt="Avatar" class="w-12 h-12 rounded-full border border-gray-300">
+                        <img src="" id="sidebar-avatar" class="w-12 h-12 rounded-full border border-gray-300">
                         <div>
                             <p class="text-xs text-gray-500 mb-0.5">Tài khoản của</p>
-                            <h2 class="font-bold text-gray-900 leading-tight">Nguyễn Văn A</h2>
+                            <h2 id="sidebar-name" class="font-bold text-gray-900 leading-tight">Đang tải...</h2>
                         </div>
                     </div>
 
-                    <!-- Navigation Menu -->
                     <nav class="p-2 md:p-4 flex flex-row lg:flex-col overflow-x-auto mobile-menu-scroll gap-1">
-                        <button onclick="switchTab('profile', this)" class="menu-item active flex-shrink-0 w-auto lg:w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition text-sm md:text-base text-blue-700 bg-blue-50">
+                        <button onclick="switchTab('profile', this)"
+                            class="menu-item active flex-shrink-0 w-auto lg:w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition text-sm md:text-base text-blue-700 bg-blue-50">
                             <i data-lucide="user" class="w-5 h-5"></i>
                             <span>Hồ sơ của tôi</span>
                         </button>
-                        
-                        <button onclick="switchTab('address', this)" class="menu-item flex-shrink-0 w-auto lg:w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition text-sm md:text-base">
+
+                        <button onclick="switchTab('address', this)"
+                            class="menu-item flex-shrink-0 w-auto lg:w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition text-sm md:text-base">
                             <i data-lucide="map-pin" class="w-5 h-5"></i>
                             <span>Sổ địa chỉ</span>
                         </button>
-                        
-                        <button onclick="switchTab('orders', this)" class="menu-item flex-shrink-0 w-auto lg:w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition text-sm md:text-base">
+
+                        <button onclick="switchTab('orders', this)"
+                            class="menu-item flex-shrink-0 w-auto lg:w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition text-sm md:text-base">
                             <i data-lucide="shopping-bag" class="w-5 h-5"></i>
                             <span>Lịch sử mua hàng</span>
                         </button>
 
                         <div class="hidden lg:block my-2 border-t border-gray-100 mx-4"></div>
-                        
-                        <button onclick="handleLogout()" class="flex-shrink-0 w-auto lg:w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-red-500 hover:bg-red-50 transition text-sm md:text-base">
+
+                        <button onclick="handleLogout()"
+                            class="flex-shrink-0 w-auto lg:w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-red-500 hover:bg-red-50 transition text-sm md:text-base">
                             <i data-lucide="log-out" class="w-5 h-5"></i>
                             <span>Đăng xuất</span>
                         </button>
@@ -109,217 +118,153 @@
                 </div>
             </aside>
 
-            <!-- Content Area -->
             <div class="w-full lg:w-3/4">
-                
-                <!-- 1. TAB: HỒ SƠ CỦA TÔI -->
-                <div id="tab-profile" class="tab-content active bg-white border border-gray-100 rounded-2xl shadow-sm p-6 md:p-8">
+
+                <div id="tab-profile"
+                    class="tab-content active bg-white border border-gray-100 rounded-2xl shadow-sm p-6 md:p-8">
                     <div class="border-b border-gray-100 pb-4 mb-6">
                         <h2 class="text-xl md:text-2xl font-black text-gray-900 uppercase">Hồ sơ của tôi</h2>
                         <p class="text-sm text-gray-500 mt-1">Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
                     </div>
 
-                    <form onsubmit="showToast('Đã cập nhật thông tin hồ sơ!', event)" class="max-w-2xl">
+                    <form onsubmit="handleUpdateProfile(event)" class="max-w-2xl">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <!-- Avatar Upload -->
-                            <div class="md:col-span-1 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-100 pb-6 md:pb-0 md:pr-6">
+                            <div
+                                class="md:col-span-1 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gray-100 pb-6 md:pb-0 md:pr-6">
                                 <div class="relative group cursor-pointer mb-4">
-                                    <img src="https://avatars.githubusercontent.com/u/93829871?s=48&v=4" class="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-gray-50 object-cover shadow-sm group-hover:opacity-80 transition">
-                                    <div class="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full shadow border-2 border-white">
+                                    <img src="" id="form-avatar"
+                                        class="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-gray-50 object-cover shadow-sm group-hover:opacity-80 transition">
+                                    <div
+                                        class="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full shadow border-2 border-white">
                                         <i data-lucide="camera" class="w-4 h-4"></i>
                                     </div>
                                 </div>
-                                <span class="text-xs text-gray-400 text-center">Dụng lượng file tối đa 1 MB<br>Định dạng: .JPEG, .PNG</span>
+                                <span class="text-xs text-gray-400 text-center">Dụng lượng file tối đa 1 MB<br>Định
+                                    dạng: .JPEG, .PNG</span>
                             </div>
 
-                            <!-- Input Fields -->
                             <div class="md:col-span-2 space-y-5">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Họ và tên</label>
-                                    <input type="text" value="Lê Tuấn Huy" class="w-full border border-gray-300 rounded-lg px-4 py-2.5 outline-none focus:border-blue-500 text-sm">
+                                    <input type="text" id="input-name"
+                                        class="w-full border border-gray-300 rounded-lg px-4 py-2.5 outline-none focus:border-blue-500 text-sm">
                                 </div>
-                                
+
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
                                     <div class="flex">
-                                        <input type="email" value="lethuanhuy@gmail.com" disabled class="w-full border border-gray-200 bg-gray-50 text-gray-500 rounded-lg px-4 py-2.5 outline-none text-sm cursor-not-allowed">
-                                        <button type="button" class="ml-3 text-sm text-blue-600 font-medium hover:underline whitespace-nowrap">Thay đổi</button>
+                                        <input type="email" id="input-email" disabled
+                                            class="w-full border border-gray-200 bg-gray-50 text-gray-500 rounded-lg px-4 py-2.5 outline-none text-sm cursor-not-allowed">
                                     </div>
                                 </div>
 
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1.5">Số điện thoại</label>
                                     <div class="flex">
-                                        <input type="tel" value="0901234567" disabled class="w-full border border-gray-200 bg-gray-50 text-gray-500 rounded-lg px-4 py-2.5 outline-none text-sm cursor-not-allowed">
-                                        <button type="button" class="ml-3 text-sm text-blue-600 font-medium hover:underline whitespace-nowrap">Thay đổi</button>
+                                        <input type="tel" id="input-phone" placeholder=""
+                                            class="w-full border border-gray-300 rounded-lg px-4 py-2.5 outline-none focus:border-blue-500 text-sm">
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="mt-8 pt-6 border-t border-gray-100">
-                            <button type="submit" class="bg-blue-600 text-white font-bold px-8 py-3 rounded-xl hover:bg-blue-700 transition shadow-md">
+                            <button type="submit"
+                                class="bg-blue-600 text-white font-bold px-8 py-3 rounded-xl hover:bg-blue-700 transition shadow-md">
                                 Lưu thay đổi
                             </button>
                         </div>
                     </form>
                 </div>
 
-                <!-- 2. TAB: SỔ ĐỊA CHỈ -->
-                <div id="tab-address" class="tab-content bg-white border border-gray-100 rounded-2xl shadow-sm p-6 md:p-8">
-                    <div class="border-b border-gray-100 pb-4 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div id="tab-address"
+                    class="tab-content bg-white border border-gray-100 rounded-2xl shadow-sm p-6 md:p-8">
+                    <div
+                        class="border-b border-gray-100 pb-4 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
                             <h2 class="text-xl md:text-2xl font-black text-gray-900 uppercase">Sổ địa chỉ</h2>
                             <p class="text-sm text-gray-500 mt-1">Quản lý địa chỉ giao hàng của bạn</p>
                         </div>
-                        <button class="bg-gray-900 text-white font-medium px-4 py-2.5 rounded-lg hover:bg-gray-800 transition flex items-center gap-2 text-sm shadow-sm">
+                        <button onclick="openProfileAddressModal()"
+                            class="bg-gray-900 text-white font-medium px-4 py-2.5 rounded-lg hover:bg-gray-800 transition flex items-center gap-2 text-sm shadow-sm">
                             <i data-lucide="plus" class="w-4 h-4"></i> Thêm địa chỉ mới
                         </button>
                     </div>
 
-                    <div class="space-y-4">
-                        <!-- Address Item 1 (Mặc định) -->
-                        <div class="border border-blue-200 bg-blue-50/30 rounded-xl p-5 relative">
-                            <div class="absolute top-5 right-5 flex gap-3">
-                                <button class="text-blue-600 text-sm font-medium hover:underline">Cập nhật</button>
-                            </div>
-                            
-                            <div class="flex items-center gap-3 mb-2">
-                                <span class="font-bold text-gray-900 text-lg">Lê Tuấn Huy</span>
-                                <span class="text-gray-400">|</span>
-                                <span class="text-gray-600">090 1234 567</span>
-                            </div>
-                            
-                            <div class="text-gray-600 text-sm mb-3">
-                                <p>123 Đường Nguyễn Văn Cừ, Tòa nhà Bitexco</p>
-                                <p>Phường Bến Nghé, Quận 1, TP. Hồ Chí Minh</p>
-                            </div>
-                            
-                            <span class="inline-block border border-blue-600 text-blue-600 text-xs font-bold px-2 py-1 rounded">Mặc định</span>
-                        </div>
+                    <div id="profile-address-list" class="space-y-4">
+                        <p class="text-center text-gray-500 py-10">Đang tải sổ địa chỉ...</p>
+                    </div>
+                </div>
+                <div id="modal-add-address"
+                    class="fixed inset-0 z-[60] bg-black/50 hidden flex items-center justify-center backdrop-blur-sm">
+                    <div class="bg-white w-full max-w-lg rounded-2xl p-6 mx-4 relative transform scale-95 transition-transform"
+                        id="modal-add-content">
+                        <button onclick="closeProfileAddressModal()"
+                            class="absolute top-4 right-4 text-gray-400 hover:text-red-500"><i data-lucide="x"
+                                class="w-6 h-6"></i></button>
+                        <h3 class="font-black text-gray-800 mb-6 uppercase border-b pb-3">Thêm địa chỉ mới</h3>
 
-                        <!-- Address Item 2 -->
-                        <div class="border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition">
-                            <div class="absolute top-5 right-5 flex gap-3">
-                                <button class="text-blue-600 text-sm font-medium hover:underline">Cập nhật</button>
-                                <button class="text-red-500 text-sm font-medium hover:underline">Xóa</button>
+                        <form id="form-new-address" onsubmit="saveProfileAddress(event)" class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="text" id="m-name" placeholder="Họ và tên" required
+                                    class="w-full border border-gray-300 bg-gray-50 rounded-xl p-3 text-sm outline-none focus:border-blue-600">
+                                <input type="tel" id="m-phone" placeholder="Số điện thoại" required
+                                    class="w-full border border-gray-300 bg-gray-50 rounded-xl p-3 text-sm outline-none focus:border-blue-600">
                             </div>
-                            
-                            <div class="flex items-center gap-3 mb-2">
-                                <span class="font-bold text-gray-900 text-lg">Nguyễn Văn B (Công ty)</span>
-                                <span class="text-gray-400">|</span>
-                                <span class="text-gray-600">098 7654 321</span>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                <select id="m-prov" required
+                                    class="border border-gray-300 bg-gray-50 rounded-xl p-2.5 text-sm outline-none">
+                                    <option value="">Tỉnh/Thành</option>
+                                </select>
+                                <select id="m-dist" required disabled
+                                    class="border border-gray-300 bg-gray-50 rounded-xl p-2.5 text-sm outline-none">
+                                    <option value="">Quận/Huyện</option>
+                                </select>
+                                <select id="m-ward" required disabled
+                                    class="border border-gray-300 bg-gray-50 rounded-xl p-2.5 text-sm outline-none">
+                                    <option value="">Phường/Xã</option>
+                                </select>
                             </div>
-                            
-                            <div class="text-gray-600 text-sm mb-3">
-                                <p>Tầng 5, Tòa nhà ABC, 456 Đường Lê Lợi</p>
-                                <p>Phường 4, Quận Gò Vấp, TP. Hồ Chí Minh</p>
+
+                            <input type="text" id="m-detail" placeholder="Số nhà, tên đường..." required
+                                class="w-full border border-gray-300 bg-gray-50 rounded-xl p-3 text-sm outline-none focus:border-blue-600">
+
+                            <div class="flex gap-3 mt-6">
+                                <button type="button" onclick="closeProfileAddressModal()"
+                                    class="flex-1 py-3 bg-gray-100 text-gray-600 rounded-xl font-bold hover:bg-gray-200 transition">Hủy</button>
+                                <button type="submit" id="btn-save-address"
+                                    class="flex-1 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition">Lưu
+                                    địa chỉ</button>
                             </div>
-                            
-                            <button class="text-sm text-gray-500 border border-gray-300 px-3 py-1.5 rounded hover:bg-gray-50 transition">Thiết lập mặc định</button>
-                        </div>
+                        </form>
                     </div>
                 </div>
 
-                <!-- 3. TAB: LỊCH SỬ MUA HÀNG -->
-                <div id="tab-orders" class="tab-content bg-white border border-gray-100 rounded-2xl shadow-sm p-6 md:p-8">
+                <div id="tab-orders"
+                    class="tab-content bg-white border border-gray-100 rounded-2xl shadow-sm p-6 md:p-8">
                     <div class="border-b border-gray-100 pb-4 mb-6">
                         <h2 class="text-xl md:text-2xl font-black text-gray-900 uppercase">Lịch sử đơn hàng</h2>
                         <p class="text-sm text-gray-500 mt-1">Theo dõi trạng thái các đơn đặt hàng của bạn</p>
                     </div>
 
-                    <!-- Order Filters (Mô phỏng) -->
                     <div class="flex overflow-x-auto hide-scrollbar gap-2 mb-6 border-b border-gray-100 pb-2">
-                        <button class="px-4 py-2 text-sm font-bold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap">Tất cả</button>
-                        <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-800 whitespace-nowrap">Chờ xác nhận</button>
-                        <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-800 whitespace-nowrap">Đang giao</button>
-                        <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-800 whitespace-nowrap">Đã giao</button>
-                        <button class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-800 whitespace-nowrap">Đã hủy</button>
+                        <button
+                            class="px-4 py-2 text-sm font-bold text-blue-600 border-b-2 border-blue-600 whitespace-nowrap">Tất
+                            cả</button>
+                        <button
+                            class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-800 whitespace-nowrap">Chờ
+                            xác nhận</button>
+                        <button
+                            class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-800 whitespace-nowrap">Đang
+                            giao</button>
+                        <button
+                            class="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-800 whitespace-nowrap">Đã
+                            giao</button>
                     </div>
 
-                    <div class="space-y-6">
-                        <!-- Order Item 1 (Đang giao) -->
-                        <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-                            <!-- Header -->
-                            <div class="bg-gray-50 px-5 py-3 border-b border-gray-200 flex justify-between items-center">
-                                <div class="text-sm">
-                                    <span class="font-bold text-gray-900">Mã đơn: #SFX8921</span>
-                                    <span class="text-gray-400 mx-2">|</span>
-                                    <span class="text-gray-500">Đặt ngày: 20/04/2026</span>
-                                </div>
-                                <div class="flex items-center gap-1.5 text-blue-600 bg-blue-100 px-3 py-1 rounded-full text-xs font-bold">
-                                    <i data-lucide="truck" class="w-3.5 h-3.5"></i> Đang giao
-                                </div>
-                            </div>
-                            <!-- Body (Sản phẩm) -->
-                            <div class="p-5 flex flex-col gap-4">
-                                <div class="flex gap-4">
-                                    <div class="w-16 h-16 bg-gray-100 rounded border border-gray-200 flex items-center justify-center p-1">
-                                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=100&q=80" alt="Giày" class="w-full h-full object-contain mix-blend-multiply">
-                                    </div>
-                                    <div class="flex-grow">
-                                        <h4 class="font-bold text-gray-800 text-sm line-clamp-1">Giày Thể Thao Nike Air Max Chuyên Dụng</h4>
-                                        <p class="text-xs text-gray-500 mt-1">Phân loại: Size 41</p>
-                                        <div class="flex justify-between items-center mt-2">
-                                            <span class="text-sm font-medium">x1</span>
-                                            <span class="text-sm font-bold text-gray-900">2.450.000 ₫</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Footer -->
-                            <div class="bg-gray-50 px-5 py-4 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-4">
-                                <div class="text-sm">
-                                    <span class="text-gray-500">Thành tiền: </span>
-                                    <span class="text-lg font-black text-blue-700">2.450.000 ₫</span>
-                                </div>
-                                <div class="flex gap-3 w-full sm:w-auto">
-                                    <button class="flex-1 sm:flex-none border border-gray-300 bg-white text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition">Xem chi tiết</button>
-                                    <button class="flex-1 sm:flex-none bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition">Theo dõi đơn</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Order Item 2 (Hoàn thành) -->
-                        <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-                            <div class="bg-gray-50 px-5 py-3 border-b border-gray-200 flex justify-between items-center">
-                                <div class="text-sm">
-                                    <span class="font-bold text-gray-900">Mã đơn: #SFX8105</span>
-                                    <span class="text-gray-400 mx-2">|</span>
-                                    <span class="text-gray-500">Đặt ngày: 15/03/2026</span>
-                                </div>
-                                <div class="flex items-center gap-1.5 text-green-600 bg-green-100 px-3 py-1 rounded-full text-xs font-bold">
-                                    <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Đã giao hàng
-                                </div>
-                            </div>
-                            <div class="p-5 flex flex-col gap-4">
-                                <div class="flex gap-4">
-                                    <div class="w-16 h-16 bg-gray-100 rounded border border-gray-200 flex items-center justify-center p-1">
-                                        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=100&q=80" alt="Thảm" class="w-full h-full object-contain mix-blend-multiply">
-                                    </div>
-                                    <div class="flex-grow">
-                                        <h4 class="font-bold text-gray-800 text-sm line-clamp-1">Thảm Tập Yoga Cao Su Non Chống Trượt</h4>
-                                        <p class="text-xs text-gray-500 mt-1">Phân loại: Xanh rêu</p>
-                                        <div class="flex justify-between items-center mt-2">
-                                            <span class="text-sm font-medium">x1</span>
-                                            <span class="text-sm text-gray-500 line-through mr-1">500.000 ₫</span>
-                                            <span class="text-sm font-bold text-gray-900">450.000 ₫</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="bg-gray-50 px-5 py-4 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-4">
-                                <div class="text-sm">
-                                    <span class="text-gray-500">Thành tiền: </span>
-                                    <span class="text-lg font-black text-blue-700">450.000 ₫</span>
-                                </div>
-                                <div class="flex gap-3 w-full sm:w-auto">
-                                    <button class="flex-1 sm:flex-none border border-blue-600 text-blue-600 bg-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-50 transition">Đánh giá</button>
-                                    <button class="flex-1 sm:flex-none bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition">Mua lại</button>
-                                </div>
-                            </div>
-                        </div>
-
+                    <div id="order-list-container" class="space-y-6">
+                        <p class="text-center text-gray-500 py-10">Đang tải lịch sử đơn hàng...</p>
                     </div>
                 </div>
 
@@ -327,63 +272,361 @@
         </div>
     </main>
 
-    <!-- Footer rút gọn -->
     <footer class="bg-gray-900 text-white py-6 mt-auto">
         <div class="container mx-auto px-4 lg:px-8 text-center text-gray-400 text-sm">
             <p>&copy; 2026 SportFlex. Đã đăng ký bản quyền.</p>
         </div>
     </footer>
 
+    <script src="../js/api.js"></script>
     <script>
         lucide.createIcons();
 
-        // Xử lý chuyển đổi Tab
-        function switchTab(tabId, btnElement) {
-            // 1. Ẩn tất cả nội dung tab
-            const tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(tab => tab.classList.remove('active'));
+        // Định dạng tiền tệ
+        function formatMoney(amount) {
+            const num = parseInt(amount, 10);
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " ₫";
+        }
 
-            // 2. Hiện tab được chọn
+        // Khởi tạo thông tin User
+        function initUserProfile() {
+            const token = localStorage.getItem('token');
+            const userStr = localStorage.getItem('userInfo');
+
+            if (!token || !userStr) {
+                window.location.href = 'auth.html';
+                return;
+            }
+
+            const user = JSON.parse(userStr);
+            const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.hoTen)}&background=2563eb&color=fff`;
+
+            // Đổ tên
+            document.getElementById('header-name').innerText = user.hoTen;
+            document.getElementById('mobile-name').innerText = user.hoTen;
+            document.getElementById('sidebar-name').innerText = user.hoTen;
+            document.getElementById('input-name').value = user.hoTen;
+            document.getElementById('input-email').value = user.email;
+            document.getElementById('input-phone').value = user.soDienThoai || user.SoDienThoai || '';
+
+            // Đổ Avatar
+            document.getElementById('header-avatar').src = avatarUrl;
+            document.getElementById('mobile-avatar').src = avatarUrl;
+            document.getElementById('sidebar-avatar').src = avatarUrl;
+            document.getElementById('form-avatar').src = avatarUrl;
+        }
+        // Chuyển Tab
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
 
-            // 3. Reset style tất cả các nút menu
-            const menuItems = document.querySelectorAll('.menu-item');
-            menuItems.forEach(item => {
-                // Xóa style của nút active
+            document.querySelectorAll('.menu-item').forEach(item => {
                 item.classList.remove('text-blue-700', 'bg-blue-50');
-                // Thêm style của nút bình thường
                 item.classList.add('text-gray-600', 'hover:bg-gray-50', 'hover:text-blue-600');
             });
-
-            // 4. Áp dụng style cho nút đang được chọn
             btnElement.classList.remove('text-gray-600', 'hover:bg-gray-50', 'hover:text-blue-600');
             btnElement.classList.add('text-blue-700', 'bg-blue-50');
-        }
 
-        // Xử lý hiển thị thông báo Toast
-        function showToast(message, event) {
-            if(event) event.preventDefault(); // Chặn load lại trang nếu submit form
-            
+            // Gọi API load đơn hàng khi bấm vào tab Lịch sử
+            if (tabId === 'orders') {
+                loadOrderHistory();
+            }
+            if (tabId === 'address') { loadProfileAddresses(); }
+        }
+        // Toast
+        function showToast(message) {
             const toast = document.getElementById('toast');
             document.getElementById('toast-message').innerText = message;
-            
             toast.classList.remove('translate-x-full');
-            
-            setTimeout(() => {
-                toast.classList.add('translate-x-full');
-            }, 3000);
+            setTimeout(() => toast.classList.add('translate-x-full'), 3000);
         }
-
-        // Xử lý Đăng xuất (Mô phỏng)
+        // Đăng xuất
         function handleLogout() {
-            if(confirm("Bạn có chắc chắn muốn đăng xuất?")) {
-                showToast("Đang đăng xuất...");
-                setTimeout(() => {
-                    // Mô phỏng việc chuyển hướng về trang chủ sau khi đăng xuất
-                    document.body.innerHTML = '<div class="min-h-screen flex items-center justify-center bg-gray-50 text-gray-500 flex-col gap-4"><svg class="animate-spin h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><p>Đang chuyển hướng...</p></div>';
-                }, 1000);
+            if (confirm("Bạn có chắc chắn muốn đăng xuất?")) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('userInfo');
+                window.location.href = 'auth.html';
             }
         }
+
+        // Trạng thái đơn hàng
+        function getStatusInfo(status) {
+            const map = {
+                'ChoXacNhan': { text: 'Chờ xác nhận', color: 'text-orange-600 bg-orange-100', icon: 'clock' },
+                'DaXacNhan': { text: 'Đã xác nhận', color: 'text-blue-600 bg-blue-100', icon: 'check-circle' },
+                'DangGiao': { text: 'Đang giao hàng', color: 'text-indigo-600 bg-indigo-100', icon: 'truck' },
+                'DaGiao': { text: 'Đã giao hàng', color: 'text-green-600 bg-green-100', icon: 'check-circle-2' },
+                'DaHuy': { text: 'Đã hủy', color: 'text-red-600 bg-red-100', icon: 'x-circle' }
+            };
+            return map[status] || { text: status, color: 'text-gray-600 bg-gray-100', icon: 'info' };
+        }
+
+        // LOAD LỊCH SỬ ĐƠN HÀNG TỪ API
+        async function loadOrderHistory() {
+            const token = localStorage.getItem('token');
+            const container = document.getElementById('order-list-container');
+            container.innerHTML = '<p class="text-center text-gray-500 py-10"><i data-lucide="loader-2" class="w-8 h-8 animate-spin mx-auto mb-2 text-blue-600"></i> Đang tải dữ liệu...</p>';
+            lucide.createIcons();
+
+            try {
+                const response = await fetch('http://localhost:3000/api/orders', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const result = await response.json();
+
+                if (response.ok && result.data.length > 0) {
+                    container.innerHTML = '';
+
+                    result.data.forEach(order => {
+                        const status = getStatusInfo(order.TrangThaiDonHang);
+                        const date = new Date(order.NgayDat).toLocaleDateString('vi-VN');
+
+                        let orderHtml = `
+                            <div class="border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
+                                <div class="bg-gray-50 px-5 py-3 border-b border-gray-200 flex justify-between items-center flex-wrap gap-2">
+                                    <div class="text-sm">
+                                        <span class="font-bold text-gray-900">Mã đơn: #${order.MaTraCuu}</span>
+                                        <span class="text-gray-400 mx-2">|</span>
+                                        <span class="text-gray-500">Ngày đặt: ${date}</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5 ${status.color} px-3 py-1 rounded-full text-xs font-bold uppercase">
+                                        <i data-lucide="${status.icon}" class="w-3.5 h-3.5"></i> ${status.text}
+                                    </div>
+                                </div>
+                                <div class="p-5 flex flex-col gap-4">
+                        `;
+
+                        order.sanPham.forEach(item => {
+                            const img = item.HinhAnhChinh.startsWith('http') ? item.HinhAnhChinh : `../assets/images/${item.HinhAnhChinh}`;
+                            orderHtml += `
+                                <div class="flex gap-4 border-b border-gray-50 pb-4 last:border-0 last:pb-0">
+                                    <div class="w-16 h-16 bg-gray-100 rounded border border-gray-200 p-1 flex-shrink-0">
+                                        <img src="${img}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100'" class="w-full h-full object-contain mix-blend-multiply">
+                                    </div>
+                                    <div class="flex-grow">
+                                        <h4 class="font-bold text-gray-800 text-sm line-clamp-1">${item.TenSanPham}</h4>
+                                        <p class="text-xs text-gray-500 mt-1">Phân loại: Size ${item.KichCo}</p>
+                                        <div class="flex justify-between items-center mt-2">
+                                            <span class="text-sm text-gray-600 font-medium">x${item.SoLuong}</span>
+                                            <span class="text-sm font-bold text-gray-900">${formatMoney(item.GiaLucMua)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+
+                        orderHtml += `
+                                </div>
+                                <div class="bg-gray-50 px-5 py-4 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-4">
+                                    <div class="text-sm">
+                                        <span class="text-gray-500">Tổng thanh toán: </span>
+                                        <span class="text-lg font-black text-blue-700">${formatMoney(order.TongTien)}</span>
+                                    </div>
+                                    <div class="flex gap-3 w-full sm:w-auto">
+                                        <button class="flex-1 sm:flex-none border border-gray-300 bg-white text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition">Xem chi tiết</button>
+                                        ${order.TrangThaiDonHang === 'ChoXacNhan' ? '<button class="flex-1 sm:flex-none text-red-500 text-sm font-medium hover:bg-red-50 px-4 py-2 rounded-lg transition">Hủy đơn</button>' : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        container.innerHTML += orderHtml;
+                    });
+                    lucide.createIcons();
+                } else {
+                    container.innerHTML = `
+                        <div class="text-center py-16">
+                            <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-400">
+                                <i data-lucide="package" class="w-10 h-10"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-800 mb-2">Bạn chưa có đơn hàng nào</h3>
+                            <a href="Home.html" class="inline-block mt-2 bg-blue-600 text-white font-bold py-2.5 px-6 rounded-lg hover:bg-blue-700 transition">Bắt đầu mua sắm</a>
+                        </div>
+                    `;
+                    lucide.createIcons();
+                }
+            } catch (error) {
+                console.error("Lỗi tải lịch sử:", error);
+                container.innerHTML = '<p class="text-center text-red-500 py-10">Lỗi kết nối máy chủ!</p>';
+            }
+        }
+
+        // CẬP NHẬT THÔNG TIN HỒ SƠ LÊN SERVER
+        async function handleUpdateProfile(event) {
+            event.preventDefault(); // Ngăn trình duyệt tự tải lại trang khi bấm Submit form
+
+            // 1. Lấy dữ liệu mới từ ô nhập
+            const newName = document.getElementById('input-name').value;
+            const newPhone = document.getElementById('input-phone').value;
+            const token = localStorage.getItem('token');
+
+            try {
+                // 2. Gửi yêu cầu PUT lên Backend
+                const response = await fetch('http://localhost:3000/api/user/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        hoTen: newName,
+                        soDienThoai: newPhone
+                    })
+                });
+
+                if (response.ok) {
+                    // 3. Nếu thành công -> Đổi tên trên giao diện lập tức
+                    document.getElementById('header-name').innerText = newName;
+                    document.getElementById('sidebar-name').innerText = newName;
+                    document.getElementById('mobile-name').innerText = newName;
+
+                    // 4. Cập nhật lại Avatar (vì avatar tạo dựa trên chữ cái đầu của Tên)
+                    const newAvatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(newName)}&background=2563eb&color=fff`;
+                    document.getElementById('header-avatar').src = newAvatarUrl;
+                    document.getElementById('sidebar-avatar').src = newAvatarUrl;
+                    document.getElementById('mobile-avatar').src = newAvatarUrl;
+                    document.getElementById('form-avatar').src = newAvatarUrl;
+
+                    // 5. Cập nhật lại bộ nhớ tạm (localStorage) để lần sau load trang web không bị mất tên mới
+                    let user = JSON.parse(localStorage.getItem('userInfo'));
+                    user.hoTen = newName;
+                    user.soDienThoai = newPhone;
+                    user.SoDienThoai = newPhone;
+                    localStorage.setItem('userInfo', JSON.stringify(user));
+
+                    showToast('Đã lưu thông tin hồ sơ thành công!');
+                } else {
+                    const result = await response.json();
+                    showToast(result.message || 'Có lỗi xảy ra', 'error');
+                }
+            } catch (error) {
+                console.error("Lỗi:", error);
+                showToast('Lỗi kết nối đến máy chủ', 'error');
+            }
+        }
+
+
+        // HÀM LOAD SỔ ĐỊA CHỈ TỪ BACKEND
+        async function loadProfileAddresses() {
+            const token = localStorage.getItem('token');
+            const container = document.getElementById('profile-address-list');
+
+            try {
+                const response = await fetch('http://localhost:3000/api/user/addresses', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const result = await response.json();
+
+                if (response.ok && result.data.length > 0) {
+                    container.innerHTML = ''; // Xóa chữ loading
+
+                    result.data.forEach(addr => {
+                        const isDefault = addr.LaMacDinh === 1;
+
+                        container.innerHTML += `
+                            <div class="border ${isDefault ? 'border-blue-400 bg-blue-50/20' : 'border-gray-200 hover:border-gray-300'} rounded-xl p-5 relative transition">
+                                ${isDefault ? '<div class="absolute top-5 right-5"><span class="bg-blue-100 text-blue-600 text-xs font-bold px-2 py-1 rounded">Mặc định</span></div>' :
+                                `<div class="absolute top-5 right-5"><button onclick="setDefaultAddress(${addr.MaDiaChi})" class="text-blue-600 text-sm font-medium hover:underline">Thiết lập mặc định</button></div>`}
+                                
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="font-bold text-gray-900 text-lg">${addr.TenNguoiNhan}</span>
+                                    <span class="text-gray-300">|</span>
+                                    <span class="text-gray-600">${addr.SoDienThoaiNhan}</span>
+                                </div>
+                                <div class="text-gray-600 text-sm leading-relaxed max-w-[80%]">
+                                    <i data-lucide="map-pin" class="w-4 h-4 inline-block mr-1 text-gray-400"></i> ${addr.DiaChiChiTiet}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    lucide.createIcons();
+                } else {
+                    container.innerHTML = '<div class="text-center p-8 border-2 border-dashed border-gray-200 rounded-xl text-gray-500">Sổ địa chỉ của bạn đang trống. Hãy thêm địa chỉ mới nhé!</div>';
+                }
+            } catch (error) {
+                console.error("Lỗi:", error);
+            }
+        }
+
+        // HÀM MỞ/ĐÓNG MODAL THÊM ĐỊA CHỈ
+        function openProfileAddressModal() {
+            document.getElementById('modal-add-address').classList.remove('hidden');
+            setTimeout(() => { document.getElementById('modal-add-content').classList.remove('scale-95'); document.getElementById('modal-add-content').classList.add('scale-100'); }, 10);
+        }
+        function closeProfileAddressModal() {
+            document.getElementById('modal-add-content').classList.remove('scale-100'); document.getElementById('modal-add-content').classList.add('scale-95');
+            setTimeout(() => { document.getElementById('modal-add-address').classList.add('hidden'); }, 200);
+        }
+
+        //  API TỈNH/THÀNH VÀ LƯU ĐỊA CHỈ (Logic giống y hệt trang Checkout)
+        const pSelect = document.getElementById('m-prov');
+        const dSelect = document.getElementById('m-dist');
+        const wSelect = document.getElementById('m-ward');
+
+        fetch('https://provinces.open-api.vn/api/p/').then(res => res.json()).then(data => data.forEach(p => pSelect.add(new Option(p.name, p.name))));
+
+        pSelect.addEventListener('change', function () {
+            dSelect.innerHTML = '<option value="">Quận/Huyện</option>'; wSelect.innerHTML = '<option value="">Phường/Xã</option>'; wSelect.disabled = true;
+            if (this.value) {
+                dSelect.disabled = false;
+                fetch('https://provinces.open-api.vn/api/p/').then(res => res.json()).then(data => fetch(`https://provinces.open-api.vn/api/p/${data.find(p => p.name === this.value).code}?depth=2`))
+                    .then(res => res.json()).then(data => data.districts.forEach(d => dSelect.add(new Option(d.name, d.name))));
+            } else { dSelect.disabled = true; }
+        });
+
+        dSelect.addEventListener('change', function () {
+            wSelect.innerHTML = '<option value="">Phường/Xã</option>';
+            if (this.value) {
+                wSelect.disabled = false;
+                fetch('https://provinces.open-api.vn/api/d/').then(res => res.json()).then(data => fetch(`https://provinces.open-api.vn/api/d/${data.find(d => d.name === this.value).code}?depth=2`))
+                    .then(res => res.json()).then(data => data.wards.forEach(w => wSelect.add(new Option(w.name, w.name))));
+            } else { wSelect.disabled = true; }
+        });
+
+        //  LƯU ĐỊA CHỈ MỚI
+        async function saveProfileAddress(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-save-address');
+            btn.innerHTML = 'Đang lưu...'; btn.disabled = true;
+
+            const name = document.getElementById('m-name').value;
+            const phone = document.getElementById('m-phone').value;
+            const detail = document.getElementById('m-detail').value;
+            const fullAddress = `${detail}, ${wSelect.value}, ${dSelect.value}, ${pSelect.value}`;
+
+            try {
+                const response = await fetch('http://localhost:3000/api/user/addresses', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+                    body: JSON.stringify({ tenNguoiNhan: name, soDienThoai: phone, diaChiChiTiet: fullAddress })
+                });
+
+                if (response.ok) {
+                    showToast("Thêm địa chỉ thành công!");
+                    closeProfileAddressModal();
+                    document.getElementById('form-new-address').reset(); // Xóa form
+                    loadProfileAddresses(); // Tải lại danh sách
+                }
+            } catch (error) { showToast("Lỗi kết nối", "error"); }
+            btn.innerHTML = 'Lưu địa chỉ'; btn.disabled = false;
+        }
+
+        // 5. SET ĐỊA CHỈ MẶC ĐỊNH
+        async function setDefaultAddress(maDiaChi) {
+            try {
+                const response = await fetch(`http://localhost:3000/api/user/addresses/${maDiaChi}/default`, {
+                    method: 'PATCH',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                if (response.ok) {
+                    showToast("Đã đặt làm mặc định!");
+                    loadProfileAddresses(); // Tải lại danh sách để cập nhật giao diện
+                }
+            } catch (error) { showToast("Lỗi kết nối", "error"); }
+        }
+
+        // Chạy khi trang load xong
+        document.addEventListener('DOMContentLoaded', initUserProfile);
     </script>
 </body>
+
 </html>

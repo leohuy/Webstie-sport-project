@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllProducts, getBestSellers } from '../controller/productController.js';
+import { getAllProducts, getBestSellers, getProductById } from '../controller/productController.js';
 
 const router = express.Router();
 
@@ -9,4 +9,6 @@ router.get('/', getAllProducts);
 // Lấy sản phẩm bán chạy
 router.get('/best-sellers', getBestSellers);
 
+// lay chi tiet san pham theo id
+router.get('/:id',getProductById);
 export default router;

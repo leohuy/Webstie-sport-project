@@ -40,7 +40,7 @@ export const addToCart = async (req, res) => {
             );
         }
 
-        res.status(200).json({ message: 'Đã thêm sản phẩm vào giỏ hàng!' });
+        res.status(200).json({ message: 'Đã thêm vào giỏ hàng!' });
 
     } catch (error) {
         console.error(error);

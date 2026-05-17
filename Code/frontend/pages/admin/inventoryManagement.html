@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Tồn Kho - Admin SportFlex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 font-sans h-screen flex overflow-hidden">
+
+    <aside
+        class="w-64 bg-slate-900 text-white flex flex-col transition-all duration-300 z-20 flex-shrink-0 hidden lg:flex shadow-2xl">
+        <div class="h-16 flex items-center px-6 border-b border-gray-800 bg-slate-950">
+            <a href="dashboardAdmin.html" class="flex items-center gap-2 text-blue-500 hover:text-blue-400 transition">
+                <i data-lucide="activity" class="w-8 h-8"></i>
+                <span class="text-xl font-black italic tracking-wider text-white">SPORTFLEX</span>
+            </a>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto py-6 px-3 space-y-1 custom-scrollbar" id="admin-menu-container">
+            <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 px-3 mt-2">Giao diện Admin
+            </div>
+            <a href="dashboardAdmin.html"
+                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium">
+                <i data-lucide="line-chart" class="w-5 h-5"></i> Thống kê Doanh thu
+            </a>
+
+            <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-6 mb-2 px-3">Quản Lý Sản Phẩm
+            </div>
+            <a href="uploadProduct.html"
+                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium">
+                <i data-lucide="upload-cloud" class="w-5 h-5 text-green-400"></i> Đăng tải Sản phẩm
+            </a>
+            <a href="productListAdmin.html"
+                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium">
+                <i data-lucide="package-search" class="w-5 h-5"></i> Danh sách Sản phẩm
+            </a>
+
+            <a href="QLTonKho.html"
+                class="menu-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium"
+                data-page="QLTonKho.html">
+                <i data-lucide="box" class="w-5 h-5"></i> Quản lý Tồn kho
+            </a>
+
+            <div class="relative group cursor-pointer">
+                <div
+                    class="flex items-center justify-between px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="layers" class="w-5 h-5 text-orange-400"></i> Quản lý Cấu trúc
+                    </div>
+                    <i data-lucide="chevron-down"
+                        class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180"></i>
+                </div>
+                <div class="hidden group-hover:block pl-11 pr-3 py-1 space-y-1 pb-2 transition-all">
+                    <a href="categoryManagement.html"
+                        class="block py-2 px-3 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition">Danh
+                        mục SP</a>
+                    <a href="brandManagement.html"
+                        class="block py-2 px-3 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition">Thương
+                        hiệu</a>
+                </div>
+            </div>
+
+            <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-6 mb-2 px-3">Bán Hàng</div>
+            <a href="orderManagement.html"
+                class="menu-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium"
+                data-page="orderManagement.html">
+                <i data-lucide="shopping-cart" class="w-5 h-5"></i> Quản lý Đơn hàng
+            </a>
+
+            <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-6 mb-2 px-3">Quản Lý Người
+                Dùng</div>
+            <a href="userManagement.html"
+                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium">
+                <i data-lucide="users" class="w-5 h-5 text-purple-400"></i> Tài khoản Người dùng
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-gray-800 bg-slate-950">
+            <div class="flex items-center gap-3 mb-4">
+                <img id="sidebar-avatar"
+                    src="https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff&bold=true"
+                    class="w-10 h-10 rounded-xl border border-gray-700 shadow-sm">
+                <div class="overflow-hidden">
+                    <p id="sidebar-name" class="text-sm font-bold text-white truncate">Đang tải...</p>
+                    <p id="sidebar-role" class="text-[11px] font-bold text-blue-400 uppercase tracking-wider truncate">
+                        Phân quyền</p>
+                </div>
+            </div>
+            <button onclick="logoutAdmin()"
+                class="w-full flex items-center justify-center gap-2 px-3 py-2 bg-gray-800 hover:bg-red-600 hover:text-white text-gray-300 rounded-lg transition text-sm font-semibold">
+                <i data-lucide="power" class="w-4 h-4"></i> Đăng xuất
+            </button>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
+        <header
+            class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10 flex-shrink-0 shadow-sm">
+            <div class="flex items-center gap-4">
+                <button class="lg:hidden text-gray-500 hover:text-blue-600"><i data-lucide="menu"
+                        class="w-6 h-6"></i></button>
+                <h1 class="text-xl font-bold text-gray-800 hidden sm:block">Quản lý Tồn kho Sản phẩm</h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <button
+                    class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
+                    <i data-lucide="download" class="w-4 h-4"></i> Xuất file kiểm kho
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-slate-50/50">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600"><i
+                            data-lucide="package" class="w-6 h-6"></i></div>
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase">Tổng mặt hàng</p>
+                        <h3 id="stat-total-items" class="text-xl font-black text-gray-800">0</h3>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center text-green-600"><i
+                            data-lucide="layers" class="w-6 h-6"></i></div>
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase">Tổng tồn kho</p>
+                        <h3 id="stat-total-stock" class="text-xl font-black text-gray-800">0</h3>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600"><i
+                            data-lucide="alert-triangle" class="w-6 h-6"></i></div>
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase">Sắp hết hàng (< 10)</p>
+                                <h3 id="stat-low-stock" class="text-xl font-black text-orange-600">0</h3>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center text-red-600"><i
+                            data-lucide="x-circle" class="w-6 h-6"></i></div>
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase">Đã hết hàng (0)</p>
+                        <h3 id="stat-out-stock" class="text-xl font-black text-red-600">0</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div
+                    class="p-6 border-b border-gray-100 flex flex-col xl:flex-row justify-between items-center gap-4 bg-white">
+                    <div class="flex items-center gap-3 w-full xl:w-auto">
+                        <button onclick="loadInventory()"
+                            class="bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
+                            <i data-lucide="refresh-cw" class="w-4 h-4"></i> Tải lại kho
+                        </button>
+                    </div>
+                    <div class="relative w-full xl:w-96">
+                        <i data-lucide="search"
+                            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4"></i>
+                        <input type="text" id="search-input" onkeyup="if(event.key==='Enter') renderTable()"
+                            placeholder="Tìm theo Mã SP, Tên sản phẩm..."
+                            class="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-500 transition-all">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead
+                            class="bg-gray-50/50 text-xs font-black text-gray-500 uppercase tracking-widest border-b border-gray-100">
+                            <tr>
+                                <th class="px-6 py-4 w-10"></th>
+                                <th class="px-6 py-4">Mã SP</th>
+                                <th class="px-6 py-4">Sản phẩm</th>
+                                <th class="px-6 py-4 text-center">Danh mục</th>
+                                <th class="px-6 py-4 text-center">Tổng tồn kho</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-tbody" class="divide-y divide-gray-100">
+                            <tr>
+                                <td colspan="5" class="p-10 text-center"><i data-lucide="loader-2"
+                                        class="w-8 h-8 animate-spin text-blue-500 mx-auto mb-2"></i>
+                                    <p class="text-gray-500">Đang tải dữ liệu kho...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="mt-10 text-center text-[11px] font-black text-gray-400 uppercase tracking-[0.2em]">
+                &copy; 2026 SportFlex Management System. Designed for Team 10.
+            </div>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function formatMoney(amount) {
+            return parseInt(amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " ₫";
+        }
+
+        let inventoryData = [];
+
+        async function loadInventory() {
+            const tbody = document.getElementById('inventory-tbody');
+            const token = localStorage.getItem('token');
+            if (!token) { alert("Vui lòng đăng nhập!"); window.location.href = "index.html"; return; }
+
+            tbody.innerHTML = '<tr><td colspan="5" class="p-10 text-center text-gray-500"><i data-lucide="loader-2" class="w-8 h-8 animate-spin text-blue-600 mx-auto mb-2"></i>Đang tải dữ liệu...</td></tr>';
+            lucide.createIcons();
+
+            try {
+                const response = await fetch('http://localhost:3000/api/admin/inventory', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const result = await response.json();
+
+                if (response.ok) {
+                    inventoryData = result.data;
+                    updateStatistics();
+                    renderTable();
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="5" class="p-10 text-center text-red-500">${result.message}</td></tr>`;
+                }
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-10 text-center text-red-500">Lỗi kết nối máy chủ!</td></tr>`;
+            }
+        }
+
+        function updateStatistics() {
+            let totalItems = inventoryData.length;
+            let totalStock = 0; let lowStockCount = 0; let outOfStockCount = 0;
+
+            inventoryData.forEach(product => {
+                totalStock += product.TongTonKho;
+                product.BienThe.forEach(variant => {
+                    const qty = variant.SoLuongTon || 0;
+                    if (qty === 0) outOfStockCount++;
+                    else if (qty < 10) lowStockCount++;
+                });
+            });
+
+            document.getElementById('stat-total-items').innerText = totalItems;
+            document.getElementById('stat-total-stock').innerText = totalStock;
+            document.getElementById('stat-low-stock').innerText = lowStockCount;
+            document.getElementById('stat-out-stock').innerText = outOfStockCount;
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('inventory-tbody');
+            const keyword = document.getElementById('search-input').value.toLowerCase();
+
+            const filteredData = inventoryData.filter(p =>
+                p.TenSanPham.toLowerCase().includes(keyword) || p.MaSanPham.toString().includes(keyword)
+            );
+
+            tbody.innerHTML = '';
+            if (filteredData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="p-10 text-center text-gray-500">Không tìm thấy sản phẩm nào!</td></tr>';
+                return;
+            }
+
+            filteredData.forEach(product => {
+                const imgUrl = product.HinhAnhChinh.startsWith('http') ? product.HinhAnhChinh : `../assets/images/${product.HinhAnhChinh}`;
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-blue-50/30 cursor-pointer border-b border-gray-100 transition-colors" onclick="toggleVariants(${product.MaSanPham})">
+                        <td class="px-6 py-4 text-center">
+                            <div id="icon-wrap-${product.MaSanPham}" class="transition-transform duration-300">
+                                <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400"></i>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 font-bold text-gray-900">#SP${product.MaSanPham}</td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <img src="${imgUrl}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100'" class="w-12 h-12 object-contain rounded-lg bg-gray-50 border border-gray-200 p-1">
+                                <div>
+                                    <p class="font-bold text-gray-800">${product.TenSanPham}</p>
+                                    <p class="text-xs text-blue-600 font-bold">${product.TenThuongHieu || 'Không có'}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-center text-gray-500 font-medium">${product.TenDanhMuc || 'Khác'}</td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-black">${product.TongTonKho}</span>
+                        </td>
+                    </tr>
+                `;
+
+                let variantRows = '';
+                if (product.BienThe && product.BienThe.length > 0) {
+                    product.BienThe.forEach(v => {
+                        const qty = v.SoLuongTon || 0;
+                        let statusBadge = '';
+                        if (qty === 0) statusBadge = `<span class="bg-red-100 text-red-700 text-[10px] px-2 py-0.5 rounded font-black ml-2 uppercase">Hết hàng</span>`;
+                        else if (qty < 10) statusBadge = `<span class="bg-orange-100 text-orange-700 text-[10px] px-2 py-0.5 rounded font-black ml-2 uppercase">Sắp hết</span>`;
+
+                        variantRows += `
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="py-3 px-4 text-gray-500 font-mono text-xs">SKU-${v.MaBienThe}</td>
+                                <td class="py-3 font-bold text-gray-800">Size ${v.KichCo}</td>
+                                <td class="py-3 font-bold ${qty === 0 ? 'text-red-600' : (qty < 10 ? 'text-orange-600' : 'text-green-600')} flex items-center">
+                                    ${qty} ${statusBadge}
+                                </td>
+                                <td class="py-3 text-gray-600 font-medium">${formatMoney(v.GiaBan)}</td>
+                                <td class="py-3 text-right pr-4">
+                                    <button onclick="promptUpdateStock(${v.MaBienThe}, ${qty})" class="text-blue-600 hover:text-blue-800 font-bold text-sm flex items-center gap-1 ml-auto">
+                                        <i data-lucide="edit-3" class="w-4 h-4"></i> Cập nhật kho
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    variantRows = '<tr><td colspan="5" class="py-4 text-center text-gray-400 italic">Chưa có thông tin kích cỡ.</td></tr>';
+                }
+
+                tbody.innerHTML += `
+                    <tr id="variants-${product.MaSanPham}" class="hidden bg-gray-50/50">
+                        <td colspan="5" class="px-8 py-6">
+                            <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-5 relative">
+                                <p class="text-xs font-black text-blue-600 mb-4 uppercase tracking-widest flex items-center gap-2">
+                                    <i data-lucide="list-tree" class="w-4 h-4"></i> Phân loại kích cỡ
+                                </p>
+                                <table class="w-full text-sm text-left">
+                                    <thead class="text-gray-400 text-xs border-b border-gray-100">
+                                        <tr>
+                                            <th class="py-2 font-bold px-4">Mã Biến Thể</th>
+                                            <th class="py-2 font-bold">Kích Cỡ</th>
+                                            <th class="py-2 font-bold">Tồn Kho</th>
+                                            <th class="py-2 font-bold">Giá Bán</th>
+                                            <th class="py-2 font-bold text-right pr-4">Thao tác</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-50">
+                                        ${variantRows}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        window.toggleVariants = function (productId) {
+            const row = document.getElementById(`variants-${productId}`);
+            const iconWrap = document.getElementById(`icon-wrap-${productId}`);
+
+            if (row.classList.contains('hidden')) {
+                row.classList.remove('hidden');
+                iconWrap.classList.add('rotate-180', 'text-blue-600');
+            } else {
+                row.classList.add('hidden');
+                iconWrap.classList.remove('rotate-180', 'text-blue-600');
+            }
+        };
+
+        window.promptUpdateStock = async function (maBienThe, currentQty) {
+            event.stopPropagation();
+            const input = prompt(`Nhập SỐ LƯỢNG TỒN KHO MỚI cho phân loại này:`, currentQty);
+            if (input === null) return;
+
+            const newQty = parseInt(input.trim());
+            if (isNaN(newQty) || newQty < 0) {
+                alert("Số lượng không hợp lệ!");
+                return;
+            }
+
+            if (newQty === currentQty) return;
+
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch(`http://localhost:3000/api/admin/inventory/${maBienThe}/stock`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ soLuongMoi: newQty })
+                });
+
+                if (response.ok) {
+                    alert("Cập nhật số lượng kho thành công!");
+                    loadInventory();
+                } else {
+                    const errorMsg = await response.json();
+                    alert(errorMsg.message || "Đã xảy ra lỗi khi cập nhật!");
+                }
+            } catch (error) {
+                alert("Lỗi kết nối máy chủ!");
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', loadInventory);
+    </script>
+</body>
+
+</html>

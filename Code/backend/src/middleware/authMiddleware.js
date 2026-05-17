@@ -19,3 +19,20 @@ export const verifyToken = (req, res, next) => {
     }
 };
 
+// Middleware kiểm tra xem người dùng có phải là Admin hoặc Staff không
+export const isAdminOrStaff = (req, res, next) => {
+    // req.user đã được hàm verifyToken bổ sung vào trước đó
+    if (!req.user) {
+        return res.status(401).json({ message: 'Không tìm thấy thông tin xác thực' });
+    }
+
+    const { vaiTro } = req.user; // Lấy VaiTro (admin/staff/customer) từ Token
+
+    // Nếu vai trò là admin hoặc staff thì cho phép đi tiếp (gọi hàm next)
+    if (vaiTro === 'admin' || vaiTro === 'staff') {
+        next();
+    } else {
+        // Nếu là khách hàng bình thường (customer) thì chặn lại ngay
+        return res.status(403).json({ message: 'Cảnh báo bảo mật: Bạn không có quyền truy cập khu vực này!' });
+    }
+};

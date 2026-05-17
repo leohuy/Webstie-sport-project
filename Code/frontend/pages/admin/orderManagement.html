@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý Đơn hàng - Admin SportFlex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 font-sans h-screen flex overflow-hidden">
+
+    <aside
+        class="w-64 bg-slate-900 text-white flex flex-col transition-all duration-300 z-20 flex-shrink-0 hidden lg:flex shadow-2xl">
+        <div class="h-16 flex items-center px-6 border-b border-gray-800 bg-slate-950">
+            <a href="dashboardAdmin.html" class="flex items-center gap-2 text-blue-500 hover:text-blue-400 transition">
+                <i data-lucide="activity" class="w-8 h-8"></i>
+                <span class="text-xl font-black italic tracking-wider text-white">SPORTFLEX</span>
+            </a>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto py-6 px-3 space-y-1 custom-scrollbar" id="admin-menu-container">
+            <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 px-3 mt-2">Giao diện Admin
+            </div>
+            <a href="dashboardAdmin.html"
+                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium">
+                <i data-lucide="line-chart" class="w-5 h-5"></i> Thống kê Doanh thu
+            </a>
+
+            <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-6 mb-2 px-3">Quản Lý Sản Phẩm
+            </div>
+            <a href="uploadProduct.html"
+                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium">
+                <i data-lucide="upload-cloud" class="w-5 h-5 text-green-400"></i> Đăng tải Sản phẩm
+            </a>
+            <a href="productListAdmin.html"
+                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium">
+                <i data-lucide="package-search" class="w-5 h-5"></i> Danh sách Sản phẩm
+            </a>
+
+            <a href="QLTonKho.html"
+                class="menu-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium"
+                data-page="QLTonKho.html">
+                <i data-lucide="box" class="w-5 h-5"></i> Quản lý Tồn kho
+            </a>
+
+            <div class="relative group cursor-pointer">
+                <div
+                    class="flex items-center justify-between px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="layers" class="w-5 h-5 text-orange-400"></i> Quản lý Cấu trúc
+                    </div>
+                    <i data-lucide="chevron-down"
+                        class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180"></i>
+                </div>
+                <div class="hidden group-hover:block pl-11 pr-3 py-1 space-y-1 pb-2 transition-all">
+                    <a href="categoryManagement.html"
+                        class="block py-2 px-3 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition">Danh
+                        mục SP</a>
+                    <a href="brandManagement.html"
+                        class="block py-2 px-3 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition">Thương
+                        hiệu</a>
+                </div>
+            </div>
+
+            <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-6 mb-2 px-3">Bán Hàng</div>
+            <a href="orderManagement.html"
+                class="menu-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium"
+                data-page="orderManagement.html">
+                <i data-lucide="shopping-cart" class="w-5 h-5"></i> Quản lý Đơn hàng
+            </a>
+
+            <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-6 mb-2 px-3">Quản Lý Người
+                Dùng</div>
+            <a href="userManagement.html"
+                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium">
+                <i data-lucide="users" class="w-5 h-5 text-purple-400"></i> Tài khoản Người dùng
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-gray-800 bg-slate-950">
+            <div class="flex items-center gap-3 mb-4">
+                <img id="sidebar-avatar"
+                    src="https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff&bold=true"
+                    class="w-10 h-10 rounded-xl border border-gray-700 shadow-sm">
+                <div class="overflow-hidden">
+                    <p id="sidebar-name" class="text-sm font-bold text-white truncate">Đang tải...</p>
+                    <p id="sidebar-role" class="text-[11px] font-bold text-blue-400 uppercase tracking-wider truncate">
+                        Phân quyền</p>
+                </div>
+            </div>
+            <button onclick="logoutAdmin()"
+                class="w-full flex items-center justify-center gap-2 px-3 py-2 bg-gray-800 hover:bg-red-600 hover:text-white text-gray-300 rounded-lg transition text-sm font-semibold">
+                <i data-lucide="power" class="w-4 h-4"></i> Đăng xuất
+            </button>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
+        <header
+            class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10 flex-shrink-0 shadow-sm">
+            <div class="flex items-center gap-4">
+                <button class="lg:hidden text-gray-500 hover:text-blue-600"><i data-lucide="menu"
+                        class="w-6 h-6"></i></button>
+                <h1 class="text-xl font-bold text-gray-800 hidden sm:block">Quản lý Đơn hàng</h1>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-slate-50/50">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600"><i
+                            data-lucide="list" class="w-6 h-6"></i></div>
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase">Tổng đơn hàng</p>
+                        <h3 id="count-total" class="text-xl font-black text-gray-800">0</h3>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600"><i
+                            data-lucide="clock" class="w-6 h-6"></i></div>
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase">Đang chờ duyệt</p>
+                        <h3 id="count-pending" class="text-xl font-black text-gray-800">0</h3>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600"><i
+                            data-lucide="truck" class="w-6 h-6"></i></div>
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase">Đang giao hàng</p>
+                        <h3 id="count-shipping" class="text-xl font-black text-gray-800">0</h3>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center text-green-600"><i
+                            data-lucide="check-circle" class="w-6 h-6"></i></div>
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase">Đã hoàn thành</p>
+                        <h3 id="count-completed" class="text-xl font-black text-gray-800">0</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div
+                    class="p-6 border-b border-gray-100 flex flex-col xl:flex-row justify-between items-center gap-4 bg-white">
+                    <div class="flex flex-wrap items-center gap-3 w-full xl:w-auto">
+                        <select id="filter-status" onchange="loadAdminOrders()"
+                            class="border border-gray-200 rounded-lg px-4 py-2 text-sm font-medium text-gray-600 focus:ring-2 focus:ring-blue-500 bg-gray-50 outline-none transition cursor-pointer">
+                            <option value="">Tất cả trạng thái</option>
+                            <option value="ChoXacNhan">Chờ xác nhận</option>
+                            <option value="DangGiao">Đang giao</option>
+                            <option value="DaGiao">Hoàn thành</option>
+                            <option value="DaHuy">Đã hủy</option>
+                        </select>
+                        <button onclick="loadAdminOrders()"
+                            class="bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
+                            <i data-lucide="refresh-cw" class="w-4 h-4"></i> Tải lại dữ liệu
+                        </button>
+                    </div>
+                    <div class="relative w-full xl:w-96">
+                        <i data-lucide="search"
+                            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4"></i>
+                        <input type="text" id="search-input" onkeyup="if(event.key==='Enter') loadAdminOrders()"
+                            placeholder="Tìm theo Mã đơn, Tên khách hàng... (Ấn Enter)"
+                            class="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-500 transition-all">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="bg-gray-50/50 text-xs font-black text-gray-500 uppercase tracking-widest">
+                            <tr>
+                                <th class="px-6 py-4">Mã Đơn</th>
+                                <th class="px-6 py-4">Khách Hàng</th>
+                                <th class="px-6 py-4 text-center">Ngày Đặt</th>
+                                <th class="px-6 py-4 text-right">Tổng Tiền</th>
+                                <th class="px-6 py-4 text-center">Trạng Thái</th>
+                                <th class="px-6 py-4 text-right">Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="order-tbody" class="divide-y divide-gray-100">
+                            <tr>
+                                <td colspan="6" class="p-10 text-center text-gray-500">
+                                    <i data-lucide="loader-2"
+                                        class="w-8 h-8 animate-spin mx-auto text-blue-600 mb-2"></i> Đang kết nối dữ
+                                    liệu máy chủ...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="p-6 border-t border-gray-100 flex justify-between items-center bg-white rounded-b-2xl">
+                    <p id="total-text" class="text-xs font-bold text-gray-400 uppercase tracking-widest">Hiển thị 0 đơn
+                        hàng</p>
+                </div>
+            </div>
+
+            <div class="mt-10 text-center text-[11px] font-black text-gray-400 uppercase tracking-[0.2em]">
+                &copy; 2026 SportFlex Management System. Designed for Team 10.
+            </div>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // 1. Hàm định dạng tiền tệ Việt Nam (1.000.000 ₫)
+        function formatMoney(amount) {
+            return parseInt(amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " ₫";
+        }
+
+        // 2. Hàm sinh màu sắc Badge trạng thái chuẩn chỉnh như thiết kế của Huy/Đạt
+        function renderStatusBadge(status) {
+            if (status === 'ChoXacNhan') {
+                return `<span class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-[10px] font-black uppercase border border-orange-200">Chờ duyệt</span>`;
+            } else if (status === 'DangGiao') {
+                return `<span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-[10px] font-black uppercase border border-indigo-200">Đang giao</span>`;
+            } else if (status === 'DaGiao') {
+                return `<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-black uppercase border border-green-200">Hoàn thành</span>`;
+            } else if (status === 'DaHuy') {
+                return `<span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-[10px] font-black uppercase border border-red-200">Đã hủy</span>`;
+            }
+            return `<span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-[10px] font-black uppercase">Không rõ</span>`;
+        }
+
+        // 3. HÀM CHÍNH: Tải dữ liệu thật từ Backend Node.js lên bảng
+        async function loadAdminOrders() {
+            const tbody = document.getElementById('order-tbody');
+            const statusFilter = document.getElementById('filter-status').value;
+            const searchKeyword = document.getElementById('search-input').value.trim();
+            const token = localStorage.getItem('token'); // Lấy mã token bảo mật của Admin/Staff
+
+            // Giao diện hiệu ứng chờ xoay tròn sinh động
+            tbody.innerHTML = '<tr><td colspan="6" class="p-10 text-center text-gray-500"><i class="ph ph-spinner-gap animate-spin text-3xl mx-auto text-blue-600 mb-2"></i>Đang tải dữ liệu thực tế...</td></tr>';
+
+            try {
+                // Gọi API lấy đơn hàng kèm bộ lọc qua URL
+                const response = await fetch(`http://localhost:3000/api/admin/orders?status=${statusFilter}&search=${encodeURIComponent(searchKeyword)}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const result = await response.json();
+
+                if (response.ok && result.data.length > 0) {
+                    tbody.innerHTML = ''; // Xóa dòng chữ chờ
+
+                    // Tạo các biến đếm để cập nhật lên các thẻ Thống kê trên đầu
+                    let total = result.data.length;
+                    let pending = result.data.filter(d => d.TrangThai === 'ChoXacNhan').length;
+                    let shipping = result.data.filter(d => d.TrangThai === 'DangGiao').length;
+                    let completed = result.data.filter(d => d.TrangThai === 'DaGiao').length;
+
+                    // Cập nhật số liệu động lên màn hình
+                    document.getElementById('count-total').innerText = total;
+                    document.getElementById('count-pending').innerText = pending;
+                    document.getElementById('count-shipping').innerText = shipping;
+                    document.getElementById('count-completed').innerText = completed;
+                    document.getElementById('total-text').innerText = `Hiển thị ${total} đơn hàng hệ thống`;
+
+                    // Lặp qua danh sách đơn hàng đổ dòng HTML vào Table
+                    result.data.forEach(order => {
+                        const orderDate = new Date(order.NgayDat).toLocaleDateString('vi-VN');
+
+                        // Xử lý nút thao tác thông minh dựa trên trạng thái đơn hàng hiện tại
+                        let actionButton = '';
+                        if (order.TrangThai === 'ChoXacNhan') {
+                            actionButton = `<button onclick="updateStatus(${order.MaDonHang}, 'DangGiao')" class="text-blue-600 hover:text-blue-800 transition" title="Xác nhận & Giao hàng"><i data-lucide="check-circle" class="w-5 h-5 inline"></i> Duyệt đơn</button>`;
+                        } else if (order.TrangThai === 'DangGiao') {
+                            actionButton = `<button onclick="updateStatus(${order.MaDonHang}, 'DaGiao')" class="text-green-600 hover:text-green-800 transition" title="Xác nhận đã giao hoàn tất"><i data-lucide="truck" class="w-5 h-5 inline"></i> Giao xong</button>`;
+                        } else {
+                            actionButton = `<span class="text-xs text-gray-400 italic">Đã đóng luồng</span>`;
+                        }
+
+                        tbody.innerHTML += `
+                            <tr class="hover:bg-blue-50/30 transition-colors">
+                                <td class="px-6 py-5 font-bold text-gray-900">#SFX${order.MaDonHang.toString().padStart(4, '0')}</td>
+                                <td class="px-6 py-5">
+                                    <div class="font-bold text-gray-800">${order.HoTen || 'Ẩn danh'}</div>
+                                    <div class="text-xs text-gray-400">${order.SoDienThoai || 'Chưa cập nhật'}</div>
+                                </td>
+                                <td class="px-6 py-5 text-center text-gray-500">${orderDate}</td>
+                                <td class="px-6 py-5 text-right font-black text-blue-600">${formatMoney(order.TongTien)}</td>
+                                <td class="px-6 py-5 text-center">${renderStatusBadge(order.TrangThai)}</td>
+                                <td class="px-6 py-5 text-right space-x-2 font-semibold text-xs">
+                                    ${actionButton}
+                                </td>
+                            </tr>
+                        `;
+                    });
+                    lucide.createIcons(); // Vẽ lại các biểu tượng icon Lucide
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="6" class="p-10 text-center text-gray-500">Hệ thống hiện tại trống hoặc không tìm thấy đơn hàng phù hợp!</td></tr>';
+                }
+            } catch (error) {
+                console.error("Lỗi:", error);
+                tbody.innerHTML = '<tr><td colspan="6" class="p-10 text-center text-red-500">Lỗi kết nối nghiêm trọng đến máy chủ Backend!</td></tr>';
+            }
+        }
+
+        // 4. HÀM DUYỆT / ĐỔI TRẠNG THÁI ĐƠN HÀNG TRỰC TIẾP XUỐNG CSDL
+        async function updateStatus(orderId, newStatus) {
+            // Hiển thị hộp thoại hỏi ý kiến xác nhận của nhân viên trước khi thao tác
+            const confirmAction = confirm(`Bạn có chắc chắn muốn cập nhật đơn hàng #${orderId} này không?`);
+            if (!confirmAction) return;
+
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch(`http://localhost:3000/api/admin/orders/${orderId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ trangThaiMoi: newStatus }) // Gửi trạng thái mới lên
+                });
+
+                if (response.ok) {
+                    alert("Cập nhật trạng thái đơn hàng thành công!");
+                    loadAdminOrders(); // Tải lại bảng ngay lập tức để cập nhật số liệu mới nhất
+                } else {
+                    const errorResult = await response.json();
+                    alert(errorResult.message || "Lỗi xử lý hệ thống");
+                }
+            } catch (error) {
+                alert("Lỗi đường truyền internet sập kết nối máy chủ!");
+            }
+        }
+
+        // Kích hoạt chạy tải dữ liệu ngay khi vừa mở trang quản trị
+        document.addEventListener('DOMContentLoaded', loadAdminOrders);
+    </script>
+</body>
+
+</html>

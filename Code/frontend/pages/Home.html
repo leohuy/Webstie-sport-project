@@ -9,9 +9,16 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- thu vien Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-white text-gray-800">
 
+<body class="bg-white text-gray-800">
+    <!--toast thong bao-->
+    <div id="toast"
+        class="fixed top-4 right-0 text-white px-6 py-3 rounded-lg shadow-2xl transform transition-transform duration-300 translate-x-full z-50 flex items-center gap-3">
+        <i id="toast-icon" data-lucide="info" class="w-5 h-5 text-white"></i>
+        <span id="toast-message" class="font-medium text-sm"></span>
+    </div>
     <!-- TOP BAR -->
     <div class="bg-slate-900 text-white text-xs py-2 px-4 md:px-8 flex justify-between items-center">
         <div class="flex items-center gap-2">
@@ -35,10 +42,13 @@
         <div class="hidden md:flex flex-1 max-w-2xl mx-8 relative">
             <div class="relative w-full">
                 <i class="ph ph-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg"></i>
-                <input type="text" placeholder="Tìm kiếm giày, phụ kiện, quần áo..."
+                <input type="text" id="search-input" placeholder="Tìm kiếm giày, phụ kiện, quần áo..."
                     class="w-full bg-gray-50 border border-gray-200 rounded-full py-2.5 pl-12 pr-24 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
-                <button
+                <button id="search-btn"
                     class="absolute right-1 top-1 bottom-1 bg-blue-600 text-white px-6 rounded-full text-sm font-medium hover:bg-blue-700 transition">Tìm</button>
+                <div id="search-suggestions"
+                    class="absolute left-0 top-[110%] w-full bg-white border border-gray-100 rounded-xl shadow-xl z-50 hidden max-h-[400px] overflow-y-auto">
+                </div>
             </div>
         </div>
         <!-- Icons -->
@@ -56,26 +66,30 @@
     </header>
 
     <!--  NAVIGATION -->
-   <nav>
-    <div class="max-w-7xl mx-auto px-4 md:px-8">
-        <ul class="flex justify-center gap-8 text-sm font-semibold text-gray-600 pb-4">
-            
-            <li><a href="Home.html" class="nav-item hover:text-blue-600 transition pb-1">Trang Chủ</a></li>
-            
-            <li><a href="ProductList.html?danhMuc=1" data-id="1" class="nav-item hover:text-blue-600 transition pb-1">Giày Thể Thao</a></li>
-            
-            <li><a href="ProductList.html?danhMuc=2" data-id="2" class="nav-item hover:text-blue-600 transition pb-1">Quần Áo</a></li>
-            
-            <li><a href="ProductList.html?danhMuc=3" data-id="3" class="nav-item hover:text-blue-600 transition pb-1">Phụ Kiện</a></li>
-            
-            <li class="relative">
-                <a href="ProductList.html" class="hover:text-blue-600 transition pb-1">Khuyến Mãi</a>
-                <span class="absolute -top-3 -right-6 bg-red-500 text-white text-[7px] font-bold px-1 py-0.3 rounded shadow-sm">HOT</span>
-            </li>
-            
-        </ul>
-    </div>
-</nav>
+    <nav>
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <ul class="flex justify-center gap-8 text-sm font-semibold text-gray-600 pb-4">
+
+                <li><a href="Home.html" class="nav-item hover:text-blue-600 transition pb-1">Trang Chủ</a></li>
+
+                <li><a href="ProductList.html?danhMuc=1" data-id="1"
+                        class="nav-item hover:text-blue-600 transition pb-1">Giày Thể Thao</a></li>
+
+                <li><a href="ProductList.html?danhMuc=2" data-id="2"
+                        class="nav-item hover:text-blue-600 transition pb-1">Quần Áo</a></li>
+
+                <li><a href="ProductList.html?danhMuc=3" data-id="3"
+                        class="nav-item hover:text-blue-600 transition pb-1">Phụ Kiện</a></li>
+
+                <li class="relative">
+                    <a href="ProductList.html" class="hover:text-blue-600 transition pb-1">Khuyến Mãi</a>
+                    <span
+                        class="absolute -top-3 -right-6 bg-red-500 text-white text-[7px] font-bold px-1 py-0.3 rounded shadow-sm">HOT</span>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
     <!-- content -->
     <main class="max-w-7xl mx-auto px-4 md:px-8 pb-8">
         <!-- banner -->
@@ -267,7 +281,9 @@
         </div>
     </footer>
 </body>
-<script src="../Js/main.js"></script>
+
 <script src="../Js/cart.js"></script>
 <script src="../Js/api.js"></script>
+<script src="../Js/main.js"></script>
+
 </html>
