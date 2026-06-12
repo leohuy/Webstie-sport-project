@@ -7,19 +7,21 @@
     <title>Thanh toán - SPORTFLEX</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { height: 4px; width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    </style>
 </head>
 
 <body class="bg-gray-50 text-gray-800 font-sans">
-    <div id="toast"
-        class="fixed top-4 right-4 text-white px-6 py-3 rounded-lg shadow-2xl transform transition-transform duration-300 translate-x-full z-50 flex items-center gap-3">
+    <div id="toast" class="fixed top-4 right-4 text-white px-6 py-3 rounded-lg shadow-2xl transform transition-transform duration-300 translate-x-full z-50 flex items-center gap-3">
         <i id="toast-icon" data-lucide="info" class="w-5 h-5"></i>
         <span id="toast-message" class="font-medium text-sm"></span>
     </div>
 
     <div class="w-full bg-white border-b border-gray-100 mb-6 shadow-sm">
         <header class="py-4 px-4 md:px-8 max-w-7xl mx-auto flex justify-between items-center">
-            <a href="Home.html"
-                class="flex items-center gap-2 text-2xl font-black text-blue-600 italic tracking-tighter">
+            <a href="../index.html" class="flex items-center gap-2 text-2xl font-black text-blue-600 italic tracking-tighter">
                 <i data-lucide="activity" class="text-3xl"></i> SPORTFLEX
             </a>
         </header>
@@ -38,8 +40,7 @@
                         <h2 class="text-lg font-black text-gray-800 uppercase flex items-center gap-2">
                             <i data-lucide="map-pin" class="text-blue-600"></i> Địa chỉ nhận hàng
                         </h2>
-                        <button onclick="openManageAddressModal()"
-                            class="text-blue-600 text-sm font-bold hover:underline">Thay đổi</button>
+                        <button onclick="openManageAddressModal()" class="text-blue-600 text-sm font-bold hover:underline">Thay đổi</button>
                     </div>
 
                     <div id="current-address-display" class="p-4 border-2 border-blue-100 bg-blue-50/30 rounded-xl">
@@ -48,104 +49,42 @@
                     </div>
                     <input type="hidden" id="selected-address-id">
                 </div>
+
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                     <h2 class="text-lg font-bold uppercase mb-4 flex items-center gap-2">
                         <i data-lucide="clipboard-edit" class="text-blue-600"></i> GHI CHÚ ĐƠN HÀNG
                     </h2>
-                    <textarea id="order-note" rows="3" class="w-full border border-gray-200 rounded-xl p-4 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Ghi chú thêm cho người giao hàng (ví dụ: Giao giờ hành chính, gọi trước khi giao...)"></textarea>
-                </div>
-                <div id="modal-manage-address"
-                    class="fixed inset-0 z-50 bg-black/50 hidden flex items-center justify-center backdrop-blur-sm">
-                    <div class="bg-white w-full max-w-xl rounded-2xl p-6 shadow-2xl mx-4">
-                        <div class="flex justify-between items-center border-b pb-4 mb-4">
-                            <h3 class="font-black text-gray-800">ĐỊA CHỈ CỦA TÔI</h3>
-                            <button onclick="closeManageAddressModal()"><i data-lucide="x"
-                                    class="w-6 h-6 text-gray-400"></i></button>
-                        </div>
-
-                        <div id="address-list-radio" class="space-y-4 max-h-80 overflow-y-auto pr-2 custom-scrollbar">
-                        </div>
-
-                        <div class="mt-6 flex flex-col gap-3">
-                            <button onclick="openAddAddressModal()"
-                                class="w-full py-3 border-2 border-dashed border-gray-300 rounded-xl text-gray-500 font-bold hover:bg-gray-50 transition flex items-center justify-center gap-2">
-                                <i data-lucide="plus-circle" class="w-5 h-5"></i> Thêm địa chỉ mới
-                            </button>
-                            <button onclick="confirmSelectAddress()"
-                                class="w-full py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition">Xác
-                                nhận</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="modal-add-address"
-                    class="fixed inset-0 z-[60] bg-black/50 hidden flex items-center justify-center">
-                    <div class="bg-white w-full max-w-lg rounded-2xl p-6 mx-4">
-                        <h3 class="font-black text-gray-800 mb-6 uppercase">Thêm địa chỉ mới</h3>
-                        <form id="form-new-address" onsubmit="saveNewAddress(event)" class="space-y-4">
-                            <input type="text" id="m-name" placeholder="Họ và tên" required
-                                class="w-full border rounded-xl p-3 text-sm outline-none focus:border-blue-600">
-                            <input type="tel" id="m-phone" placeholder="Số điện thoại" required
-                                class="w-full border rounded-xl p-3 text-sm outline-none focus:border-blue-600">
-                            <div class="grid grid-cols-3 gap-2">
-                                <select id="m-prov" class="border rounded-xl p-2 text-xs outline-none">
-                                    <option value="">Tỉnh</option>
-                                </select>
-                                <select id="m-dist" class="border rounded-xl p-2 text-xs outline-none">
-                                    <option value="">Huyện</option>
-                                </select>
-                                <select id="m-ward" class="border rounded-xl p-2 text-xs outline-none">
-                                    <option value="">Xã</option>
-                                </select>
-                            </div>
-                            <input type="text" id="m-detail" placeholder="Số nhà, tên đường..." required
-                                class="w-full border rounded-xl p-3 text-sm outline-none focus:border-blue-600">
-                            <div class="flex gap-2">
-                                <button type="button" onclick="closeAddAddressModal()"
-                                    class="flex-1 py-3 bg-gray-100 rounded-xl font-bold">Hủy</button>
-                                <button type="submit" id="btn-save-address"
-                                    class="flex-1 py-3 bg-gray-900 text-white rounded-xl font-bold">Lưu địa chỉ</button>
-                            </div>
-                        </form>
-                    </div>
+                    <textarea id="order-note" rows="3" class="w-full border border-gray-200 rounded-xl p-4 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Ghi chú thêm cho người giao hàng..."></textarea>
                 </div>
 
                 <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
                     <div class="flex items-center mb-6 pb-4 border-b border-gray-100">
-                        <div
-                            class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 font-bold flex items-center justify-center mr-3">
-                            2</div>
+                        <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 font-bold flex items-center justify-center mr-3">2</div>
                         <h2 class="text-lg md:text-xl font-bold uppercase text-gray-800">PHƯƠNG THỨC THANH TOÁN</h2>
                     </div>
 
                     <div class="space-y-4">
-                        <label
-                            class="flex items-center p-4 border-2 border-blue-600 rounded-xl cursor-pointer bg-blue-50/50">
-                            <input type="radio" name="payment_method" value="COD" class="w-5 h-5 accent-blue-600"
-                                checked>
+                        <label class="flex items-center p-4 border-2 border-blue-600 rounded-xl cursor-pointer bg-blue-50/50">
+                            <input type="radio" name="payment_method" value="COD" class="w-5 h-5 accent-blue-600" checked>
                             <div class="ml-4 flex-1">
-                                <div class="font-bold text-gray-800 text-sm md:text-base">Thanh toán khi nhận hàng (COD)
-                                </div>
-                                <p class="text-xs md:text-sm text-gray-500 mt-1">Thanh toán bằng tiền mặt khi nhận hàng.
-                                </p>
+                                <div class="font-bold text-gray-800 text-sm md:text-base">Thanh toán khi nhận hàng (COD)</div>
+                                <p class="text-xs md:text-sm text-gray-500 mt-1">Thanh toán bằng tiền mặt khi nhận hàng.</p>
                             </div>
                         </label>
 
-                        <label
-                            class="flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 transition">
-                            <input type="radio" name="payment_method" value="VNPAY" class="w-5 h-5 accent-blue-600">
+                        <label class="flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 transition">
+                            <input type="radio" name="payment_method" value="VIETQR" class="w-5 h-5 accent-blue-600">
                             <div class="ml-4 flex-1">
                                 <div class="font-bold text-gray-800 flex items-center gap-2 text-sm md:text-base">
-                                    Thanh toán qua VNPAY
-                                    <span
-                                        class="text-blue-600 font-bold italic border border-blue-200 bg-white px-2 py-0.5 rounded text-[10px]">VNPAY</span>
+                                    Chuyển khoản mã QR (VietQR)
+                                    <span class="text-blue-600 font-bold italic border border-blue-200 bg-white px-2 py-0.5 rounded text-[10px]">TỰ ĐỘNG</span>
                                 </div>
-                                <p class="text-xs md:text-sm text-gray-500 mt-1">Thanh toán qua ví điện tử hoặc thẻ
-                                    ATM/Visa.</p>
+                                <p class="text-xs md:text-sm text-gray-500 mt-1">Quét mã bằng ứng dụng ngân hàng hoặc Momo.</p>
                             </div>
                         </label>
                     </div>
                 </div>
+
             </div>
 
             <div class="lg:col-span-1">
@@ -154,7 +93,7 @@
                         <i data-lucide="receipt" class="text-blue-600"></i> TÓM TẮT ĐƠN HÀNG
                     </h2>
 
-                    <div id="checkout-items" class="max-h-64 overflow-y-auto pr-2 mb-4 space-y-4">
+                    <div id="checkout-items" class="max-h-64 overflow-y-auto pr-2 mb-4 space-y-4 custom-scrollbar">
                         <p class="text-center text-sm text-gray-500">Đang tải...</p>
                     </div>
 
@@ -169,8 +108,7 @@
                         </div>
                     </div>
 
-                    <div
-                        class="flex justify-between items-center mb-6 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                    <div class="flex justify-between items-center mb-6 bg-gray-50 p-4 rounded-xl border border-gray-100">
                         <span class="font-bold text-gray-800">Tổng thanh toán</span>
                         <span class="text-xl md:text-2xl font-black text-blue-600" id="checkout-total">0 ₫</span>
                     </div>
@@ -184,10 +122,80 @@
         </div>
     </main>
 
+    <div id="modal-manage-address" class="fixed inset-0 z-50 bg-black/50 hidden flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-white w-full max-w-xl rounded-2xl p-6 shadow-2xl mx-4">
+            <div class="flex justify-between items-center border-b pb-4 mb-4">
+                <h3 class="font-black text-gray-800">ĐỊA CHỈ CỦA TÔI</h3>
+                <button onclick="closeManageAddressModal()"><i data-lucide="x" class="w-6 h-6 text-gray-400"></i></button>
+            </div>
+            <div id="address-list-radio" class="space-y-4 max-h-80 overflow-y-auto pr-2 custom-scrollbar"></div>
+            <div class="mt-6 flex flex-col gap-3">
+                <button onclick="openAddAddressModal()" class="w-full py-3 border-2 border-dashed border-gray-300 rounded-xl text-gray-500 font-bold hover:bg-gray-50 transition flex items-center justify-center gap-2">
+                    <i data-lucide="plus-circle" class="w-5 h-5"></i> Thêm địa chỉ mới
+                </button>
+                <button onclick="confirmSelectAddress()" class="w-full py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-add-address" class="fixed inset-0 z-[60] bg-black/50 hidden flex items-center justify-center">
+        <div class="bg-white w-full max-w-lg rounded-2xl p-6 mx-4">
+            <h3 class="font-black text-gray-800 mb-6 uppercase">Thêm địa chỉ mới</h3>
+            <form id="form-new-address" onsubmit="saveNewAddress(event)" class="space-y-4">
+                <input type="text" id="m-name" placeholder="Họ và tên" required class="w-full border rounded-xl p-3 text-sm outline-none focus:border-blue-600">
+                <input type="tel" id="m-phone" placeholder="Số điện thoại" required class="w-full border rounded-xl p-3 text-sm outline-none focus:border-blue-600">
+                <div class="grid grid-cols-3 gap-2">
+                    <select id="m-prov" class="border rounded-xl p-2 text-xs outline-none"><option value="">Tỉnh</option></select>
+                    <select id="m-dist" class="border rounded-xl p-2 text-xs outline-none"><option value="">Huyện</option></select>
+                    <select id="m-ward" class="border rounded-xl p-2 text-xs outline-none"><option value="">Xã</option></select>
+                </div>
+                <input type="text" id="m-detail" placeholder="Số nhà, tên đường..." required class="w-full border rounded-xl p-3 text-sm outline-none focus:border-blue-600">
+                <div class="flex gap-2">
+                    <button type="button" onclick="closeAddAddressModal()" class="flex-1 py-3 bg-gray-100 rounded-xl font-bold">Hủy</button>
+                    <button type="submit" id="btn-save-address" class="flex-1 py-3 bg-gray-900 text-white rounded-xl font-bold">Lưu địa chỉ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-qr-payment" class="fixed inset-0 z-[70] bg-black/80 hidden flex items-center justify-center backdrop-blur-sm transition-opacity">
+        <div class="bg-white w-full max-w-md rounded-2xl overflow-hidden shadow-2xl mx-4 transform scale-100 transition-transform">
+            <div class="bg-blue-600 p-4 text-center">
+                <h3 class="font-black text-white text-lg tracking-wider">CHUYỂN KHOẢN THANH TOÁN</h3>
+            </div>
+            <div class="p-6 flex flex-col items-center">
+                <p class="text-sm text-gray-500 mb-4 text-center">Mở ứng dụng ngân hàng và quét mã bên dưới để thanh toán tự động.</p>
+                
+                <div class="p-3 border-4 border-blue-100 rounded-2xl bg-white mb-6">
+                    <img id="qr-image" src="" alt="Mã VietQR" class="w-56 h-56 object-contain">
+                </div>
+
+                <div class="w-full bg-gray-50 rounded-xl p-4 mb-6 text-sm border border-gray-200">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-500">Số tiền:</span>
+                        <span class="font-bold text-blue-600 text-base" id="qr-amount-text">0 ₫</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-500">Nội dung:</span>
+                        <span class="font-bold text-gray-800" id="qr-desc-text">Thanh toan don hang</span>
+                    </div>
+                </div>
+
+                <button onclick="finishQrPayment()" class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-lg shadow-blue-200 transition flex items-center justify-center gap-2">
+                    <i data-lucide="check-circle" class="w-5 h-5"></i> Tôi đã thanh toán thành công
+                </button>
+                <button onclick="finishQrPayment()" class="w-full py-2 mt-2 text-gray-400 hover:text-gray-600 text-xs font-bold underline transition">
+                    Thanh toán sau
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         lucide.createIcons();
+        
+        let globalOrderTotal = 0; // Biến toàn cục lưu tổng tiền để tạo mã QR
 
-        //  FORMAT TIỀN
         function formatMoney(amount) {
             return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " ₫";
         }
@@ -201,26 +209,22 @@
             setTimeout(() => toast.classList.add('translate-x-full'), 3000);
         }
 
-        //  LOAD GIỎ HÀNG VÀ ĐIỀN THÔNG TIN USER
+        // LOAD GIỎ HÀNG
         let isBuyNowMode = false;
         let buyNowDataPayload = null;
         async function loadCheckoutData() {
             const token = localStorage.getItem('token');
-            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
             if (!token) { window.location.href = 'auth.html'; return; }
-            // if (userInfo) { document.getElementById('checkout-name').value = userInfo.hoTen || ''; }
 
-            // Kiểm tra xem có đang ở chế độ MUA NGAY không
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('mode') === 'buynow') {
                 isBuyNowMode = true;
                 buyNowDataPayload = JSON.parse(sessionStorage.getItem('buyNowItem'));
 
-                if (!buyNowDataPayload) { window.location.href = 'index.html'; return; }
+                if (!buyNowDataPayload) { window.location.href = '../index.html'; return; }
 
-                // Đổ duy nhất 1 sản phẩm này ra giao diện
                 const container = document.getElementById('checkout-items');
-                const total = buyNowDataPayload.giaBan * buyNowDataPayload.soLuong;
+                globalOrderTotal = buyNowDataPayload.giaBan * buyNowDataPayload.soLuong; // LƯU TỔNG TIỀN VÀO BIẾN TOÀN CỤC
 
                 container.innerHTML = `
                     <div class="flex items-start gap-3">
@@ -238,26 +242,24 @@
                     </div>
                 `;
                 document.getElementById('checkout-count').innerText = buyNowDataPayload.soLuong;
-                document.getElementById('checkout-subtotal').innerText = formatMoney(total);
-                document.getElementById('checkout-total').innerText = formatMoney(total);
-                return; // Dừng hàm tại đây, không gọi API giỏ hàng nữa
+                document.getElementById('checkout-subtotal').innerText = formatMoney(globalOrderTotal);
+                document.getElementById('checkout-total').innerText = formatMoney(globalOrderTotal);
+                return;
             }
+
             try {
-                // Gọi API lấy giỏ hàng
-                const response = await fetch('http://localhost:3000/api/cart', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
+                const response = await fetch('http://localhost:8080/api/cart', { headers: { 'Authorization': `Bearer ${token}` } });
                 const result = await response.json();
 
                 if (response.ok && result.data.length > 0) {
                     const container = document.getElementById('checkout-items');
                     container.innerHTML = '';
-                    let total = 0;
+                    globalOrderTotal = 0; // RESET BIẾN TOÀN CỤC
                     let count = 0;
 
                     result.data.forEach(item => {
                         const price = item.GiaBan || 0;
-                        total += price * item.SoLuong;
+                        globalOrderTotal += price * item.SoLuong; // CỘNG DỒN TỔNG TIỀN
                         count += item.SoLuong;
 
                         container.innerHTML += `
@@ -278,269 +280,30 @@
                     });
 
                     document.getElementById('checkout-count').innerText = count;
-                    document.getElementById('checkout-subtotal').innerText = formatMoney(total);
-                    document.getElementById('checkout-total').innerText = formatMoney(total);
+                    document.getElementById('checkout-subtotal').innerText = formatMoney(globalOrderTotal);
+                    document.getElementById('checkout-total').innerText = formatMoney(globalOrderTotal);
                 } else {
-                    window.location.href = 'cart.html'; // Giỏ rỗng thì đá về trang Giỏ hàng
+                    window.location.href = 'cart.html';
                 }
-            } catch (error) {
-                console.error("Lỗi tải giỏ hàng:", error);
-            }
-        }
-        let allAddresses = [];
-        async function loadUserAddresses() {
-            const token = localStorage.getItem('token');
-            const response = await fetch('http://localhost:3000/api/user/addresses', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            const result = await response.json();
-            allAddresses = result.data || [];
-
-            const radioContainer = document.getElementById('address-list-radio');
-            radioContainer.innerHTML = '';
-
-            if (allAddresses.length > 0) {
-                allAddresses.forEach(addr => {
-                    const isDefault = addr.LaMacDinh === 1;
-                    // Nếu là địa chỉ mặc định thì tự động hiển thị ra màn hình chính ngay
-                    if (isDefault && !document.getElementById('selected-address-id').value) {
-                        updateDisplayAddress(addr);
-                    }
-
-                    // Vẽ danh sách Radio trong Modal
-                    radioContainer.innerHTML += `
-                <label class="flex items-start gap-4 p-4 border rounded-xl cursor-pointer hover:bg-gray-50 transition has-[:checked]:border-blue-600 has-[:checked]:bg-blue-50/30">
-                    <input type="radio" name="addr-radio" value="${addr.MaDiaChi}" ${isDefault ? 'checked' : ''} class="mt-1 w-4 h-4 text-blue-600">
-                    <div class="flex-grow">
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="font-bold text-gray-900 text-sm">${addr.TenNguoiNhan}</span>
-                            <span class="text-gray-400 text-xs">|</span>
-                            <span class="text-gray-600 text-sm">${addr.SoDienThoaiNhan}</span>
-                            ${isDefault ? '<span class="text-[10px] bg-blue-600 text-white px-1.5 py-0.5 rounded uppercase font-bold">Mặc định</span>' : ''}
-                        </div>
-                        <p class="text-xs text-gray-500 leading-relaxed">${addr.DiaChiChiTiet}</p>
-                    </div>
-                </label>
-            `;
-                });
-            } else {
-                radioContainer.innerHTML = '<p class="text-center text-gray-400 py-4">Chưa có địa chỉ nào.</p>';
-                document.getElementById('addr-name-phone').innerText = "Chưa có thông tin";
-                document.getElementById('addr-full').innerText = "Bạn vui lòng bấm 'Thay đổi' để thêm địa chỉ giao hàng mới nhé!";
-            }
+            } catch (error) { console.error("Lỗi:", error); }
         }
 
-        // Cập nhật hiển thị lên màn hình chính
-        function updateDisplayAddress(addr) {
-            document.getElementById('selected-address-id').value = addr.MaDiaChi;
-            document.getElementById('addr-name-phone').innerText = `${addr.TenNguoiNhan} | ${addr.SoDienThoaiNhan}`;
-            document.getElementById('addr-full').innerText = addr.DiaChiChiTiet;
-        }
-
-        // Xác nhận chọn từ Radio
-        function confirmSelectAddress() {
-            const selectedId = document.querySelector('input[name="addr-radio"]:checked').value;
-            const addr = allAddresses.find(a => a.MaDiaChi == selectedId);
-            if (addr) {
-                updateDisplayAddress(addr);
-                closeManageAddressModal();
-            }
-        }
-
-        // Mở/Đóng các Modal
-        // function openManageAddressModal() { document.getElementById('modal-manage-address').classList.remove('hidden'); }
-        // function closeManageAddressModal() { document.getElementById('modal-manage-address').classList.add('hidden'); }
-        // function openAddAddressModal() { document.getElementById('modal-add-address').classList.remove('hidden'); }
-        // function closeAddAddressModal() { document.getElementById('modal-add-address').classList.add('hidden'); }
-
-        function openAddressModal() {
-            document.getElementById('address-modal').classList.remove('hidden');
-            setTimeout(() => {
-                document.getElementById('address-modal-content').classList.remove('scale-95');
-                document.getElementById('address-modal-content').classList.add('scale-100');
-            }, 10);
-        }
-
-        function closeAddressModal() {
-            document.getElementById('address-modal-content').classList.remove('scale-100');
-            document.getElementById('address-modal-content').classList.add('scale-95');
-            setTimeout(() => { document.getElementById('address-modal').classList.add('hidden'); }, 200);
-        }
-
-        // luuw địa chỉ mới
-        async function saveNewAddress(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-save-address');
-            btn.innerHTML = 'Đang lưu...'; btn.disabled = true;
-
-            // Ghép địa chỉ
-            const name = document.getElementById('m-name').value;
-            const phone = document.getElementById('m-phone').value;
-            const address = document.getElementById('m-detail').value;
-            const prov = document.getElementById('m-prov').value;
-            const dist = document.getElementById('m-dist').value;
-            const ward = document.getElementById('m-ward').value;
-            const fullAddress = `${address}, ${ward}, ${dist}, ${prov}`;
-
-            const token = localStorage.getItem('token');
-            try {
-                const response = await fetch('http://localhost:3000/api/user/addresses', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                    body: JSON.stringify({
-                        tenNguoiNhan: name,
-                        soDienThoai: phone,
-                        diaChiChiTiet: fullAddress
-                    })
-                });
-
-                if (response.ok) {
-                    showToast("Đã lưu địa chỉ!");
-                    await loadUserAddresses();
-                    closeAddAddressModal();
-                }
-            } catch (error) { showToast("Lỗi kết nối", "error"); }
-            btn.innerHTML = 'Lưu địa chỉ'; btn.disabled = false;
-        }
-
-
-
-        //  API TỈNH THÀNH
-        const provinceSelect = document.getElementById('m-prov');
-        const districtSelect = document.getElementById('m-dist');
-        const wardSelect = document.getElementById('m-ward');
-
-        fetch('https://provinces.open-api.vn/api/p/')
-            .then(res => res.json())
-            .then(data => data.forEach(p => provinceSelect.add(new Option(p.name, p.name))))
-
-        provinceSelect.addEventListener('change', function () {
-            const pName = this.value;
-            districtSelect.innerHTML = '<option value="">Chọn Quận/Huyện</option>';
-            wardSelect.innerHTML = '<option value="">Chọn Phường/Xã</option>';
-            wardSelect.disabled = true;
-
-            if (pName) {
-                districtSelect.disabled = false;
-                // Tìm code dựa theo tên để fetch Quận/Huyện
-                fetch('https://provinces.open-api.vn/api/p/')
-                    .then(res => res.json())
-                    .then(data => {
-                        const pCode = data.find(p => p.name === pName).code;
-                        return fetch(`https://provinces.open-api.vn/api/p/${pCode}?depth=2`);
-                    })
-                    .then(res => res.json())
-                    .then(data => data.districts.forEach(d => districtSelect.add(new Option(d.name, d.name))));
-            } else { districtSelect.disabled = true; }
-        });
-
-        districtSelect.addEventListener('change', function () {
-            const dName = this.value;
-            wardSelect.innerHTML = '<option value="">Chọn Phường/Xã</option>';
-            if (dName) {
-                wardSelect.disabled = false;
-                // Lấy data phường xã tương tự...
-                fetch('https://provinces.open-api.vn/api/d/')
-                    .then(res => res.json())
-                    .then(data => {
-                        const dCode = data.find(d => d.name === dName).code;
-                        return fetch(`https://provinces.open-api.vn/api/d/${dCode}?depth=2`);
-                    })
-                    .then(res => res.json())
-                    .then(data => data.wards.forEach(w => wardSelect.add(new Option(w.name, w.name))));
-            } else { wardSelect.disabled = true; }
-        });
-
-        // XỬ LÝ NÚT ĐẶT HÀNG
-        // async function submitOrder(e) {
-        //     e.preventDefault();
-        //     const btn = document.getElementById('btn-submit');
-
-        //     // Chỉ lấy ID địa chỉ từ ô input ẩn
-        //     const maDiaChi = document.getElementById('selected-address-id').value;
-        //     const note = document.getElementById('checkout-note').value;
-        //     const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
-
-        //     if (!maDiaChi) {
-        //         showToast("Vui lòng thêm địa chỉ nhận hàng!", "error");
-        //         return;
-        //     }
-
-        //     btn.disabled = true; btn.innerHTML = 'Đang xử lý...';
-
-        //     const orderPayload = {
-        //         maDiaChi: maDiaChi, // Truyền ID địa chỉ lên Backend
-        //         phuongThucThanhToan: paymentMethod,
-        //         ghiChu: note
-        //     };
-
-        //     // 2. KIỂM TRA CHẾ ĐỘ: Nếu là "Mua Ngay", nhét thêm thông tin món hàng vào Payload
-        //     // (Đảm bảo bạn đã khai báo isBuyNowMode và buyNowDataPayload ở trên hàm loadCheckoutData)
-        //     if (typeof isBuyNowMode !== 'undefined' && isBuyNowMode && buyNowDataPayload) {
-        //         orderPayload.buyNowItem = {
-        //             maBienThe: buyNowDataPayload.maBienThe,
-        //             soLuong: buyNowDataPayload.soLuong
-        //         };
-        //     }
-
-        //     try {
-        //         const token = localStorage.getItem('token');
-        //         const response = await fetch('http://localhost:3000/api/orders/checkout', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //                 'Authorization': `Bearer ${token}`
-        //             },
-        //             body: JSON.stringify(orderPayload) // Gửi Payload đã cấu hình
-        //         });
-
-        //         const result = await response.json();
-
-        //         if (response.ok) {
-        //             showToast("Đặt hàng thành công!", "success");
-
-        //             // Nếu đặt thành công ở chế độ "Mua Ngay", xóa sạch dữ liệu lưu tạm trong Session
-        //             if (typeof isBuyNowMode !== 'undefined' && isBuyNowMode) {
-        //                 sessionStorage.removeItem('buyNowItem');
-        //             }
-
-        //             // Chuyển hướng sau khi đặt thành công
-        //             setTimeout(() => {
-        //                 alert(`Cảm ơn bạn đã mua hàng! Mã đơn của bạn là: ${result.maTraCuu}`);
-        //                 window.location.href = "profile.html"; // Chuyển về trang Lịch sử mua hàng
-        //             }, 2000);
-        //         } else {
-        //             showToast(result.message, "error");
-        //             btn.disabled = false;
-        //             btn.innerHTML = 'Xác nhận đặt hàng';
-        //         }
-        //     } catch (error) {
-        //         showToast("Lỗi kết nối Server", "error");
-        //         btn.disabled = false;
-        //         btn.innerHTML = 'Xác nhận đặt hàng';
-        //     }
-        // }
-
+        // 🌟 XỬ LÝ ĐẶT HÀNG VÀ HIỆN MÃ QR
         async function handlePlaceOrder(event) {
             event.preventDefault();
             const token = localStorage.getItem('token');
-            if (!token) { alert("Vui lòng đăng nhập!"); window.location.href = "index.html"; return; }
+            if (!token) { alert("Vui lòng đăng nhập!"); window.location.href = "../index.html"; return; }
 
             const maDiaChi = document.getElementById('selected-address-id').value;
             const selectedPaymentRadio = document.querySelector('input[name="payment_method"]:checked');
             const phuongThucThanhToan = selectedPaymentRadio ? selectedPaymentRadio.value : 'COD';
             const ghiChu = document.getElementById('order-note').value.trim();
 
-            if (!maDiaChi) {
-                showToast("Vui lòng thêm địa chỉ giao hàng!", "error");
-                return;
-            }
+            if (!maDiaChi) { showToast("Vui lòng thêm địa chỉ giao hàng!", "error"); return; }
 
-            // Xử lý chế độ mua ngay
-            const buyNowData = JSON.parse(sessionStorage.getItem('buyNowItem'));
             let buyNowItem = null;
-            if (isBuyNowMode && buyNowData) {
-                buyNowItem = { maBienThe: buyNowData.maBienThe, soLuong: buyNowData.soLuong };
+            if (isBuyNowMode && buyNowDataPayload) {
+                buyNowItem = { maBienThe: buyNowDataPayload.maBienThe, soLuong: buyNowDataPayload.soLuong };
             }
 
             const orderBtn = document.getElementById('btn-submit');
@@ -548,8 +311,7 @@
             orderBtn.disabled = true;
 
             try {
-                // SỬ DỤNG ĐÚNG API ĐẶT HÀNG TRONG USER ROUTES
-                const response = await fetch('http://localhost:3000/api/orders', {
+                const response = await fetch('http://localhost:8080/api/orders', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                     body: JSON.stringify({ maDiaChi, phuongThucThanhToan, ghiChu, buyNowItem })
@@ -558,13 +320,38 @@
                 const result = await response.json();
 
                 if (response.ok) {
-                    showToast(" Đặt hàng thành công!");
-                    if (buyNowData) sessionStorage.removeItem('buyNowItem'); // Xóa data tạm
-
-                    // Chuyển về trang Lịch sử đơn hàng (profile.html)
-                    setTimeout(() => {
-                        window.location.href = "profile.html";
-                    }, 1500);
+                    if (buyNowDataPayload) sessionStorage.removeItem('buyNowItem'); // Xóa data tạm
+                    
+                    // NẾU CHỌN THANH TOÁN VIETQR
+                    if (phuongThucThanhToan === 'VIETQR') {
+                        // Cấu hình Ngân hàng của bạn ở đây
+                        const BANK_ID = "VPB"; // Tên viết tắt ngân hàng (VD: MB, VCB, TCB, VPB...)
+                        const ACCOUNT_NO = "0335263576"; // Số tài khoản ngân hàng của bạn
+                        const ACCOUNT_NAME = "LE TUAN HUY"; // Tên chủ thẻ (không dấu)
+                        
+                        // Lấy mã đơn hàng từ Backend trả về (nếu có), không có thì tự chế
+                        const orderId = result.orderId || result.data?.MaDonHang || Math.floor(1000 + Math.random() * 9000);
+                        const description = `Thanh toan don hang ${orderId}`;
+                        
+                        // Tạo URL ảnh mã QR từ hệ thống VietQR
+                        const qrUrl = `https://img.vietqr.io/image/${BANK_ID}-${ACCOUNT_NO}-compact2.png?amount=${globalOrderTotal}&addInfo=${encodeURIComponent(description)}&accountName=${encodeURIComponent(ACCOUNT_NAME)}`;
+                        
+                        // Đổ dữ liệu vào Modal
+                        document.getElementById('qr-image').src = qrUrl;
+                        document.getElementById('qr-amount-text').innerText = formatMoney(globalOrderTotal);
+                        document.getElementById('qr-desc-text').innerText = description;
+                        
+                        // Mở Modal
+                        document.getElementById('modal-qr-payment').classList.remove('hidden');
+                        
+                        // Khôi phục nút
+                        orderBtn.innerHTML = 'Xác nhận đặt hàng'; orderBtn.disabled = false;
+                        showToast("Đơn hàng đã được tạo. Vui lòng thanh toán!");
+                    } else {
+                        // NẾU CHỌN COD THÌ CHUYỂN VỀ TRANG PROFILE LUÔN
+                        showToast("Đặt hàng thành công!");
+                        setTimeout(() => { window.location.href = "profile.html"; }, 1500);
+                    }
                 } else {
                     showToast(result.message || "Lỗi đặt hàng", "error");
                     orderBtn.innerHTML = 'Xác nhận đặt hàng'; orderBtn.disabled = false;
@@ -575,11 +362,111 @@
             }
         }
 
-        // Chạy khi load trang
+        // HÀM TẮT MODAL QR VÀ ĐÁ VỀ TRANG CÁ NHÂN
+        function finishQrPayment() {
+            document.getElementById('modal-qr-payment').classList.add('hidden');
+            window.location.href = "profile.html"; // Đá về trang Lịch sử đơn hàng
+        }
+
+        // CÁC HÀM XỬ LÝ ĐỊA CHỈ (GIỮ NGUYÊN)
+        let allAddresses = [];
+        async function loadUserAddresses() {
+            const token = localStorage.getItem('token');
+            const response = await fetch('http://localhost:8080/api/user/addresses', { headers: { 'Authorization': `Bearer ${token}` } });
+            const result = await response.json();
+            allAddresses = result.data || [];
+
+            const radioContainer = document.getElementById('address-list-radio');
+            radioContainer.innerHTML = '';
+
+            if (allAddresses.length > 0) {
+                allAddresses.forEach(addr => {
+                    const isDefault = addr.LaMacDinh === 1;
+                    if (isDefault && !document.getElementById('selected-address-id').value) {
+                        updateDisplayAddress(addr);
+                    }
+                    radioContainer.innerHTML += `
+                        <label class="flex items-start gap-4 p-4 border rounded-xl cursor-pointer hover:bg-gray-50 transition has-[:checked]:border-blue-600 has-[:checked]:bg-blue-50/30">
+                            <input type="radio" name="addr-radio" value="${addr.MaDiaChi}" ${isDefault ? 'checked' : ''} class="mt-1 w-4 h-4 text-blue-600">
+                            <div class="flex-grow">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="font-bold text-gray-900 text-sm">${addr.TenNguoiNhan}</span>
+                                    <span class="text-gray-400 text-xs">|</span>
+                                    <span class="text-gray-600 text-sm">${addr.SoDienThoaiNhan}</span>
+                                </div>
+                                <p class="text-xs text-gray-500 leading-relaxed">${addr.DiaChiChiTiet}</p>
+                            </div>
+                        </label>
+                    `;
+                });
+            } else {
+                radioContainer.innerHTML = '<p class="text-center text-gray-400 py-4">Chưa có địa chỉ nào.</p>';
+            }
+        }
+
+        function updateDisplayAddress(addr) {
+            document.getElementById('selected-address-id').value = addr.MaDiaChi;
+            document.getElementById('addr-name-phone').innerText = `${addr.TenNguoiNhan} | ${addr.SoDienThoaiNhan}`;
+            document.getElementById('addr-full').innerText = addr.DiaChiChiTiet;
+        }
+
+        function confirmSelectAddress() {
+            const selectedId = document.querySelector('input[name="addr-radio"]:checked').value;
+            const addr = allAddresses.find(a => a.MaDiaChi == selectedId);
+            if (addr) { updateDisplayAddress(addr); closeManageAddressModal(); }
+        }
+
+        function openManageAddressModal() { document.getElementById('modal-manage-address').classList.remove('hidden'); }
+        function closeManageAddressModal() { document.getElementById('modal-manage-address').classList.add('hidden'); }
+        function openAddAddressModal() { document.getElementById('modal-add-address').classList.remove('hidden'); }
+        function closeAddAddressModal() { document.getElementById('modal-add-address').classList.add('hidden'); }
+
+        async function saveNewAddress(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-save-address');
+            btn.innerHTML = 'Đang lưu...'; btn.disabled = true;
+
+            const fullAddress = `${document.getElementById('m-detail').value}, ${document.getElementById('m-ward').value}, ${document.getElementById('m-dist').value}, ${document.getElementById('m-prov').value}`;
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch('http://localhost:8080/api/user/addresses', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({
+                        tenNguoiNhan: document.getElementById('m-name').value,
+                        soDienThoai: document.getElementById('m-phone').value,
+                        diaChiChiTiet: fullAddress
+                    })
+                });
+                if (response.ok) { showToast("Đã lưu địa chỉ!"); await loadUserAddresses(); closeAddAddressModal(); }
+            } catch (error) { showToast("Lỗi kết nối", "error"); }
+            btn.innerHTML = 'Lưu địa chỉ'; btn.disabled = false;
+        }
+
+        // Cấu hình thả xuống Tỉnh/Thành
+        const provS = document.getElementById('m-prov'), distS = document.getElementById('m-dist'), wardS = document.getElementById('m-ward');
+        fetch('https://provinces.open-api.vn/api/p/').then(r => r.json()).then(d => d.forEach(p => provS.add(new Option(p.name, p.name))));
+        provS.addEventListener('change', function() {
+            distS.innerHTML = '<option value="">Huyện</option>'; wardS.innerHTML = '<option value="">Xã</option>'; wardS.disabled = true;
+            if(this.value) {
+                distS.disabled = false;
+                fetch('https://provinces.open-api.vn/api/p/').then(r=>r.json())
+                .then(d => fetch(`https://provinces.open-api.vn/api/p/${d.find(p => p.name === this.value).code}?depth=2`))
+                .then(r=>r.json()).then(d => d.districts.forEach(x => distS.add(new Option(x.name, x.name))));
+            } else distS.disabled = true;
+        });
+        distS.addEventListener('change', function() {
+            wardS.innerHTML = '<option value="">Xã</option>';
+            if(this.value) {
+                wardS.disabled = false;
+                fetch('https://provinces.open-api.vn/api/d/').then(r=>r.json())
+                .then(d => fetch(`https://provinces.open-api.vn/api/d/${d.find(p => p.name === this.value).code}?depth=2`))
+                .then(r=>r.json()).then(d => d.wards.forEach(w => wardS.add(new Option(w.name, w.name))));
+            } else wardS.disabled = true;
+        });
+
         document.addEventListener('DOMContentLoaded', loadCheckoutData);
         document.addEventListener('DOMContentLoaded', loadUserAddresses);
-
     </script>
 </body>
-
 </html>

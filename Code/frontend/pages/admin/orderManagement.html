@@ -27,6 +27,7 @@
         }
     </style>
 </head>
+    <script src="../../Js/protectRole.js"></script>
 
 <body class="bg-gray-50 text-gray-800 font-sans h-screen flex overflow-hidden">
 
@@ -58,9 +59,9 @@
                 <i data-lucide="package-search" class="w-5 h-5"></i> Danh sách Sản phẩm
             </a>
 
-            <a href="QLTonKho.html"
+            <a href="inventoryManagement.html"
                 class="menu-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium"
-                data-page="QLTonKho.html">
+                data-page="inventoryManagement.html">
                 <i data-lucide="box" class="w-5 h-5"></i> Quản lý Tồn kho
             </a>
 
@@ -125,7 +126,73 @@
                 <h1 class="text-xl font-bold text-gray-800 hidden sm:block">Quản lý Đơn hàng</h1>
             </div>
         </header>
+        <div id="modal-order-details"
+            class="fixed inset-0 z-[60] bg-black/50 hidden flex items-center justify-center backdrop-blur-sm transition-all">
+            <div
+                class="bg-white w-full max-w-3xl rounded-2xl p-6 md:p-8 mx-4 max-h-[90vh] flex flex-col shadow-2xl relative">
+                <button onclick="closeOrderModal()"
+                    class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition bg-gray-50 rounded-full p-2">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
 
+                <h2
+                    class="text-xl font-black text-gray-800 mb-6 uppercase border-b border-gray-100 pb-4 flex items-center gap-2">
+                    <i data-lucide="file-text" class="text-blue-600"></i> Chi tiết đơn hàng <span id="modal-order-id"
+                        class="text-blue-600"></span>
+                </h2>
+
+                <div class="overflow-y-auto custom-scrollbar pr-2 space-y-6">
+                    <div
+                        class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50/50 p-4 rounded-xl border border-gray-100">
+                        <div>
+                            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Người nhận
+                            </p>
+                            <p class="font-bold text-gray-800 text-sm" id="modal-customer-name">Đang tải...</p>
+                            <p class="text-sm text-gray-600" id="modal-customer-phone"></p>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Địa chỉ giao
+                                hàng</p>
+                            <p class="text-sm text-gray-700 leading-relaxed" id="modal-customer-address">Đang tải...</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p
+                            class="text-xs font-black text-gray-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+                            <i data-lucide="package" class="w-4 h-4"></i> Danh sách mặt hàng
+                        </p>
+                        <div class="border border-gray-200 rounded-xl overflow-hidden">
+                            <table class="w-full text-left text-sm">
+                                <thead class="bg-gray-50 text-gray-500 text-xs uppercase">
+                                    <tr>
+                                        <th class="px-4 py-3">Sản phẩm</th>
+                                        <th class="px-4 py-3 text-center">SL</th>
+                                        <th class="px-4 py-3 text-right">Đơn giá</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="modal-items-tbody" class="divide-y divide-gray-100">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex flex-col md:flex-row justify-between items-end gap-4 bg-blue-50/30 p-4 rounded-xl border border-blue-100">
+                        <div class="w-full md:w-2/3">
+                            <p class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1">Ghi chú của
+                                khách</p>
+                            <p class="text-sm text-gray-700 italic" id="modal-order-note">Không có ghi chú</p>
+                        </div>
+                        <div class="text-right w-full md:w-1/3">
+                            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Tổng tiền cần
+                                thu</p>
+                            <p class="text-2xl font-black text-blue-600" id="modal-order-total">0 ₫</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-slate-50/50">
 
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
@@ -228,6 +295,11 @@
     <script>
         lucide.createIcons();
 
+  function logoutAdmin() {
+            localStorage.clear();
+            window.location.href = "../auth.html"; 
+        }
+
         // 1. Hàm định dạng tiền tệ Việt Nam (1.000.000 ₫)
         function formatMoney(amount) {
             return parseInt(amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " ₫";
@@ -259,7 +331,7 @@
 
             try {
                 // Gọi API lấy đơn hàng kèm bộ lọc qua URL
-                const response = await fetch(`http://localhost:3000/api/admin/orders?status=${statusFilter}&search=${encodeURIComponent(searchKeyword)}`, {
+                const response = await fetch(`http://localhost:8080/api/admin/orders?status=${statusFilter}&search=${encodeURIComponent(searchKeyword)}`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 const result = await response.json();
@@ -306,6 +378,7 @@
                                 <td class="px-6 py-5 text-center">${renderStatusBadge(order.TrangThai)}</td>
                                 <td class="px-6 py-5 text-right space-x-2 font-semibold text-xs">
                                     ${actionButton}
+                                    <button onclick="viewOrderDetails(${order.MaDonHang})" class="text-gray-500 hover:text-blue-600 transition" title="Xem chi tiết"><i data-lucide="eye" class="w-5 h-5 inline"></i></button>
                                 </td>
                             </tr>
                         `;
@@ -328,7 +401,7 @@
 
             const token = localStorage.getItem('token');
             try {
-                const response = await fetch(`http://localhost:3000/api/admin/orders/${orderId}/status`, {
+                const response = await fetch(`http://localhost:8080/api/admin/orders/${orderId}/status`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -348,9 +421,120 @@
                 alert("Lỗi đường truyền internet sập kết nối máy chủ!");
             }
         }
+        // Mở modal và fetch data
+        async function viewOrderDetails(orderId) {
+            const modal = document.getElementById('modal-order-details');
+            modal.classList.remove('hidden');
+
+            const tbody = document.getElementById('modal-items-tbody');
+            tbody.innerHTML = '<tr><td colspan="3" class="p-6 text-center text-gray-400"><i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto"></i></td></tr>';
+            lucide.createIcons();
+
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch(`http://localhost:8080/api/admin/orders/${orderId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const result = await response.json();
+
+                if (response.ok) {
+                    const info = result.data.thongTinChung;
+                    const items = result.data.danhSachSanPham;
+
+                    // Đổ thông tin chung
+                    document.getElementById('modal-order-id').innerText = `#SFX${info.MaDonHang.toString().padStart(4, '0')}`;
+                    document.getElementById('modal-customer-name').innerText = info.TenNguoiNhan || info.HoTen;
+                    document.getElementById('modal-customer-phone').innerText = info.SoDienThoaiNhan || info.SoDienThoai;
+                    document.getElementById('modal-customer-address').innerText = info.DiaChiChiTiet || 'Khách nhận tại cửa hàng';
+                    document.getElementById('modal-order-note').innerText = info.GhiChu || 'Không có ghi chú';
+                    document.getElementById('modal-order-total').innerText = formatMoney(info.TongTien);
+
+                    // Đổ danh sách sản phẩm
+                    tbody.innerHTML = '';
+                    items.forEach(item => {
+                        const img = item.HinhAnhChinh.startsWith('http') ? item.HinhAnhChinh : `../assets/images/${item.HinhAnhChinh}`;
+                        tbody.innerHTML += `
+                            <tr>
+                                <td class="px-4 py-3">
+                                    <div class="flex items-center gap-3">
+                                        <img src="${img}" onerror="this.src='https://via.placeholder.com/50'" class="w-10 h-10 rounded border border-gray-200 object-cover">
+                                        <div>
+                                            <p class="font-bold text-gray-800 text-xs w-48 truncate" title="${item.TenSanPham}">${item.TenSanPham}</p>
+                                            <p class="text-[11px] text-gray-500 font-bold bg-gray-100 inline-block px-1.5 rounded">Size: ${item.KichCo}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3 text-center font-bold text-gray-700">x${item.SoLuong}</td>
+                                <td class="px-4 py-3 text-right font-bold text-blue-600">${formatMoney(item.GiaLucMua)}</td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-red-500">${result.message}</td></tr>`;
+                }
+            } catch (error) {
+                tbody.innerHTML = '<tr><td colspan="3" class="p-4 text-center text-red-500">Lỗi kết nối máy chủ!</td></tr>';
+            }
+        }
+
+        // Đóng modal
+        function closeOrderModal() {
+            document.getElementById('modal-order-details').classList.add('hidden');
+        }
+
+
 
         // Kích hoạt chạy tải dữ liệu ngay khi vừa mở trang quản trị
         document.addEventListener('DOMContentLoaded', loadAdminOrders);
+    </script>
+      <script>
+        // Load thông tin Sidebar
+        document.addEventListener('DOMContentLoaded', () => {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            if(userInfo) {
+                document.getElementById('sidebar-name').innerText = userInfo.hoTen || 'Quản trị viên';
+                
+                const role = userInfo.vaiTro || userInfo.VaiTro;
+                document.getElementById('sidebar-role').innerText = role === 'Admin' || role === 'admin' ? 'SUPER ADMIN' : 'QUẢN LÝ KHO';
+                
+                // NẾU LÀ STAFF (NHÂN VIÊN) -> ẨN CÁC MENU QUAN TRỌNG VÀ TIÊU ĐỀ RỖNG
+                if (role === 'NhanVien' || role === 'staff') {
+                    
+                    // 1. Dùng includes để bắt một phần tên file (chống lỗi sai đường dẫn ./ hay /)
+                    const restrictedPaths = ['dashboardAdmin', 'userManagement', 'categoryManagement', 'brandManagement'];
+
+                    document.querySelectorAll('nav a').forEach(link => {
+                        const href = link.getAttribute('href') || '';
+                        // Nếu href chứa 1 trong các từ khóa cấm -> Ẩn thẻ a
+                        if (restrictedPaths.some(path => href.includes(path))) {
+                            link.style.display = 'none';
+                        }
+                    });
+
+                    // 2. Dọn dẹp luôn các Tiêu đề (Header xám) và Group Dropdown
+                    document.querySelectorAll('nav div').forEach(div => {
+                        const text = div.innerText.trim().toUpperCase();
+                        
+                        // Ẩn tiêu đề "GIAO DIỆN ADMIN" vì đã giấu Thống kê
+                        if (text.includes('GIAO DIỆN ADMIN')) {
+                            div.style.display = 'none';
+                        }
+                        
+                        // Ẩn tiêu đề "QUẢN LÝ NGƯỜI DÙNG" vì đã giấu Tài khoản
+                        if (text.includes('QUẢN LÝ NGƯỜI DÙNG')) {
+                            div.style.display = 'none';
+                        }
+                        
+                        // Ẩn an toàn khối Dropdown Cấu trúc
+                        if (text.includes('QUẢN LÝ CẤU TRÚC')) {
+                            const groupParent = div.closest('.group');
+                            if (groupParent) groupParent.style.display = 'none';
+                        }
+                    });
+                }
+            }
+        });
+
     </script>
 </body>
 

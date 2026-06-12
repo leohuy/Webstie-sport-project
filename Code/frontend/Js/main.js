@@ -3,6 +3,18 @@
 function formatMoneyHeader(amount) {
     return parseInt(amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " ₫";
 }
+
+function isPagesSection() {
+    return /[\\/]pages[\\/]/.test(window.location.pathname);
+}
+
+function getPageLink(pagePath) {
+    return isPagesSection() ? pagePath : `pages/${pagePath}`;
+}
+
+function getImagePath(fileName) {
+    return isPagesSection() ? `../assets/images/${fileName}` : `assets/images/${fileName}`;
+}
 // Hàm tự động Active Menu dựa vào URL
 function highlightActiveMenu() {
     // 1. Lấy tham số danhMuc từ URL (ví dụ URL đang là ?danhMuc=2 thì urlCategoryId = "2")
@@ -25,8 +37,8 @@ function highlightActiveMenu() {
             // Thêm màu xanh đậm và gạch chân (Tailwind CSS)
             item.classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'font-bold');
         }
-        // Logic 2: Đang ở trang chủ (Home.html)
-        else if (!urlCategoryId && currentPath.includes('Home.html') && item.getAttribute('href') === 'Home.html') {
+        // Logic 2: Đang ở trang chủ (index.html)
+        else if (!urlCategoryId && currentPath.includes('index.html') && (item.getAttribute('href') || '').endsWith('index.html')) {
             item.classList.remove('text-gray-600');
             item.classList.add('text-blue-600', 'border-b-2', 'border-blue-600', 'font-bold');
         }
@@ -57,7 +69,7 @@ function setupSearchBar() {
         searchTimeout = setTimeout(async () => {
             try {
                 // Tận dụng luôn API getAllProducts đã có chức năng search
-                const response = await fetch(`http://localhost:3000/api/products?search=${encodeURIComponent(keyword)}`);
+                const response = await fetch(`http://localhost:8080/api/products?search=${encodeURIComponent(keyword)}`);
                 const result = await response.json();
 
                 if (response.ok && result.data.length > 0) {
@@ -66,9 +78,9 @@ function setupSearchBar() {
                     searchSuggestions.innerHTML = '';
 
                     suggestions.forEach(product => {
-                        const img = product.HinhAnhChinh.startsWith('http') ? product.HinhAnhChinh : `../assets/images/${product.HinhAnhChinh}`;
+                        const img = product.HinhAnhChinh.startsWith('http') ? product.HinhAnhChinh : getImagePath(product.HinhAnhChinh);
                         searchSuggestions.innerHTML += `
-                            <a href="ProductDetail.html?id=${product.MaSanPham}" class="flex items-center gap-3 p-3 hover:bg-gray-50 transition border-b border-gray-50 last:border-0">
+                            <a href="${getPageLink(`ProductDetail.html?id=${product.MaSanPham}`)}" class="flex items-center gap-3 p-3 hover:bg-gray-50 transition border-b border-gray-50 last:border-0">
                                 <img src="${img}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100'" class="w-12 h-12 object-contain bg-gray-100 rounded p-1">
                                 <div class="flex-1">
                                     <h4 class="text-sm font-bold text-gray-800 line-clamp-1 hover:text-blue-600">${product.TenSanPham}</h4>
@@ -100,7 +112,7 @@ function setupSearchBar() {
     window.executeSearch = () => {
         const keyword = searchInput.value.trim();
         if (keyword !== '') {
-            window.location.href = `ProductList.html?search=${encodeURIComponent(keyword)}`;
+            window.location.href = getPageLink(`ProductList.html?search=${encodeURIComponent(keyword)}`);
         }
     };
 
@@ -121,9 +133,68 @@ function setupSearchBar() {
     });
 }
 
-
 // Chạy hàm ngay khi tải xong giao diện
 document.addEventListener('DOMContentLoaded', function () {
     highlightActiveMenu();
     setupSearchBar();
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const slider = document.getElementById('product-slider');
+    const btnPrev = document.getElementById('slider-prev');
+    const btnNext = document.getElementById('slider-next');
+
+    // Khoảng cách mỗi lần cuộn (Ví dụ: cuộn 1 thẻ sản phẩm 280px + gap 24px)
+    const scrollAmount = 304; 
+    let autoSlideInterval;
+
+    // 1. Hàm cuộn sang phải
+    const scrollRight = () => {
+        if (slider) {
+            // Nếu đã cuộn đến kịch kim bên phải -> Quay lại từ đầu
+            if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 10) {
+                slider.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+                slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            }
+        }
+    };
+
+    // 2. Hàm cuộn sang trái
+    const scrollLeft = () => {
+        if (slider) {
+            slider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        }
+    };
+
+    // 3. Gắn sự kiện cho nút bấm
+    if (btnNext) btnNext.addEventListener('click', () => {
+        scrollRight();
+        resetAutoSlide(); // Khi người dùng tự bấm thì reset bộ đếm thời gian
+    });
+    
+    if (btnPrev) btnPrev.addEventListener('click', () => {
+        scrollLeft();
+        resetAutoSlide();
+    });
+
+    // 4. Thiết lập Tự động trượt (Auto Slide) mỗi 5 giây
+    function startAutoSlide() {
+        autoSlideInterval = setInterval(scrollRight, 5000);
+    }
+
+    function resetAutoSlide() {
+        clearInterval(autoSlideInterval);
+        startAutoSlide(); // Bắt đầu đếm lại 5 giây
+    }
+
+    // Tạm dừng tự động trượt khi rê chuột vào khu vực sản phẩm
+    if (slider) {
+        slider.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+        slider.addEventListener('mouseleave', startAutoSlide);
+        
+        // Khởi động khi load trang
+        startAutoSlide();
+    }
 });

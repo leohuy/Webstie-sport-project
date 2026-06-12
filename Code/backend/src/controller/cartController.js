@@ -9,12 +9,12 @@ export const addToCart = async (req, res) => {
         const { maBienThe, soLuong = 1 } = req.body;
 
         // Tìm hoặc Tạo Giỏ Hàng cho User này
-        let [carts] = await db.query('SELECT MaGioHang FROM GIOHANG WHERE MaNguoiDung = ?', [userId]);
+        let [carts] = await db.query('SELECT MaGioHang FROM giohang WHERE MaNguoiDung = ?', [userId]);
         let maGioHang;
 
         if (carts.length === 0) {
             // Nếu chưa có, tạo giỏ hàng mới
-            const [newCart] = await db.query('INSERT INTO GIOHANG (MaNguoiDung) VALUES (?)', [userId]);
+            const [newCart] = await db.query('INSERT INTO giohang (MaNguoiDung) VALUES (?)', [userId]);
             maGioHang = newCart.insertId;
         } else {
             maGioHang = carts[0].MaGioHang;
@@ -22,20 +22,20 @@ export const addToCart = async (req, res) => {
 
         // Kiểm tra xem Biến thể sản phẩm này đã có trong Chi tiết giỏ hàng chưa
         const [cartItems] = await db.query(
-            'SELECT * FROM CHITIET_GIOHANG WHERE MaGioHang = ? AND MaBienThe = ?',
+            'SELECT * FROM chitiet_giohang WHERE MaGioHang = ? AND MaBienThe = ?',
             [maGioHang, maBienThe]
         );
 
         if (cartItems.length > 0) {
             // Đã có -> Tăng số lượng
             await db.query(
-                'UPDATE CHITIET_GIOHANG SET SoLuong = SoLuong + ? WHERE MaChiTietGH = ?',
+                'UPDATE chitiet_giohang SET SoLuong = SoLuong + ? WHERE MaChiTietGH = ?',
                 [soLuong, cartItems[0].MaChiTietGH]
             );
         } else {
             // Chưa có -> Thêm mới
             await db.query(
-                'INSERT INTO CHITIET_GIOHANG (MaGioHang, MaBienThe, SoLuong) VALUES (?, ?, ?)',
+                'INSERT INTO chitiet_giohang (MaGioHang, MaBienThe, SoLuong) VALUES (?, ?, ?)',
                 [maGioHang, maBienThe, soLuong]
             );
         }
@@ -56,11 +56,11 @@ export const getCart = async (req, res) => {
         const sql = `
             SELECT ct.MaChiTietGH, ct.SoLuong, bt.KichCo, bt.GiaBan, 
                    sp.TenSanPham, sp.HinhAnhChinh, th.TenThuongHieu
-            FROM GIOHANG gh
-            JOIN CHITIET_GIOHANG ct ON gh.MaGioHang = ct.MaGioHang
-            JOIN BIENTHE_SANPHAM bt ON ct.MaBienThe = bt.MaBienThe
-            JOIN SANPHAM sp ON bt.MaSanPham = sp.MaSanPham
-            LEFT JOIN THUONGHIEU th ON sp.MaThuongHieu = th.MaThuongHieu
+            FROM giohang gh
+            JOIN chitiet_giohang ct ON gh.MaGioHang = ct.MaGioHang
+            JOIN bienthe_sanpham bt ON ct.MaBienThe = bt.MaBienThe
+            JOIN sanpham sp ON bt.MaSanPham = sp.MaSanPham
+            LEFT JOIN thuonghieu th ON sp.MaThuongHieu = th.MaThuongHieu
             WHERE gh.MaNguoiDung = ?
         `;
         const [cartItems] = await db.query(sql, [userId]);
@@ -75,7 +75,7 @@ export const getCart = async (req, res) => {
 export const updateCartItem = async (req, res) => {
     try {
         const { maChiTietGH, soLuong } = req.body;
-        await db.query('UPDATE CHITIET_GIOHANG SET SoLuong = ? WHERE MaChiTietGH = ?', [soLuong, maChiTietGH]);
+        await db.query('UPDATE chitiet_giohang SET SoLuong = ? WHERE MaChiTietGH = ?', [soLuong, maChiTietGH]);
         res.status(200).json({ message: 'Đã cập nhật số lượng' });
     } catch (error) {
         res.status(500).json({ message: 'Lỗi server' });
@@ -86,7 +86,7 @@ export const updateCartItem = async (req, res) => {
 export const removeCartItem = async (req, res) => {
     try {
         const { maChiTietGH } = req.params;
-        await db.query('DELETE FROM CHITIET_GIOHANG WHERE MaChiTietGH = ?', [maChiTietGH]);
+        await db.query('DELETE FROM chitiet_giohang WHERE MaChiTietGH = ?', [maChiTietGH]);
         res.status(200).json({ message: 'Đã xóa sản phẩm khỏi giỏ' });
     } catch (error) {
         res.status(500).json({ message: 'Lỗi server' });

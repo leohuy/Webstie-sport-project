@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Sản Phẩm - Admin SportFlex</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    </style>
+</head>
+    <script src="../../Js/protectRole.js"></script>
+<body class="bg-gray-50 text-gray-800 font-sans h-screen flex overflow-hidden">
+
+    <aside class="w-64 bg-slate-900 text-white flex flex-col transition-all duration-300 z-20 flex-shrink-0 hidden lg:flex shadow-2xl">
+        <div class="h-16 flex items-center px-6 border-b border-gray-800 bg-slate-950">
+            <a href="dashboardAdmin.html" class="flex items-center gap-2 text-blue-500 hover:text-blue-400 transition">
+                <i data-lucide="activity" class="w-8 h-8"></i>
+                <span class="text-xl font-black italic tracking-wider text-white">SPORTFLEX</span>
+            </a>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto py-6 px-3 space-y-1 custom-scrollbar">
+            <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-2 px-3 mt-2">Giao diện Admin</div>
+            <a href="dashboardAdmin.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium">
+                <i data-lucide="line-chart" class="w-5 h-5"></i> Thống kê Doanh thu
+            </a>
+
+            <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-6 mb-2 px-3">Quản Lý Sản Phẩm</div>
+            <a href="uploadProduct.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium">
+                <i data-lucide="upload-cloud" class="w-5 h-5 text-green-400"></i> Đăng tải Sản phẩm
+            </a>
+            <a href="productListAdmin.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-white bg-blue-600 shadow-lg font-semibold transition text-sm">
+                <i data-lucide="package-search" class="w-5 h-5"></i> Danh sách Sản phẩm
+            </a>
+            <a href="inventoryManagement.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium">
+                <i data-lucide="box" class="w-5 h-5"></i> Quản lý Tồn kho
+            </a>
+            
+            <div class="relative group cursor-pointer">
+                <div class="flex items-center justify-between px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="layers" class="w-5 h-5 text-orange-400"></i> Quản lý Cấu trúc
+                    </div>
+                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180"></i>
+                </div>
+                <div class="hidden group-hover:block pl-11 pr-3 py-1 space-y-1 pb-2 transition-all">
+                    <a href="categoryManagement.html" class="block py-2 px-3 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition">Danh mục SP</a>
+                    <a href="brandManagement.html" class="block py-2 px-3 text-sm text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition">Thương hiệu</a>
+                </div>
+            </div>
+
+            <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-6 mb-2 px-3">Bán Hàng</div>
+            <a href="orderManagement.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium">
+                <i data-lucide="shopping-cart" class="w-5 h-5"></i> Quản lý Đơn hàng
+            </a>
+
+            <div class="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-6 mb-2 px-3">Quản Lý Người Dùng</div>
+            <a href="userManagement.html" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium">
+                <i data-lucide="users" class="w-5 h-5 text-purple-400"></i> Tài khoản Người dùng
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-gray-800 bg-slate-950">
+            <div class="flex items-center gap-3 mb-4">
+                <img id="sidebar-avatar" src="https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff&bold=true" class="w-10 h-10 rounded-xl border border-gray-700 shadow-sm">
+                <div class="overflow-hidden">
+                    <p id="sidebar-name" class="text-sm font-bold text-white truncate">Đang tải...</p>
+                    <p id="sidebar-role" class="text-[11px] font-bold text-blue-400 uppercase tracking-wider truncate">SUPER ADMIN</p>
+                </div>
+            </div>
+            <button onclick="logoutAdmin()" class="w-full flex items-center justify-center gap-2 px-3 py-2 bg-gray-800 hover:bg-red-600 hover:text-white text-gray-300 rounded-lg transition text-sm font-semibold">
+                <i data-lucide="power" class="w-4 h-4"></i> Đăng xuất
+            </button>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
+        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-10 flex-shrink-0 shadow-sm">
+            <div class="flex items-center gap-4">
+                <button class="lg:hidden text-gray-500 hover:text-blue-600"><i data-lucide="menu" class="w-6 h-6"></i></button>
+                <h1 class="text-xl font-bold text-gray-800 hidden sm:block">Danh Sách Sản Phẩm</h1>
+            </div>
+            <a href="uploadProduct.html" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
+                <i data-lucide="plus" class="w-4 h-4"></i> Thêm mới
+            </a>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-slate-50">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                
+                <div class="p-6 border-b border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4 bg-white">
+                    <div class="relative w-full md:w-96">
+                        <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4"></i>
+                        <input type="text" id="search-input" onkeyup="if(event.key==='Enter') renderProductTable()" placeholder="Nhập tên sản phẩm hoặc mã SP..." class="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-500 transition-all">
+                    </div>
+                    <button onclick="loadProducts()" class="bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 py-2.5 rounded-lg text-sm font-bold transition flex items-center gap-2">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i> Làm mới
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
+                        <thead class="bg-gray-50/50 text-xs font-black text-gray-500 uppercase tracking-widest border-b border-gray-100">
+                            <tr>
+                                <th class="px-6 py-4">Mã SP</th>
+                                <th class="px-6 py-4">Sản Phẩm</th>
+                                <th class="px-6 py-4">Phân Loại</th>
+                                <th class="px-6 py-4 text-right">Giá Bán (Từ)</th>
+                                <th class="px-6 py-4 text-center">Trạng Thái</th>
+                                <th class="px-6 py-4 text-right">Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product-tbody" class="divide-y divide-gray-100">
+                            <tr><td colspan="6" class="p-10 text-center text-gray-500"><i data-lucide="loader-2" class="w-8 h-8 animate-spin mx-auto text-blue-600 mb-2"></i>Đang tải dữ liệu...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="p-6 border-t border-gray-100 flex justify-between items-center bg-gray-50/30">
+                    <p id="total-text" class="text-xs font-bold text-gray-400 uppercase tracking-widest">Hiển thị 0 sản phẩm</p>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center text-[11px] font-black text-gray-400 uppercase tracking-[0.2em]">
+                &copy; 2026 SportFlex Management System. Designed for Team 10.
+            </div>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function formatMoney(amount) {
+            if(!amount) return "Chưa cập nhật";
+            return parseInt(amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " ₫";
+        }
+
+          function logoutAdmin() {
+            localStorage.clear();
+            window.location.href = "../auth.html"; 
+        }
+
+        let productData = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            if(userInfo) {
+                document.getElementById('sidebar-name').innerText = userInfo.hoTen || 'Quản trị viên';
+                document.getElementById('sidebar-role').innerText = userInfo.vaiTro === 'admin' ? 'SUPER ADMIN' : 'STAFF';
+                document.getElementById('sidebar-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userInfo.hoTen || 'A')}&background=0D8ABC&color=fff&bold=true`;
+            }
+            loadProducts();
+        });
+
+        function logoutAdmin() { localStorage.clear(); window.location.href = "../../index.html"; }
+
+        // 1. TẢI DỮ LIỆU TỪ BACKEND
+        async function loadProducts() {
+            const tbody = document.getElementById('product-tbody');
+            const token = localStorage.getItem('token');
+            if(!token) { window.location.href = '../../index.html'; return; }
+
+            tbody.innerHTML = '<tr><td colspan="6" class="p-10 text-center text-gray-500"><i data-lucide="loader-2" class="w-8 h-8 animate-spin mx-auto text-blue-600 mb-2"></i>Đang tải dữ liệu...</td></tr>';
+            lucide.createIcons();
+
+            try {
+                const response = await fetch('http://localhost:8080/api/admin/products', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const result = await response.json();
+
+                if(response.ok) {
+                    productData = result.data;
+                    renderProductTable();
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="6" class="p-10 text-center text-red-500">Lỗi lấy dữ liệu</td></tr>';
+                }
+            } catch(error) {
+                tbody.innerHTML = '<tr><td colspan="6" class="p-10 text-center text-red-500">Lỗi máy chủ</td></tr>';
+            }
+        }
+
+        // 2. VẼ BẢNG SẢN PHẨM & TÌM KIẾM
+        function renderProductTable() {
+            const tbody = document.getElementById('product-tbody');
+            const keyword = document.getElementById('search-input').value.toLowerCase();
+
+            const filteredData = productData.filter(p => 
+                p.TenSanPham.toLowerCase().includes(keyword) || 
+                p.MaSanPham.toString() === keyword
+            );
+
+            document.getElementById('total-text').innerText = `Hiển thị ${filteredData.length} sản phẩm`;
+            tbody.innerHTML = '';
+
+            if(filteredData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="p-10 text-center text-gray-500">Không tìm thấy sản phẩm nào!</td></tr>';
+                return;
+            }
+
+            filteredData.forEach(p => {
+                const imgUrl = p.HinhAnhChinh.startsWith('http') ? p.HinhAnhChinh : `../assets/images/${p.HinhAnhChinh}`;
+                
+                
+                // Nút trạng thái
+                const statusBadge = p.TrangThai === 'HoatDong' 
+                    ? `<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-black uppercase">Đang bán</span>`
+                    : `<span class="bg-gray-200 text-gray-600 px-3 py-1 rounded-full text-[10px] font-black uppercase">Đã Ẩn</span>`;
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-blue-50/30 transition-colors">
+                        <td class="px-6 py-4 font-bold text-gray-900">#SP${p.MaSanPham}</td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <img src="${imgUrl}" onerror="this.src='https://via.placeholder.com/100?text=No+Img'" class="w-12 h-12 object-cover rounded-lg bg-gray-100 border border-gray-200">
+                                <div>
+                                    <div class="font-bold text-gray-800 w-48 lg:w-64 truncate" title="${p.TenSanPham}">${p.TenSanPham}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="font-semibold text-gray-700">${p.TenDanhMuc || 'Khác'}</div>
+                            <div class="text-xs font-bold text-blue-600 mt-0.5">${p.TenThuongHieu || ''}</div>
+                        </td>
+                        <td class="px-6 py-4 text-right font-black text-blue-600">
+                            ${formatMoney(p.GiaThapNhat)}
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            ${statusBadge}
+                        </td>
+                        <td class="px-6 py-4 text-right space-x-3">
+                            <button onclick="alert('Chức năng Chỉnh sửa đang được phát triển!')" class="text-blue-600 hover:text-blue-800 transition" title="Chỉnh sửa"><i data-lucide="edit" class="w-5 h-5 inline"></i></button>
+                            <button onclick="alert('Chức năng Xóa đang được phát triển!')" class="text-gray-400 hover:text-red-600 transition" title="Xóa/Ẩn"><i data-lucide="trash-2" class="w-5 h-5 inline"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+            lucide.createIcons();
+        }
+    </script>
+     <script>
+        // Load thông tin Sidebar
+        document.addEventListener('DOMContentLoaded', () => {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            if(userInfo) {
+                document.getElementById('sidebar-name').innerText = userInfo.hoTen || 'Quản trị viên';
+                
+                const role = userInfo.vaiTro || userInfo.VaiTro;
+                document.getElementById('sidebar-role').innerText = role === 'Admin' || role === 'admin' ? 'SUPER ADMIN' : 'QUẢN LÝ KHO';
+                
+                // NẾU LÀ STAFF (NHÂN VIÊN) -> ẨN CÁC MENU QUAN TRỌNG VÀ TIÊU ĐỀ RỖNG
+                if (role === 'NhanVien' || role === 'staff') {
+                    
+                    // 1. Dùng includes để bắt một phần tên file (chống lỗi sai đường dẫn ./ hay /)
+                    const restrictedPaths = ['dashboardAdmin', 'userManagement', 'categoryManagement', 'brandManagement'];
+
+                    document.querySelectorAll('nav a').forEach(link => {
+                        const href = link.getAttribute('href') || '';
+                        // Nếu href chứa 1 trong các từ khóa cấm -> Ẩn thẻ a
+                        if (restrictedPaths.some(path => href.includes(path))) {
+                            link.style.display = 'none';
+                        }
+                    });
+
+                    // 2. Dọn dẹp luôn các Tiêu đề (Header xám) và Group Dropdown
+                    document.querySelectorAll('nav div').forEach(div => {
+                        const text = div.innerText.trim().toUpperCase();
+                        
+                        // Ẩn tiêu đề "GIAO DIỆN ADMIN" vì đã giấu Thống kê
+                        if (text.includes('GIAO DIỆN ADMIN')) {
+                            div.style.display = 'none';
+                        }
+                        
+                        // Ẩn tiêu đề "QUẢN LÝ NGƯỜI DÙNG" vì đã giấu Tài khoản
+                        if (text.includes('QUẢN LÝ NGƯỜI DÙNG')) {
+                            div.style.display = 'none';
+                        }
+                        
+                        // Ẩn an toàn khối Dropdown Cấu trúc
+                        if (text.includes('QUẢN LÝ CẤU TRÚC')) {
+                            const groupParent = div.closest('.group');
+                            if (groupParent) groupParent.style.display = 'none';
+                        }
+                    });
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>

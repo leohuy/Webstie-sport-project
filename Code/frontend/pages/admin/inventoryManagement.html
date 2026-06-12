@@ -23,6 +23,7 @@
         }
     </style>
 </head>
+    <script src="../../Js/protectRole.js"></script>
 
 <body class="bg-gray-50 text-gray-800 font-sans h-screen flex overflow-hidden">
 
@@ -54,9 +55,9 @@
                 <i data-lucide="package-search" class="w-5 h-5"></i> Danh sách Sản phẩm
             </a>
 
-            <a href="QLTonKho.html"
+            <a href="inventoryManagement.html"
                 class="menu-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition text-sm font-medium"
-                data-page="QLTonKho.html">
+                data-page="inventoryManagement.html">
                 <i data-lucide="box" class="w-5 h-5"></i> Quản lý Tồn kho
             </a>
 
@@ -222,16 +223,20 @@
 
         let inventoryData = [];
 
+          function logoutAdmin() {
+            localStorage.clear();
+            window.location.href = "../auth.html"; 
+        }
         async function loadInventory() {
             const tbody = document.getElementById('inventory-tbody');
             const token = localStorage.getItem('token');
-            if (!token) { alert("Vui lòng đăng nhập!"); window.location.href = "index.html"; return; }
+            if (!token) { alert("Vui lòng đăng nhập!"); window.location.href = "../../index.html"; return; }
 
             tbody.innerHTML = '<tr><td colspan="5" class="p-10 text-center text-gray-500"><i data-lucide="loader-2" class="w-8 h-8 animate-spin text-blue-600 mx-auto mb-2"></i>Đang tải dữ liệu...</td></tr>';
             lucide.createIcons();
 
             try {
-                const response = await fetch('http://localhost:3000/api/admin/inventory', {
+                const response = await fetch('http://localhost:8080/api/admin/inventory', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 const result = await response.json();
@@ -393,7 +398,7 @@
 
             const token = localStorage.getItem('token');
             try {
-                const response = await fetch(`http://localhost:3000/api/admin/inventory/${maBienThe}/stock`, {
+                const response = await fetch(`http://localhost:8080/api/admin/inventory/${maBienThe}/stock`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                     body: JSON.stringify({ soLuongMoi: newQty })
@@ -412,6 +417,55 @@
         };
 
         document.addEventListener('DOMContentLoaded', loadInventory);
+    </script>
+    <script>
+        // Load thông tin Sidebar
+        document.addEventListener('DOMContentLoaded', () => {
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            if(userInfo) {
+                document.getElementById('sidebar-name').innerText = userInfo.hoTen || 'Quản trị viên';
+                
+                const role = userInfo.vaiTro || userInfo.VaiTro;
+                document.getElementById('sidebar-role').innerText = role === 'Admin' || role === 'admin' ? 'SUPER ADMIN' : 'QUẢN LÝ KHO';
+                
+                // NẾU LÀ STAFF (NHÂN VIÊN) -> ẨN CÁC MENU QUAN TRỌNG VÀ TIÊU ĐỀ RỖNG
+                if (role === 'NhanVien' || role === 'staff') {
+                    
+                    // 1. Dùng includes để bắt một phần tên file (chống lỗi sai đường dẫn ./ hay /)
+                    const restrictedPaths = ['dashboardAdmin', 'userManagement', 'categoryManagement', 'brandManagement'];
+
+                    document.querySelectorAll('nav a').forEach(link => {
+                        const href = link.getAttribute('href') || '';
+                        // Nếu href chứa 1 trong các từ khóa cấm -> Ẩn thẻ a
+                        if (restrictedPaths.some(path => href.includes(path))) {
+                            link.style.display = 'none';
+                        }
+                    });
+
+                    // 2. Dọn dẹp luôn các Tiêu đề (Header xám) và Group Dropdown
+                    document.querySelectorAll('nav div').forEach(div => {
+                        const text = div.innerText.trim().toUpperCase();
+                        
+                        // Ẩn tiêu đề "GIAO DIỆN ADMIN" vì đã giấu Thống kê
+                        if (text.includes('GIAO DIỆN ADMIN')) {
+                            div.style.display = 'none';
+                        }
+                        
+                        // Ẩn tiêu đề "QUẢN LÝ NGƯỜI DÙNG" vì đã giấu Tài khoản
+                        if (text.includes('QUẢN LÝ NGƯỜI DÙNG')) {
+                            div.style.display = 'none';
+                        }
+                        
+                        // Ẩn an toàn khối Dropdown Cấu trúc
+                        if (text.includes('QUẢN LÝ CẤU TRÚC')) {
+                            const groupParent = div.closest('.group');
+                            if (groupParent) groupParent.style.display = 'none';
+                        }
+                    });
+                }
+            }
+        });
+
     </script>
 </body>
 

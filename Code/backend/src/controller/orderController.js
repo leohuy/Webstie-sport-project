@@ -14,7 +14,7 @@ export const placeOrder = async (req, res) => {
         // 1. KIỂM TRA CHẾ ĐỘ MUA
         if (buyNowItem) {
             // Chế độ "Mua Ngay": Chỉ lấy thông tin của 1 sản phẩm này
-            const [variantInfo] = await db.query('SELECT GiaBan FROM BIENTHE_SANPHAM WHERE MaBienThe = ?', [buyNowItem.maBienThe]);
+            const [variantInfo] = await db.query('SELECT GiaBan FROM bienthe_sanpham WHERE MaBienThe = ?', [buyNowItem.maBienThe]);
             itemsToOrder = [{
                 MaBienThe: buyNowItem.maBienThe,
                 SoLuong: buyNowItem.soLuong,
@@ -25,9 +25,9 @@ export const placeOrder = async (req, res) => {
             // Chế độ "Giỏ Hàng": Lấy toàn bộ từ CSDL như cũ
             const [cartItems] = await db.query(`
                 SELECT ct.MaChiTietGH, ct.SoLuong, bt.GiaBan, bt.MaBienThe
-                FROM GIOHANG gh
-                JOIN CHITIET_GIOHANG ct ON gh.MaGioHang = ct.MaGioHang
-                JOIN BIENTHE_SANPHAM bt ON ct.MaBienThe = bt.MaBienThe
+                FROM giohang gh
+                JOIN chitiet_giohang ct ON gh.MaGioHang = ct.MaGioHang
+                JOIN bienthe_sanpham bt ON ct.MaBienThe = bt.MaBienThe
                 WHERE gh.MaNguoiDung = ?
             `, [userId]);
 
@@ -40,7 +40,7 @@ export const placeOrder = async (req, res) => {
         //const maDiaChi = addrResult.insertId;
         const maTraCuu = 'SFX' + Date.now().toString().slice(-6);
         const [orderResult] = await db.query(
-            'INSERT INTO DONHANG (MaNguoiDung, MaDiaChi, MaTraCuu, TongTien, PhuongThucThanhToan, GhiChu, TrangThaiDonHang) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            'INSERT INTO donhang (MaNguoiDung, MaDiaChi, MaTraCuu, TongTien, PhuongThucThanhToan, GhiChu, TrangThaiDonHang) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [userId, maDiaChi, maTraCuu, tongTien, phuongThucThanhToan, ghiChu, 'ChoXacNhan']
         );
         const maDonHang = orderResult.insertId;
@@ -48,16 +48,16 @@ export const placeOrder = async (req, res) => {
         //  THÊM CHI TIẾT ĐƠN HÀNG
         for (let item of itemsToOrder) {
             await db.query(
-                'INSERT INTO CHITIET_DONHANG (MaDonHang, MaBienThe, SoLuong, GiaLucMua) VALUES (?, ?, ?, ?)',
+                'INSERT INTO chitiet_donhang (MaDonHang, MaBienThe, SoLuong, GiaLucMua) VALUES (?, ?, ?, ?)',
                 [maDonHang, item.MaBienThe, item.SoLuong, item.GiaBan]
             );
         }
 
         //  XÓA GIỎ HÀNG 
         if (!buyNowItem) {
-            const [cart] = await db.query('SELECT MaGioHang FROM GIOHANG WHERE MaNguoiDung = ?', [userId]);
+            const [cart] = await db.query('SELECT MaGioHang FROM giohang WHERE MaNguoiDung = ?', [userId]);
             if (cart.length > 0) {
-                await db.query('DELETE FROM CHITIET_GIOHANG WHERE MaGioHang = ?', [cart[0].MaGioHang]);
+                await db.query('DELETE FROM chitiet_giohang WHERE MaGioHang = ?', [cart[0].MaGioHang]);
             }
         }
 
@@ -75,8 +75,8 @@ export const getUserOrders = async (req, res) => {
         // 1. Lấy danh sách đơn hàng
         const [orders] = await db.query(`
             SELECT dh.*, dc.DiaChiChiTiet 
-            FROM DONHANG dh
-            JOIN DIACHI dc ON dh.MaDiaChi = dc.MaDiaChi
+            FROM donhang dh
+            JOIN diachi dc ON dh.MaDiaChi = dc.MaDiaChi
             WHERE dh.MaNguoiDung = ?
             ORDER BY dh.NgayDat DESC
         `, [userId]);
@@ -86,9 +86,9 @@ export const getUserOrders = async (req, res) => {
         const ordersWithDetails = await Promise.all(orders.map(async (order) => {
             const [details] = await db.query(`
                 SELECT ct.*, sp.TenSanPham, sp.HinhAnhChinh, bt.KichCo
-                FROM CHITIET_DONHANG ct
-                JOIN BIENTHE_SANPHAM bt ON ct.MaBienThe = bt.MaBienThe
-                JOIN SANPHAM sp ON bt.MaSanPham = sp.MaSanPham
+                FROM chitiet_donhang ct
+                JOIN bienthe_sanpham bt ON ct.MaBienThe = bt.MaBienThe
+                JOIN sanpham sp ON bt.MaSanPham = sp.MaSanPham
                 WHERE ct.MaDonHang = ?
             `, [order.MaDonHang]);
 
@@ -103,5 +103,49 @@ export const getUserOrders = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Lỗi server' });
+    }
+};
+
+
+
+// API HỦY ĐƠN HÀNG DÀNH CHO KHÁCH HÀNG
+export const cancelOrder = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { id } = req.params; 
+
+        // 1. Chỉ SELECT đúng cột TrangThaiDonHang
+        const [order] = await db.query(
+            'SELECT TrangThaiDonHang FROM donhang WHERE MaDonHang = ? AND MaNguoiDung = ?', 
+            [id, userId]
+        );
+
+        if (order.length === 0) return res.status(404).json({ message: 'Không tìm thấy đơn hàng của bạn!' });
+        
+        // Kiểm tra trạng thái
+        if (order[0].TrangThaiDonHang !== 'ChoXacNhan') {
+            return res.status(400).json({ message: 'Chỉ có thể hủy đơn hàng khi đang ở trạng thái Chờ xác nhận!' });
+        }
+
+        // 2. Cập nhật trạng thái thành Đã hủy
+        await db.query(
+            "UPDATE donhang SET TrangThaiDonHang = 'DaHuy' WHERE MaDonHang = ?", 
+            [id]
+        );
+
+        // 3. HOÀN TRẢ TỒN KHO: Khách hủy thì phải trả lại số lượng giày vào kho
+        const [items] = await db.query('SELECT MaBienThe, SoLuong FROM chitiet_donhang WHERE MaDonHang = ?', [id]);
+        for(let item of items) {
+            await db.query(
+                'UPDATE bienthe_sanpham SET SoLuongTon = SoLuongTon + ? WHERE MaBienThe = ?', 
+                [item.SoLuong, item.MaBienThe]
+            );
+        }
+
+        res.status(200).json({ message: 'Hủy đơn hàng thành công!' });
+
+    } catch (error) {
+        console.error("Lỗi hủy đơn:", error);
+        res.status(500).json({ message: 'Lỗi server khi hủy đơn hàng' });
     }
 };

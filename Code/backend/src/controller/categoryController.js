@@ -3,7 +3,7 @@ import db from "../config/db.js";
 // api lay danh muc san pham
 export const getAllCategories = async (req, res) => {
     try {
-        const [categories] = await db.query('SELECT * FROM DANHMUC');
+        const [categories] = await db.query('SELECT * FROM danhmuc');
         res.status(200).json({
             message: 'Lấy danh mục thành công',
             data: categories

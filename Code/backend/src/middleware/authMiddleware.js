@@ -29,7 +29,7 @@ export const isAdminOrStaff = (req, res, next) => {
     const { vaiTro } = req.user; // Lấy VaiTro (admin/staff/customer) từ Token
 
     // Nếu vai trò là admin hoặc staff thì cho phép đi tiếp (gọi hàm next)
-    if (vaiTro === 'admin' || vaiTro === 'staff') {
+    if (vaiTro === 'Admin' || vaiTro === 'NhanVien') {
         next();
     } else {
         // Nếu là khách hàng bình thường (customer) thì chặn lại ngay

@@ -1,19 +1,44 @@
 import express from "express";
-import { getAdminOrders, updateOrderStatus } from "../controller/adminOrderController.js";
+import { getAdminOrders, updateOrderStatus , getOrderDetails } from "../controller/adminOrderController.js";
 import { verifyToken } from "../middleware/authMiddleware.js"; 
 import { isAdminOrStaff } from "../middleware/authMiddleware.js";
 import { getInventory, updateStock } from "../controller/inventoryController.js";
+import { getDashboardStats } from "../controller/dashboardController.js";
+import { getCategories, createCategory, getBrands, createBrand } from "../controller/categoryBrandController.js";
+import { createProduct, getProducts, getProductDetailPublic } from "../controller/adminProductController.js";
+import { getAllUsers, updateUserRole, toggleUserStatus } from "../controller/adminUserController.js";
 const router = express.Router();
 
-// router.get('/orders', verifyToken, isAdminOrStaff, getAdminOrders);
-// router.put('/orders/:id/status', verifyToken, isAdminOrStaff, updateOrderStatus);
-// router.get('/inventory', verifyToken, isAdminOrStaff, getInventory);
-// router.put('/inventory/:maBienThe/stock', verifyToken, isAdminOrStaff, updateStock);
-
-
-
-router.get('/orders',  getAdminOrders);
-router.put('/orders/:id/status' ,updateOrderStatus);
-router.get('/inventory',  getInventory);
-router.put('/inventory/:maBienThe/stock', updateStock);
+router.get('/orders', verifyToken, isAdminOrStaff, getAdminOrders);
+router.put('/orders/:id/status', verifyToken, isAdminOrStaff, updateOrderStatus);
+router.get('/inventory', verifyToken, isAdminOrStaff, getInventory);
+router.put('/inventory/:maBienThe/stock', verifyToken, isAdminOrStaff, updateStock);
+router.get('/dashboard', verifyToken, isAdminOrStaff, getDashboardStats);
+router.get('/categories', verifyToken, isAdminOrStaff, getCategories);
+router.post('/categories', verifyToken, isAdminOrStaff, createCategory);
+router.get('/brands', verifyToken, isAdminOrStaff, getBrands);
+router.post('/brands', verifyToken, isAdminOrStaff, createBrand);
+router.post('/products', verifyToken, isAdminOrStaff, createProduct);
+router.get('/products', verifyToken, isAdminOrStaff, getProducts);
+router.get('/users', verifyToken, isAdminOrStaff, getAllUsers);
+router.put('/users/:id/role', verifyToken, isAdminOrStaff, updateUserRole);
+router.put('/users/:id/status', verifyToken, isAdminOrStaff, toggleUserStatus);
+router.get('/orders/:id', verifyToken, isAdminOrStaff, getOrderDetails);
+router.get('/dashboard/stats', verifyToken, isAdminOrStaff, getDashboardStats);
+// router.get('/orders',  getAdminOrders);
+// router.put('/orders/:id/status' ,updateOrderStatus);
+// router.get('/inventory',  getInventory);
+// router.put('/inventory/:maBienThe/stock', updateStock);
+// router.get('/dashboard', getDashboardStats);
+// router.get('/categories',  getCategories);
+// router.post('/categories', createCategory);
+// router.get('/brands',  getBrands);
+// router.post('/brands', createBrand);
+// router.post('/products', createProduct);
+// router.get('/products', getProducts);
+// router.get('/users',  getAllUsers);
+// router.put('/users/:id/role', updateUserRole);
+// router.put('/users/:id/status',  toggleUserStatus);
+// router.get('/orders/:id', getOrderDetails);
+// router.get('/products/:id', getProductDetailPublic);
 export default router;

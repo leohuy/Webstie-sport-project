@@ -6,6 +6,18 @@
             toast.classList.remove('translate-x-full');
             setTimeout(() => toast.classList.add('translate-x-full'), 3000);
         }
+
+function isPagesSection() {
+    return /[\\/]pages[\\/]/.test(window.location.pathname);
+}
+
+function getPageLink(pagePath) {
+    return isPagesSection() ? pagePath : `pages/${pagePath}`;
+}
+
+function getImagePath(fileName) {
+    return isPagesSection() ? `../assets/images/${fileName}` : `assets/images/${fileName}`;
+}
 // goi api dang nhap va dang ky
 async function handleAuth(event, type) {
     event.preventDefault();
@@ -21,7 +33,7 @@ async function handleAuth(event, type) {
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
 
-            const response = await fetch('http://localhost:3000/api/auth/login', {
+            const response = await fetch('http://localhost:8080/api/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: email, matKhau: password })
@@ -31,12 +43,28 @@ async function handleAuth(event, type) {
 
             if (response.ok) {
                 showToast("Đăng nhập thành công!", "success");
+                
                 // Lưu Token vào LocalStorage theo đúng yêu cầu đồ án
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('userInfo', JSON.stringify(data.user));
 
-                // Chuyển hướng sau 1.5 giây
-                setTimeout(() => window.location.href = 'Home.html', 1500);
+                // 🌟 LOGIC MỚI: KIỂM TRA QUYỀN VÀ CHUYỂN TRANG
+                setTimeout(() => {
+                    const role = data.user.vaiTro; // Lấy quyền từ thông tin user (đề phòng viết hoa/thường)
+                    if (role === 'Admin') {
+                        // Nếu là Super Admin (Thanh Huy) -> Bay vào trang Dashboard thống kê
+                        window.location.href = 'admin/dashboardAdmin.html';
+                    } 
+                    else if (role === 'NhanVien') {
+                        // Nếu là Nhân viên (Đạt) -> Bay vào trang Quản lý đơn hàng (Hoặc QLTonKho)
+                        window.location.href = 'admin/orderManagement.html'; 
+                    } 
+                    else {
+                        // Nếu là Khách hàng bình thường -> Bay ra trang chủ mua sắm
+                        window.location.href = '../index.html';
+                    }
+                }, 1500);
+
             } else {
                 showToast(data.message || "Sai tài khoản hoặc mật khẩu!", "error");
             }
@@ -57,7 +85,7 @@ async function handleAuth(event, type) {
                 return;
             }
 
-            const response = await fetch('http://localhost:3000/api/auth/register', {
+            const response = await fetch('http://localhost:8080/api/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -98,47 +126,51 @@ async function loadHomepageData() {
     if (!categoryList || !bestsellerList) return;
 
     try {
-        //  Fetch Danh Mục
-        const catRes = await fetch('http://localhost:3000/api/categories');
+        // --- 1. FETCH DANH MỤC VÀ GẮN LINK ĐIỀU HƯỚNG ---
+        const catRes = await fetch('http://localhost:8080/api/categories');
         const catResult = await catRes.json();
 
         if (catRes.ok) {
-            categoryList.innerHTML = ''; // Xóa rỗng
+            categoryList.innerHTML = ''; 
             catResult.data.forEach(cat => {
-                // Tùy biến icon theo tên danh mục
                 let icon = 'ph-sneaker';
                 if (cat.TenDanhMuc.includes('Tạ')) icon = 'ph-barbell';
                 if (cat.TenDanhMuc.includes('Áo')) icon = 'ph-t-shirt';
                 if (cat.TenDanhMuc.includes('Vợt')) icon = 'ph-tennis-ball';
                 if (cat.TenDanhMuc.includes('Balo')) icon = 'ph-backpack';
 
+                // Thay thẻ <div class="... group"> bằng thẻ <a href="...">
                 categoryList.innerHTML += `
-                    <div class="flex flex-col items-center gap-3 cursor-pointer group">
-                        <div class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden p-1 border-2 border-transparent group-hover:border-blue-500 transition-colors flex items-center justify-center bg-gray-100">
+                    <a href="${getPageLink(`ProductList.html?danhMuc=${cat.MaDanhMuc}`)}" class="flex flex-col items-center gap-3 cursor-pointer group">
+                        <div class="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden p-1 border-2 border-transparent group-hover:border-blue-500 transition-colors flex items-center justify-center bg-gray-100 shadow-sm">
                             <i class="ph ${icon} text-5xl text-gray-400 group-hover:text-blue-500 transition"></i>
                         </div>
                         <span class="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition">${cat.TenDanhMuc}</span>
-                    </div>
+                    </a>
                 `;
             });
         }
 
-        // Fetch Sản Phẩm Bán Chạy
-        const prodRes = await fetch('http://localhost:3000/api/products/best-sellers');
+        // --- 2. FETCH SẢN PHẨM BÁN CHẠY VÀ CHUẨN BỊ CHO SLIDER ---
+        const prodRes = await fetch('http://localhost:8080/api/products/best-sellers');
         const prodResult = await prodRes.json();
 
         if (prodRes.ok) {
-            bestsellerList.innerHTML = ''; // Xóa rỗng
-            prodResult.data.forEach(product => {
-                const priceFormatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.GiaMacDinh);
+            bestsellerList.innerHTML = ''; 
+            
+            // Lấy tối đa 10 sản phẩm để trượt cho mượt
+            const products = prodResult.data.slice(0, 10);
 
+            products.forEach(product => {
+                const priceFormatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.GiaMacDinh);
+                
                 bestsellerList.innerHTML += `
-                    <div class="border border-gray-100 rounded-2xl p-4 bg-white hover:shadow-xl hover:border-blue-100 transition-all duration-300 flex flex-col group">
+                    <div class="w-[220px] sm:w-[260px] shrink-0 snap-start border border-gray-100 rounded-2xl p-4 bg-white hover:shadow-xl hover:border-blue-100 transition-all duration-300 flex flex-col group">
                         
-                        <a href="ProductDetail.html?id=${product.MaSanPham}" class="block cursor-pointer">
+                        <a href="${getPageLink(`ProductDetail.html?id=${product.MaSanPham}`)}" class="block cursor-pointer">
                             <div class="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-50 mb-4 flex items-center justify-center">
-                                <span class="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded">HOT</span>
-                                <img src="./assets/images/${product.HinhAnhChinh}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'" class="w-[80%] object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500">
+                                <span class="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded z-10">HOT</span>
+                                <img src="${getImagePath(product.HinhAnhChinh)}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'" class="w-[80%] object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500">
                             </div>
                             <div class="flex items-center gap-1 text-yellow-400 text-xs mb-2">
                                 <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
@@ -155,10 +187,52 @@ async function loadHomepageData() {
                     </div>
                 `;
             });
+
+            // Sau khi đổ HTML xong, lập tức kích hoạt tính năng trượt (Slider)
+            initBestSellerSlider(); 
         }
     } catch (error) {
         console.error("Lỗi khi fetch dữ liệu trang chủ:", error);
     }
+}
+
+// --- 3. HÀM ĐIỀU KHIỂN SLIDER (Chạy tự động sau 5s & Bấm nút) ---
+function initBestSellerSlider() {
+    const slider = document.getElementById('bestseller-list');
+    const btnPrev = document.getElementById('bs-prev'); // Bắt buộc phải có id="bs-prev" ở trang Home
+    const btnNext = document.getElementById('bs-next'); // Bắt buộc phải có id="bs-next" ở trang Home
+    
+    if (!slider) return;
+
+    // Kích thước 1 thẻ (260px) + Gap (24px) = Cuộn khoảng 284px mỗi lần bấm
+    const scrollAmount = 284; 
+    let autoSlideInterval;
+
+    const scrollRight = () => {
+        if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 10) {
+            slider.scrollTo({ left: 0, behavior: 'smooth' }); // Quay về đầu
+        } else {
+            slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
+    };
+
+    const scrollLeft = () => {
+        slider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    };
+
+    // Sự kiện Click nút
+    if (btnNext) btnNext.addEventListener('click', () => { scrollRight(); resetAutoSlide(); });
+    if (btnPrev) btnPrev.addEventListener('click', () => { scrollLeft(); resetAutoSlide(); });
+
+    // Hàm tự động trượt
+    function startAutoSlide() { autoSlideInterval = setInterval(scrollRight, 5000); }
+    function resetAutoSlide() { clearInterval(autoSlideInterval); startAutoSlide(); }
+
+    // Rê chuột vào sản phẩm thì dừng trượt
+    slider.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+    slider.addEventListener('mouseleave', startAutoSlide);
+
+    startAutoSlide(); // Bắt đầu chạy ngay khi Load xong
 }
 
 // // qpi lay danh sach san pham (productlist.html)
@@ -174,7 +248,7 @@ async function loadHomepageData() {
 
     //     try {
     //         // Gửi yêu cầu GET lên Backend Node.js
-    //         const response = await fetch('http://localhost:3000/api/products');
+    //         const response = await fetch('http://localhost:8080/api/products');
     //         const result = await response.json();
 
     //         if (response.ok) {
@@ -225,7 +299,7 @@ async function fetchAndRenderProducts() {
         const danhMucId = urlParams.get('danhMuc'); // Sẽ lấy ra được số '1', '2' hoặc null
 
         // Nối tham số vào link API gửi cho Backend
-        let apiUrl = 'http://localhost:3000/api/products';
+        let apiUrl = 'http://localhost:8080/api/products';
         if (danhMucId) {
             apiUrl += `?danhMuc=${danhMucId}`;
         }
@@ -256,9 +330,9 @@ async function fetchAndRenderProducts() {
               const productCard = `
                     <div class="border border-gray-100 rounded-2xl p-4 bg-white hover:shadow-xl hover:border-blue-100 transition-all duration-300 flex flex-col group">
                         
-                        <a href="ProductDetail.html?id=${product.MaSanPham}" class="block cursor-pointer">
+                        <a href="${getPageLink(`ProductDetail.html?id=${product.MaSanPham}`)}" class="block cursor-pointer">
                             <div class="relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-50 mb-4 flex items-center justify-center">
-                                <img src="../assets/images/${product.HinhAnhChinh}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'" class="w-[85%] object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500 drop-shadow-xl">
+                                <img src="${getImagePath(product.HinhAnhChinh)}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'" class="w-[85%] object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-500 drop-shadow-xl">
                             </div>
                             <h3 class="font-bold text-gray-800 text-sm mb-1 line-clamp-2 group-hover:text-blue-600 transition">${product.TenSanPham}</h3>
                         </a>
@@ -280,43 +354,7 @@ async function fetchAndRenderProducts() {
         console.error("Lỗi khi fetch sản phẩm:", error);
     }
 }
-// them san pham vao gio hang 
-async function addToCart(maBienThe) {
-    const token = localStorage.getItem('token');
 
-    // Kiểm tra đăng nhập
-    if (!token) {
-        showToast("Vui lòng đăng nhập để mua hàng!", "error");
-        setTimeout(() => window.location.href = 'auth.html', 1500);
-        return;
-    }
-
-    try {
-        const response = await fetch('http://localhost:3000/api/cart/add', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // <--- ĐÍNH KÈM TOKEN Ở ĐÂY
-            },
-            body: JSON.stringify({
-                maBienThe: maBienThe,
-                soLuong: 1
-            })
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            showToast(data.message, "success");
-        
-        } else {
-            showToast(data.message, "error");
-        }
-    } catch (error) {
-        console.error("Lỗi khi thêm giỏ hàng:", error);
-        showToast("Không thể kết nối đến máy chủ!", "error");
-    }
-}
 
 
 // Kích hoạt hàm ngay khi trang web tải xong nội dung

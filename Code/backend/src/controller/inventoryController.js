@@ -7,9 +7,9 @@ export const getInventory = async (req, res) => {
         const [products] = await db.query(`
             SELECT sp.MaSanPham, sp.TenSanPham, sp.HinhAnhChinh, sp.TrangThai, 
                    dm.TenDanhMuc, th.TenThuongHieu
-            FROM SANPHAM sp
-            LEFT JOIN DANHMUC dm ON sp.MaDanhMuc = dm.MaDanhMuc
-            LEFT JOIN THUONGHIEU th ON sp.MaThuongHieu = th.MaThuongHieu
+            FROM sanpham sp
+            LEFT JOIN danhmuc dm ON sp.MaDanhMuc = dm.MaDanhMuc
+            LEFT JOIN thuonghieu th ON sp.MaThuongHieu = th.MaThuongHieu
             ORDER BY sp.MaSanPham DESC
         `);
 
@@ -17,7 +17,7 @@ export const getInventory = async (req, res) => {
         const inventoryData = await Promise.all(products.map(async (product) => {
             const [variants] = await db.query(`
                 SELECT MaBienThe, KichCo, SoLuongTon, GiaBan 
-                FROM BIENTHE_SANPHAM 
+                FROM bienthe_sanpham 
                 WHERE MaSanPham = ?
             `, [product.MaSanPham]);
 
@@ -53,7 +53,7 @@ export const updateStock = async (req, res) => {
         }
 
         await db.query(
-            'UPDATE BIENTHE_SANPHAM SET SoLuongTon = ? WHERE MaBienThe = ?',
+            'UPDATE bienthe_sanpham SET SoLuongTon = ? WHERE MaBienThe = ?',
             [soLuongMoi, maBienThe]
         );
 

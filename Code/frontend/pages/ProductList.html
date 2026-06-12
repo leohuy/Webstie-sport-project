@@ -8,7 +8,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
-
 <body>
     <div class="bg-slate-900 text-white text-xs py-2 px-4 md:px-8 flex justify-between items-center">
         <div class="flex items-center gap-2">
@@ -22,7 +21,7 @@
     </div>
 
     <header class="py-4 px-4 md:px-8 max-w-7xl mx-auto flex justify-between items-center bg-white">
-        <a href="Home.html" class="flex items-center gap-2 text-2xl font-black text-blue-600 italic tracking-tighter">
+        <a href="../index.html" class="flex items-center gap-2 text-2xl font-black text-blue-600 italic tracking-tighter">
             <i class="ph-fill ph-activity text-3xl"></i>
             SPORTFLEX
         </a>
@@ -44,7 +43,8 @@
             <a href="cart.html" class="relative cursor-pointer hover:text-blue-600 transition">
                 <i class="ph ph-shopping-bag text-2xl"></i>
                 <span
-                    class="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white">3</span>
+                    id="cart-count"
+                    class="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-white"></span>
             </a>
             <a href="profile.html" class="cursor-pointer hover:text-blue-600 transition">
                 <i class="ph ph-user text-2xl"></i>
@@ -55,7 +55,7 @@
     <nav>
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <ul class="flex justify-center gap-8 text-sm font-semibold text-gray-600 pb-4">
-                <li><a href="Home.html" class="nav-item hover:text-blue-600 transition pb-1">Trang Chủ</a></li>
+                <li><a href="../index.html" class="nav-item hover:text-blue-600 transition pb-1">Trang Chủ</a></li>
                 <li><a href="ProductList.html?danhMuc=1" data-id="1"
                         class="nav-item hover:text-blue-600 transition pb-1">Giày Thể Thao</a></li>
                 <li><a href="ProductList.html?danhMuc=2" data-id="2"
@@ -75,7 +75,7 @@
 
         <div class="mb-8">
             <div class="flex items-center gap-2 text-sm text-gray-500 mb-4">
-                <a href="index.html" class="hover:text-blue-600 transition">Trang chủ</a>
+                <a href="../index.html" class="hover:text-blue-600 transition">Trang chủ</a>
                 <i class="ph-bold ph-caret-right text-xs"></i>
                 <a href="#" class="hover:text-blue-600 transition" id="bread-cat">Danh mục</a>
                 <i class="ph-bold ph-caret-right text-xs"></i>
@@ -389,7 +389,7 @@
 
             // 2. Fetch API
             try {
-                const response = await fetch(`http://localhost:3000/api/products?${queryParams.toString()}`);
+                const response = await fetch(`http://localhost:8080/api/products?${queryParams.toString()}`);
                 const result = await response.json();
                 loader.classList.add('hidden');
 
@@ -442,7 +442,9 @@
             applyFilters();
         });
     </script>
+    <script src="../Js/api.js"></script>
     <script src="../Js/main.js"></script>
+    <script src="../Js/cart.js"></script>
 </body>
 
 </html>

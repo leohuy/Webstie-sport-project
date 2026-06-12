@@ -12,4 +12,5 @@ router.get('/', verifyToken, getCart);
 router.put('/update', verifyToken, updateCartItem);
 // api xóa sản phẩm khỏi giỏ hàng
 router.delete('/remove/:maChiTietGH', verifyToken, removeCartItem);
+
 export default router;

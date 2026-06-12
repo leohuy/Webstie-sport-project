@@ -5,7 +5,7 @@ export const getUserAddresses = async (req, res) => {
         const userId = req.user.id; // Lấy ID người dùng từ verifyToken
 
         const [addresses] = await db.query(
-            'SELECT * FROM DIACHI WHERE MaNguoiDung = ? ORDER BY LaMacDinh DESC, MaDiaChi DESC',
+            'SELECT * FROM diachi WHERE MaNguoiDung = ? ORDER BY LaMacDinh DESC, MaDiaChi DESC',
             [userId]
         );
 
@@ -26,7 +26,7 @@ export const addAddress = async (req, res) => {
 
         // Lưu vào bảng DIACHI
         const [result] = await db.query(
-            'INSERT INTO DIACHI (MaNguoiDung, TenNguoiNhan, SoDienThoaiNhan, DiaChiChiTiet, LaMacDinh) VALUES (?, ?, ?, ?, ?)',
+            'INSERT INTO diachi (MaNguoiDung, TenNguoiNhan, SoDienThoaiNhan, DiaChiChiTiet, LaMacDinh) VALUES (?, ?, ?, ?, ?)',
             [userId, tenNguoiNhan, soDienThoai, diaChiChiTiet, true] // Tạm set mặc định là true cho dễ
         );
 
@@ -45,9 +45,9 @@ export const setDefaultAddress = async (req, res) => {
         const { maDiaChi } = req.params;
 
         // Bỏ mặc định tất cả các địa chỉ cũ của user này
-        await db.query('UPDATE DIACHI SET LaMacDinh = 0 WHERE MaNguoiDung = ?', [userId]);
+        await db.query('UPDATE diachi SET LaMacDinh = 0 WHERE MaNguoiDung = ?', [userId]);
         // Set mặc định cho cái mới chọn
-        await db.query('UPDATE DIACHI SET LaMacDinh = 1 WHERE MaDiaChi = ? AND MaNguoiDung = ?', [maDiaChi, userId]);
+        await db.query('UPDATE diachi SET LaMacDinh = 1 WHERE MaDiaChi = ? AND MaNguoiDung = ?', [maDiaChi, userId]);
 
         res.status(200).json({ message: 'Đã cập nhật địa chỉ mặc định!' });
     } catch (error) { res.status(500).json({ message: 'Lỗi server' }); }
@@ -63,7 +63,7 @@ export const updateProfile = async (req, res) => {
 
         // Chạy lệnh SQL để cập nhật vào bảng NGUOIDUNG
         await db.query(
-            'UPDATE NGUOIDUNG SET HoTen = ?, SoDienThoai = ? WHERE MaNguoiDung = ?',
+            'UPDATE nguoidung SET HoTen = ?, SoDienThoai = ? WHERE MaNguoiDung = ?',
             [hoTen, soDienThoai, userId]
         );
 
@@ -71,5 +71,17 @@ export const updateProfile = async (req, res) => {
     } catch (error) {
         console.error("Lỗi cập nhật profile:", error);
         res.status(500).json({ message: 'Lỗi server khi cập nhật thông tin' });
+    }
+};
+
+export const deleteAddress = async (req, res) => {
+    try {
+        const { id } = req.params; // MaDiaChi
+        const userId = req.user.id;
+
+        await db.query('DELETE FROM diachi WHERE MaDiaChi = ? AND MaNguoiDung = ?', [id, userId]);
+        res.status(200).json({ message: "Xóa địa chỉ thành công!" });
+    } catch (error) {
+        res.status(500).json({ message: "Lỗi server khi xóa địa chỉ" });
     }
 };

@@ -15,7 +15,7 @@ async function loadCart() {
     // kiem tra, neu chua dang nhap thi chuyen den trang dang nhap
     const token = localStorage.getItem('token');
     if (!token) {
-        window.location.href = 'auth.html';
+        window.location.href = getPageLink('auth.html');
         return;
     }
 
@@ -25,7 +25,7 @@ async function loadCart() {
     document.getElementById('header-avatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.hoTen)}&background=2563eb&color=fff`;
 
     try {
-        const response = await fetch('http://localhost:3000/api/cart', {
+        const response = await fetch('http://localhost:8080/api/cart', {
             headers: { 'Authorization': `Bearer ${token}` }
         });
         const result = await response.json();
@@ -38,6 +38,69 @@ async function loadCart() {
         }
     } catch (error) {
         console.error("Lỗi:", error);
+    }
+}
+async function updateGlobalCartBadge() {
+    const token = localStorage.getItem('token');
+    const badge = document.getElementById('cart-count'); // Đảm bảo thẻ số lượng có id="cart-count"
+    
+    if (!token || !badge) return;
+
+    try {
+        const response = await fetch('http://localhost:8080/api/cart', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (response.ok) {
+            const result = await response.json();
+            // Đếm tổng số lượng (hoặc số dòng) trong giỏ
+            let total = 0;
+            if (result.data) {
+                result.data.forEach(item => total += item.SoLuong);
+            }
+            
+            badge.innerText = total > 99 ? '99+' : total; // Hiển thị số
+            
+            // Tạo hiệu ứng giật nảy nhẹ cho bắt mắt
+            badge.classList.add('animate-bounce');
+            setTimeout(() => badge.classList.remove('animate-bounce'), 1000);
+        }
+    } catch (error) { console.error("Lỗi đếm giỏ hàng:", error); }
+}
+// them san pham vao gio hang 
+async function addToCart(maBienThe) {
+    const token = localStorage.getItem('token');
+
+    // Kiểm tra đăng nhập
+    if (!token) {
+        showToast("Vui lòng đăng nhập để mua hàng!", "error");
+        setTimeout(() => window.location.href = getPageLink('auth.html'), 1500);
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:8080/api/cart/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // <--- ĐÍNH KÈM TOKEN Ở ĐÂY
+            },
+            body: JSON.stringify({
+                maBienThe: maBienThe,
+                soLuong: 1
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            showToast(data.message, "success");
+            updateGlobalCartBadge(); // Cập nhật số lượng trên badge
+        } else {
+            showToast(data.message, "error");
+        }
+    } catch (error) {
+        console.error("Lỗi khi thêm giỏ hàng:", error);
+        showToast("Không thể kết nối đến máy chủ!", "error");
     }
 }
 // load du lieu gio hang va hien thi
@@ -72,7 +135,7 @@ function renderCartItems() {
                         </button>
 
                         <div class="w-24 h-24 sm:w-28 sm:h-28 bg-gray-50 rounded-xl flex items-center justify-center flex-shrink-0 border border-gray-100 p-2">
-                            <img src="../assets/images/${item.HinhAnhChinh}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200'" class="w-full h-full object-contain mix-blend-multiply">
+                            <img src="${getImagePath(item.HinhAnhChinh)}" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200'" class="w-full h-full object-contain mix-blend-multiply">
                         </div>
 
                         <div class="flex-grow flex flex-col w-full">
@@ -133,7 +196,7 @@ async function updateQty(maChiTietGH, change, index) {
 
     // Gửi API ngầm xuống Server
     const token = localStorage.getItem('token');
-    await fetch('http://localhost:3000/api/cart/update', {
+    await fetch('http://localhost:8080/api/cart/update', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -152,7 +215,7 @@ async function removeItem(maChiTietGH, index) {
     renderCartItems();
 
     // Gửi API xóa xuống Database
-    await fetch(`http://localhost:3000/api/cart/remove/${maChiTietGH}`, {
+    await fetch(`http://localhost:8080/api/cart/remove/${maChiTietGH}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
     });
@@ -166,7 +229,7 @@ async function handlePlaceOrder(event) {
     const token = localStorage.getItem('token');
     if (!token) {
         alert("Vui lòng đăng nhập trước khi thực hiện thanh toán!");
-        window.location.href = "login.html";
+        window.location.href = getPageLink("auth.html");
         return;
     }
 
@@ -208,7 +271,7 @@ async function handlePlaceOrder(event) {
 
     // 5. Đóng gói dữ liệu và gửi yêu cầu POST lên Backend
     try {
-        const response = await fetch('http://localhost:3000/api/orders', {
+        const response = await fetch('http://localhost:8080/api/orders', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -249,5 +312,8 @@ async function handlePlaceOrder(event) {
     }
 }
 
-// KHỞI ĐỘNG
-document.addEventListener('DOMContentLoaded', loadCart);
+
+document.addEventListener('DOMContentLoaded', function () {
+   loadCart();
+    updateGlobalCartBadge();
+});

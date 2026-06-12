@@ -12,7 +12,7 @@ export const register = async (req, res) => {
         const { hoTen, email, matKhau, soDienThoai } = req.body;
 
         // Kiểm tra xem email đã tồn tại chưa
-        const [existingUsers] = await db.query('SELECT * FROM NGUOIDUNG WHERE Email = ?', [email]);
+        const [existingUsers] = await db.query('SELECT * FROM nguoidung WHERE Email = ?', [email]);
         if (existingUsers.length > 0) {
             return res.status(400).json({ message: 'Email này đã được sử dụng!' });
         }
@@ -23,7 +23,7 @@ export const register = async (req, res) => {
 
         // Lưu vào CSDL
         const [result] = await db.query(
-            'INSERT INTO NGUOIDUNG (HoTen, Email, MatKhau, SoDienThoai, VaiTro) VALUES (?, ?, ?, ?, ?)',
+            'INSERT INTO nguoidung (HoTen, Email, MatKhau, SoDienThoai, VaiTro) VALUES (?, ?, ?, ?, ?)',
             [hoTen, email, hashedPassword, soDienThoai, 'KhachHang']
         );
 
@@ -40,7 +40,7 @@ export const login = async (req, res) => {
         const { email, matKhau } = req.body;
 
         //  Tìm user theo Email
-        const [users] = await db.query('SELECT * FROM NGUOIDUNG WHERE Email = ?', [email]);
+        const [users] = await db.query('SELECT * FROM nguoidung WHERE Email = ?', [email]);
         
         if (users.length === 0) {
             return res.status(401).json({ message: 'Sai email hoặc mật khẩu!' }); // Mã 401 Unauthorized
@@ -82,6 +82,7 @@ export const login = async (req, res) => {
             }
         });
     } catch (error) {
+        console.log("====== LỖI ĐĂNG NHẬP ======", error);
         res.status(500).json({ message: 'Lỗi server', error: error.message });
     }
 };
